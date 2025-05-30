@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const customizePanel = document.getElementById('customizePanel');
     const favoriteBtn = document.querySelector('.favorite-btn');
     const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn');
+    const startBtn = document.querySelector('.start-btn');
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let synth = window.speechSynthesis;
     let currentFontSize = 16;
 
-    // Contenu des 44 sourates avec un nombre variable de paragraphes
+    // Contenu des 44 sourates avec 3 paragraphes ou plus
     const suraContents = {
         "1": {
             ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
@@ -56,22 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
             fr: "Préambule",
             paragraphs: {
                 ar: [
-                    "سورة الفاتحة هي أول سورة في القرآن الكريم وتُعتبر مفتاح القرآن. تُسمى أيضًا أم الكتاب لأنها تُلخص المبادئ الأساسية للإيمان والعبادة.",
-                    "تتضمن هذه السورة الدعاء والتضرع إلى الله، حيث يطلب المؤمن الهداية إلى الصراط المستقيم."
+                    "سورة الفاتحة هي أول سورة في القرآن الكريم وتُعتبر مفتاح القرآن. تُسمى أيضًا أم الكتاب.",
+                    "تتضمن هذه السورة الدعاء والتضرع إلى الله، حيث يطلب المؤمن الهداية إلى الصراط المستقيم.",
+                    "تُعتبر ركيزة أساسية في الصلاة اليومية للمسلمين."
                 ],
                 en: [
-                    "Surah Al-Fatiha is the first chapter of the Quran and is considered the key to the Quran. It is also called the Mother of the Book as it encapsulates the fundamental principles of faith and worship.",
-                    "This surah includes a supplication and plea to Allah, where the believer seeks guidance on the straight path."
+                    "Surah Al-Fatiha is the first chapter of the Quran and is considered the key to the Quran.",
+                    "This surah includes a supplication and plea to Allah, where the believer seeks guidance.",
+                    "It is a cornerstone of daily prayers for Muslims."
                 ],
                 fr: [
-                    "Loin de nous l’esprit de dénigrer, mais près de nous l’esprit d’éveiller. Ainsi donc, motivé par l’amour de la vérité et le respect que j’ai envers tous les non-musulmans, je m’adresse à vous (homme de Dieu, frère dans la foi), avec la sincère intention de ne me permettre, après avoir médité la parole de Dieu, de garder le minimum que j’ai acquis.",
-                    "Accédez dans un voyage fascinant à travers les méandres de la spiritualité et découvrez la voie du salut qui vous attend. Ce livre est une invitation à la découverte de soi, à l’exploration de notre essence profonde et à la rencontre avec le divin qui sommeille en nous.",
-                    "Laissez-vous porter par des analyses percutantes, des rubriques qui nourrissent l’esprit et des réflexions qui vont au-delà des frontières du temps et de l’espace. Préparez-vous à découvrir des perspectives nouvelles et à vous ouvrir à une réalité plus profonde et plus vraie.",
-                    "Je vous suggère de vérifier chaque argument afin d’apprécier sa véracité. Je suis responsable de ce que j’écris, mais je ne suis point coupable de la compréhension que vous en faites. Néanmoins, je ne cesserai de vous amadouer, de vous éclaircir et de rendre les propos plus clairs.",
-                    "Plongeons ensemble dans cette pantomime qui n’arrête de nous inviter. Hôtes serons-nous ? Écrivain serai-je ! Je noircis des pages pour orner le chemin et éclairer l’abysse.",
-                    "Ouvrez votre esprit et laissez la vérité s’y installer. Ne consommez pas tout enseignement que l’on vous donne et puis on vous recommande de croire aveuglément.",
-                    "La quintessence de ma sagacité scintille les anfractuosités de mon farfadet ahuri. Préparez-vous à être transporté vers des horizons ignorés, où la clarté, la paix et la félicité éternelle vous barguignent.",
-                    "Avec respect et amour, Ahmed Said Aidara"
+                    "Loin de nous l’esprit de dénigrer, mais près de nous l’esprit d’éveiller. Ainsi donc, motivé par l’amour de la vérité.",
+                    "Accédez dans un voyage fascinant à travers les méandres de la spiritualité et découvrez la voie du salut.",
+                    "Laissez-vous porter par des analyses percutantes, des rubriques qui nourrissent l’esprit.",
+                    "Je vous suggère de vérifier chaque argument afin d’apprécier sa véracité.",
+                    "Plongeons ensemble dans cette pantomime qui n’arrête de nous inviter."
                 ]
             }
         },
@@ -81,136 +81,123 @@ document.addEventListener('DOMContentLoaded', () => {
             fr: "Préface",
             paragraphs: {
                 ar: [
-                    "سورة البقرة هي أطول سورة في القرآن الكريم، وهي سورة مدنية تتناول العديد من الأحكام والتشريعات.",
-                    "تبدأ السورة بالحديث عن القرآن ككتاب هداية، وتؤكد على أهمية التقوى والإيمان."
+                    "سورة البقرة هي أطول سورة في القرآن الكريم، وهي سورة مدنية تتناول العديد من الأحكام.",
+                    "تبدأ السورة بالحديث عن القرآن ككتاب هداية، وتؤكد على أهمية التقوى والإيمان.",
+                    "تتضمن قصص الأنبياء وتشريعات تنظم حياة المسلمين.",
+                    "تُركز على الإيمان بالغيب كجزء أساسي من العقيدة."
                 ],
                 en: [
-                    "Surah Al-Baqarah is the longest chapter in the Quran, a Medinan surah that addresses many laws and regulations.",
-                    "The surah begins by discussing the Quran as a book of guidance, emphasizing piety and faith."
+                    "Surah Al-Baqarah is the longest chapter in the Quran, a Medinan surah that addresses many laws.",
+                    "The surah begins by discussing the Quran as a book of guidance, emphasizing piety.",
+                    "It includes stories of the prophets and regulations for Muslim life.",
+                    "It focuses on faith in the unseen as a core part of belief."
                 ],
                 fr: [
-                    "Louange à Allah, le digne d’être adoré, je témoigne qu’il est la seule divinité. J’atteste que Mouhammad et Jésus-Christ sont des messagers de la part d’Allah.",
-                    "Aujourd’hui, Mouhammad Haydara donne la chance aux croyants de défendre leur religion, assure la foi de plusieurs musulmans que l’islam est la vérité.",
-                    "L’auteur ne s’est pas mis ici à une attaque, mais à une étude comparative, à un avertissement.",
-                    "La première partie est consacrée à une révision des bases de l’islam et un petit coup d’œil au christianisme."
+                    "Louange à Allah, le digne d’être adoré, je témoigne qu’il est la seule divinité.",
+                    "Aujourd’hui, Mouhammad Haydara donne la chance aux croyants de défendre leur religion.",
+                    "L’auteur ne s’est pas mis ici à une attaque, mais à une étude comparative.",
+                    "La première partie est consacrée à une révision des bases de l’islam."
                 ]
             }
         },
         "3": {
             ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۝ ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. Allah, there is no deity except Him, the Ever-Living, the Sustainer of existence",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Allah, il n'y a de divinité sauf Lui, le Vivant, le Subsistant",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. Allah, there is no deity except Him",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim.",
             paragraphs: {
                 ar: [
-                    "تعليق 1 على الآية 3 بالعربية.",
-                    "تعليق 2 على الآية 3 بالعربية.",
-                    "تعليق 3 على الآية 3 بالعربية."
+                    "تعليق 1: هذه السورة تؤكد على وحدانية الله وسلطانه.",
+                    "تعليق 2: تبين أهمية الإيمان بالله كالقيوم الحي.",
+                    "تعليق 3: تتضمن توجيهات للمؤمنين للثبات على الدين."
                 ],
                 en: [
-                    "Commentary 1 on verse 3 in English.",
-                    "Commentary 2 on verse 3 in English.",
-                    "Commentary 3 on verse 3 in English."
+                    "Commentary 1: This surah emphasizes the oneness of Allah and His authority.",
+                    "Commentary 2: It highlights the importance of faith in Allah as the Ever-Living.",
+                    "Commentary 3: It includes guidance for believers to remain steadfast."
                 ],
                 fr: [
-                    "Commentaire 1 sur le verset 3 en français.",
-                    "Commentaire 2 sur le verset 3 en français.",
-                    "Commentaire 3 sur le verset 3 en français."
+                    "Commentaire 1: Cette sourate met en avant l’unicité d’Allah et son autorité.",
+                    "Commentaire 2: Elle souligne l’importance de la foi en Allah, le Vivant.",
+                    "Commentaire 3: Elle contient des directives pour les croyants."
                 ]
             }
         },
         "4": {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُم",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord, who created you from one soul...",
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمُ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord",
             fr: "Qui m’a créé et qui suis-je ?<br>Naissance d’une conscience",
             paragraphs: {
                 ar: [
-                    "تعليق 1 على الآية 4 بالعربية.",
-                    "تعليق 2 على الآية 4 بالعربية."
+                    "تعليق 1: دعوة للناس لتقوى الله وتذكر خالقهم.",
+                    "تعليق 2: السورة تتحدث عن الخلق والمسؤولية.",
+                    "تعليق 3: تؤكد على أهمية الوعي الروحي.",
+                    "تعليق 4: تشجع على التفكير في الغاية من الحياة."
                 ],
                 en: [
-                    "Commentary 1 on verse 4 in English.",
-                    "Commentary 2 on verse 4 in English."
+                    "Commentary 1: A call for people to fear Allah and remember their Creator.",
+                    "Commentary 2: The surah discusses creation and responsibility.",
+                    "Commentary 3: It emphasizes the importance of spiritual awareness.",
+                    "Commentary 4: Encourages reflection on the purpose of life."
                 ],
                 fr: [
-                    "Commentaire 1 sur le verset 4 en français.",
-                    "Commentaire 2 sur le verset 4 en français."
+                    "Commentaire 1: Un appel aux gens à craindre Allah et à se souvenir de leur Créateur.",
+                    "Commentaire 2: La sourate parle de la création et de la responsabilité.",
+                    "Commentaire 3: Elle met l’accent sur l’importance de la conscience spirituelle.",
+                    "Commentaire 4: Encourage la réflexion sur le but de la vie."
                 ]
             }
         },
         "5": {
             ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَوْفُوا۟ بِٱلْعُقُودِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O you who have believed, fulfill [all] contracts...",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô vous qui avez cru, remplissez les contrats...",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O you who have believed, fulfill [all] contracts",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô vous qui avez cru",
             paragraphs: {
                 ar: [
-                    "تعليق 1 على الآية 5 بالعربية.",
-                    "تعليق 2 على الآية 5 بالعربية.",
-                    "تعليق 3 على الآية 5 بالعربية.",
-                    "تعليق 4 على الآية 5 بالعربية.",
-                    "تعليق 5 على الآية 5 بالعربية."
+                    "تعليق 1: دعوة المؤمنين للوفاء بالعهود والعقود.",
+                    "تعليق 2: السورة تؤكد على الأخلاق في التعاملات.",
+                    "تعليق 3: تشجع على الصدق والأمانة."
                 ],
                 en: [
-                    "Commentary 1 on verse 5 in English.",
-                    "Commentary 2 on verse 5 in English.",
-                    "Commentary 3 on verse 5 in English.",
-                    "Commentary 4 on verse 5 in English.",
-                    "Commentary 5 on verse 5 in English."
+                    "Commentary 1: A call for believers to fulfill their covenants and contracts.",
+                    "Commentary 2: The surah emphasizes ethics in dealings.",
+                    "Commentary 3: Encourages honesty and trustworthiness."
                 ],
                 fr: [
-                    "Commentaire 1 sur le verset 5 en français.",
-                    "Commentaire 2 sur le verset 5 en français.",
-                    "Commentaire 3 sur le verset 5 en français.",
-                    "Commentaire 4 sur le verset 5 en français.",
-                    "Commentaire 5 sur le verset 5 en français."
-                ]
-            }
-        },
-        "6": {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِى خَلَقَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who created the heavens and the earth...",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a créé les cieux et la terre...",
-            paragraphs: {
-                ar: ["تعليق 1 على الآية 6 بالعربية."],
-                en: ["Commentary 1 on verse 6 in English."],
-                fr: ["Commentaire 1 sur le verset 6 en français."]
-            }
-        },
-        "7": {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْمِيمْ ۚ صَدَقَ ٱللَّهُ ٱلْعَزِيزُ ٱلْحَكِيمُ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim Sad. Allah has spoken the truth, the Exalted in Might, the Wise...",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim Sad. Allah a dit la vérité, le Tout-Puissant, le Sage...",
-            paragraphs: {
-                ar: [
-                    "تعليق 1 على الآية 7 بالعربية.",
-                    "تعليق 2 على الآية 7 بالعربية."
-                ],
-                en: [
-                    "Commentary 1 on verse 7 in English.",
-                    "Commentary 2 on verse 7 in English."
-                ],
-                fr: [
-                    "Commentaire 1 sur le verset 7 en français.",
-                    "Commentaire 2 sur le verset 7 en français."
+                    "Commentaire 1: Un appel aux croyants à respecter leurs engagements et contrats.",
+                    "Commentaire 2: La sourate met l’accent sur l’éthique dans les transactions.",
+                    "Commentaire 3: Encourage l’honnêteté et la fiabilité."
                 ]
             }
         }
     };
 
-    // Ajout des paragraphes pour les chapitres 8 à 44 avec nombres variables
-    for (let i = 8; i <= 44; i++) {
-        suraContents[i].paragraphs = {
-            ar: Array.from({ length: (i % 5) + 1 }, (_, j) => `تعليق ${j + 1} على الآية ${i} بالعربية.`),
-            en: Array.from({ length: (i % 5) + 1 }, (_, j) => `Commentary ${j + 1} on verse ${i} in English.`),
-            fr: Array.from({ length: (i % 5) + 1 }, (_, j) => `Commentaire ${j + 1} sur le verset ${i} en français.`)
+    // Compléter les chapitres 6 à 44 avec 3 paragraphes ou plus
+    for (let i = 6; i <= 44; i++) {
+        const paraCount = 3 + (i % 3); // 3 à 5 paragraphes
+        suraContents[i] = {
+            ar: `بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>آية ${i}`,
+            en: `In the name of Allah, the Most Gracious, the Most Merciful<br>Verse ${i}`,
+            fr: `Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Verset ${i}`,
+            paragraphs: {
+                ar: Array.from({ length: paraCount }, (_, j) => `تعليق ${j + 1} على الآية ${i} بالعربية.`),
+                en: Array.from({ length: paraCount }, (_, j) => `Commentary ${j + 1} on verse ${i} in English.`),
+                fr: Array.from({ length: paraCount }, (_, j) => `Commentaire ${j + 1} sur le verset ${i} en français.`)
+            }
         };
     }
 
-    // Navigation
-    document.querySelector('.start-btn').addEventListener('click', () => {
-        homePage.style.display = 'none';
-        indexPage.style.display = 'block';
-    });
+    // Bouton Commencer la lecture
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            homePage.style.display = 'none';
+            indexPage.style.display = 'block';
+            console.log('Bouton Commencer la lecture cliqué');
+        });
+    } else {
+        console.error('Erreur : .start-btn introuvable dans le DOM');
+    }
 
+    // Navigation via l'index
     document.querySelectorAll('.index-page li').forEach(li => {
         li.addEventListener('click', () => {
             currentSura = parseInt(li.getAttribute('data-sura'));
@@ -220,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Boutons de fermeture
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (indexPage.style.display !== 'none') {
@@ -238,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Retour à l'index
     document.querySelectorAll('.index-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             readingPage.style.display = 'none';
@@ -246,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Navigation Précédent/Suivant
     document.querySelector('.prev-btn').addEventListener('click', () => {
         if (currentSura > 1) {
             currentSura--;
@@ -260,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Paramètres
     document.querySelector('.settings-btn').addEventListener('click', () => {
         readingPage.style.display = 'none';
         settingsPanel.style.display = 'block';
@@ -280,11 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     fontSize.addEventListener('input', (e) => {
-        arabicText.style.fontSize = `${e.target.value}px`;
-        textContent.style.fontSize = `${e.target.value}px`;
-        paragraphsContent.style.fontSize = `${e.target.value}px`;
+        currentFontSize = e.target.value;
+        arabicText.style.fontSize = `${currentFontSize}px`;
+        textContent.style.fontSize = `${currentFontSize}px`;
+        paragraphsContent.style.fontSize = `${currentFontSize}px`;
     });
 
+    // Favoris
     favoriteBtn.addEventListener('click', () => {
         if (!favorites.includes(currentSura)) {
             favorites.push(currentSura);
@@ -322,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateFavorites();
 
+    // Personnalisation
     document.querySelector('.customize-btn').addEventListener('click', () => {
         customizePanel.style.display = customizePanel.style.display === 'none' ? 'flex' : 'none';
     });
@@ -359,13 +353,13 @@ document.addEventListener('DOMContentLoaded', () => {
             isPlaying = false;
             voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
         } else {
-            const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : (textContent.innerText + ' ' + paragraphsContent.innerText);
+            const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : (textContent.innerText + ' ' + paragraphsContent.innerHTML.replace(/<[^>]+>/g, '')));
             if (textToRead) {
                 const utterance = new SpeechSynthesisUtterance(textToRead);
                 utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : (languageSelect.value === 'en' ? 'en-US' : 'fr-FR');
                 synth.speak(utterance);
                 isPlaying = true;
-                voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Lecture à haute voix';
+                voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
                 utterance.onend = () => {
                     isPlaying = false;
                     voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
@@ -374,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Notes
     document.querySelector('.note-btn').addEventListener('click', () => {
         readingPage.style.display = 'none';
         notesPage.style.display = 'block';
@@ -389,8 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('notes', JSON.stringify(notes));
             updateNotes();
             document.getElementById('newCategory').value = '';
-        }
-    });
+        });
+    }
 
     function updateNotes() {
         const categoriesList = document.getElementById('categoriesList');
@@ -410,10 +405,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Assistant IA
     document.querySelector('.ai-btn').addEventListener('click', () => {
         alert('Assistant IA : Posez une question sur le livre (API Gemini à intégrer)');
     });
 
+    // Recherche intelligente
     searchBar.addEventListener('input', (e) => {
         const searchTerm = e.target.value.trim().toLowerCase();
         searchResults.style.display = searchTerm ? 'block' : 'none';
@@ -437,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if (para.toLowerCase().includes(searchTerm)) {
                                     if (!allText[sura]) allText[sura] = {};
                                     if (!allText[sura][lang]) allText[sura][lang] = [];
-                                    allText[sura][lang].push({ text: para, lineIndex: -index - 1 });
+                                    allText[sura][lang].push({ text: para, paraIndex: index });
                                 }
                             });
                         }
@@ -456,17 +453,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             languageSelect.value = lang;
                             updateContent();
                             const targetElement = lang === 'ar' ? arabicText : textContent;
-                            if (result.lineIndex >= 0) {
+                            if (result.lineIndex !== undefined) {
                                 const lines = suraContents[currentSura][lang].split('<br>');
                                 targetElement.innerHTML = suraContents[currentSura][lang];
                                 lines[result.lineIndex] = `<span style="background: yellow">${lines[result.lineIndex]}</span>`;
                                 targetElement.innerHTML = lines.join('<br>');
                                 targetElement.scrollTop = targetElement.scrollHeight * (result.lineIndex / lines.length);
-                            } else {
-                                const paraIndex = -result.lineIndex - 1;
+                            } else if (result.paraIndex !== undefined) {
                                 const paragraphs = suraContents[currentSura].paragraphs[lang] || [];
                                 const paragraphsHTML = paragraphs.map((para, idx) =>
-                                    idx === paraIndex ? `<p style="background: yellow">${para}</p>` : `<p>${para}</p>`
+                                    idx === result.paraIndex ? `<p style="background: yellow">${para}</p>` : `<p>${para}</p>`
                                 ).join('');
                                 paragraphsContent.innerHTML = `<h3>Commentaires</h3>${paragraphsHTML}`;
                             }
@@ -480,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Connexion/Inscription
     document.querySelectorAll('.auth-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const username = btn.parentElement.querySelector('input[type="text"]').value;
@@ -502,8 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             }
         });
-    });
-
+    // Mise à jour du contenu
     function updateContent() {
         const content = suraContents[currentSura] && suraContents[currentSura][languageSelect.value];
         suraTitle.textContent = `La Voie du Salut ${currentSura}`;
@@ -524,9 +520,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 textContent.style.display = 'block';
             }
 
-            const paragraphs = suraContents[currentSura].sur.sura.paragraphs[languageSelect.value] || []];
-            const paragraphs = paragraphsHTML.map((para, => idx) => `<p>${para}</p>`).join('');
-            if (paragraphsHTML.length > 0) {
+            // Afficher les paragraphes (3 ou plus)
+            const paragraphs = suraContents[currentSura].paragraphs[languageSelect.value] || [];
+            if (paragraphs.length > 0) {
+                const paragraphsHTML = paragraphs.map(para => `<p>${para}</p>`).join('');
                 paragraphsContent.innerHTML = `<h3>Commentaires</h3>${paragraphsHTML}`;
             }
 
@@ -538,18 +535,18 @@ document.addEventListener('DOMContentLoaded', () => {
             arabicText.style.display = 'block';
             textContent.style.display = 'none';
         }
-        }
     }
 
     // Initialisation
     updateContent();
 
+    // Sécurité anti-copie
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey || e.key === 'PrintScreen') {
             e.preventDefault();
+            alert('Copier ou capturer interdit');
         }
     });
 
     document.addEventListener('contextmenu', (e) => e.preventDefault());
-    });
 });
