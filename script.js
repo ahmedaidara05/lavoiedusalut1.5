@@ -593,21 +593,21 @@ const suraContents = {
     });
 
     function updateFavorites() {
-        favoritesList.innerHTML = '';
-        favorites.forEach(sura => {
-            if (sura >= 1 && sura <= 44 && suraContents[sura]) {
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre aya ${suraContents[sura].ar.split('<br>').length - 1} <i class="fas fa-mosque"></i>`;
-                li.addEventListener('click', () => {
-                    currentSura = sura;
-                    updateContent();
-                    favoritesPage.style.display = 'none';
-                    readingPage.style.display = 'block';
-                });
-                favoritesList.appendChild(li);
-            }
-        });
-    }
+    favoritesList.innerHTML = '';
+    favorites.forEach(sura => {
+        if (sura >= 1 && sura <= 44 && suraContents[sura]) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre de paragraphes ${suraContents[sura].paragraphs[languageSelect.value].length} <i class="fas fa-mosque"></i>`;
+            li.addEventListener('click', () => {
+                currentSura = sura;
+                updateContent();
+                favoritesPage.style.display = 'none';
+                readingPage.style.display = 'block';
+            });
+            favoritesList.appendChild(li);
+        }
+    });
+}
     updateFavorites();
 
     // Personnalisation
