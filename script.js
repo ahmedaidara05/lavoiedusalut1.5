@@ -56,7 +56,7 @@ const suraContents = {
         paragraphs: {
             ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
             en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            fr: ["bonjour 1", "Paragraphe 2", "Paragraphe 3"]
         }
     },
     2: {
