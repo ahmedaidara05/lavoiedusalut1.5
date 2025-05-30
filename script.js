@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
         favoritesList.innerHTML = '';
         favorites.forEach(sura => {
             const li = document.createElement('li');
-            li.textContent = `Sourate ${sura}`;
+            li.textContent = `Chapitre ${sura}`;
             li.addEventListener('click', () => {
                 currentSura = sura;
                 loadSuraContent();
