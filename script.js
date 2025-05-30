@@ -530,6 +530,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialisation
     updateContent();
 
+    const content = suraContents[currentSura] && suraContents[currentSura][languageSelect.value];
+    suraTitle.textContent = `Surat ${currentSura}`;
+    if (content) {
+        const lines = content.split('<br>');
+        const bismillahLine = lines[0];
+        const rest = lines.slice(1).join('<br>');
+        const paragraphs = suraContents[currentSura].paragraphs[languageSelect.value] || [];
+        const paragraphsHTML = paragraphs.map(para => `<p class="paragraph">${para}</p>`).join('');
+        
+        if (languageSelect.value === 'ar') {
+            arabicText.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}<br><div class="paragraphs">${paragraphsHTML}</div>`;
+            textContent.style.display = 'none';
+            arabicText.style.display = 'block';
+        } else {
+            textContent.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}<br><div class="paragraphs">${paragraphsHTML}</div>`;
+            arabicText.style.display = 'none';
+            textContent.style.display = 'block';
+        }
+    } else {
+        arabicText.innerHTML = 'Contenu non disponible';
+        textContent.innerHTML = 'Content not available';
+        arabicText.style.display = 'block';
+        textContent.style.display = 'none';
+    }
+}
+
     // Sécurité
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey || e.key === 'PrintScreen') {
