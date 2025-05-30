@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const notesPage = document.getElementById('notesPage');
     const arabicText = document.getElementById('arabicText');
     const textContent = document.getElementById('textContent');
+    const frenchText = document.getElementById('frenchText');
     const suraTitle = document.getElementById('suraTitle');
     const languageSelect = document.getElementById('languageSelect');
     const themeSelect = document.getElementById('themeSelect');
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('searchResults');
     const customizePanel = document.getElementById('customizePanel');
     const favoriteBtn = document.querySelector('.favorite-btn');
-    const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn'); // Mis à jour pour le panneau de personnalisation
+    const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn');
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
@@ -50,96 +51,445 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contenu des 44 sourates en arabe, anglais et français
     const suraContents = {
         1: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, the Lord of all the worlds",
-            fr: "Préambule",
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
             paragraphs: {
-                ar: [
-                    "سورة الفاتحة هي أول سورة في القرآن الكريم وتُعتبر مفتاح القرآن. تُسمى أيضًا أم الكتاب لأنها تُلخص المبادئ الأساسية للإيمان والعبادة.",
-                    "تتضمن هذه السورة الدعاء والتضرع إلى الله، حيث يطلب المؤمن الهداية إلى الصراط المستقيم، مما يجعلها ركيزة أساسية في الصلاة اليومية."
-                ],
-                en: [
-                    "Surah Al-Fatiha is the first chapter of the Quran and is considered the key to the Quran. It is also called the Mother of the Book as it encapsulates the fundamental principles of faith and worship.",
-                    "This surah includes a supplication and plea to Allah, where the believer seeks guidance on the straight path, making it a cornerstone of daily prayers."
-                ],
-                fr: [
-                    "Loin de nous l’esprit de dénigrer, mais près de nous l’esprit d’éveiller. Ainsi donc, motivé par l’amour de la vérité et le respect que j’ai envers tous les non-musulmans, je m’adresse à vous (homme de Dieu, frère dans la foi), avec la sincère intention de ne me permettre, après avoir médité la parole de Dieu, de garder le minimum que j’ai acquis. Il est écrit dans le livre de Josué ; Que ce livre de la loi ne s’éloigne pas de ta bouche, et médite-le jour et nuit, afin que tu prennes garde à faire selon tout ce qui y est écrit ; car alors, tu feras réussir tes voies, et alors, tu prospéreras. Dieu dit dans le Coran ; Et Nous avons rendu le Coran facile à retenir. L’un de vous souhaite-t-il apprendre ?",
-                    "Accédez dans un voyage fascinant à travers les méandres de la spiritualité et découvrez la voie du salut qui vous attend. Ce livre est une invitation à la découverte de soi, à l’exploration de notre essence profonde et à la rencontre avec le divin qui sommeille en nous. Contemplez la voie du salut, une voie parsemée d’émerveillement, de transformation et de libération.",
-                    "Laissez-vous porter par des analyses percutantes, des rubriques qui nourrissent l’esprit et des réflexions qui vont au-delà des frontières du temps et de l’espace. Préparez-vous à découvrir des perspectives nouvelles et à vous ouvrir à une réalité plus profonde et plus vraie. Plongez dans la sagesse véritable de l’Islam, laissez-vous guider par une quête spirituelle qui touchera votre cœur et éclairera votre chemin, explorez ses enseignements riches et laissez-vous toucher par la beauté et la lumière qui en émanent, sur la voie du salut.",
-                    "Je vous suggère de vérifier chaque argument afin d’apprécier sa véracité. Je suis responsable de ce que j’écris, mais je ne suis point coupable de la compréhension que vous en faites. Néanmoins, je ne cesserai de vous amadouer, de vous éclaircir et de rendre les propos plus clairs.",
-                    "Plongeons ensemble dans cette pantomime qui n’arrête de nous inviter. Hôtes serons-nous ? Écrivain serai-je ! Je noircis des pages pour orner le chemin et éclairer l’abysse. Assombrir pour ne pas sombrer. Pour extérioriser et évacuer nos gnoses, j’écris en argument et preuve pour nourrir votre méninge et cerner vos tohu-bohu. Certes, il ne sert à rien de lire pour passer, mais lisez pour comprendre.",
-                    "Ouvrez votre esprit et laissez la vérité s’y installer. Ne consommez pas tout enseignement que l’on vous donne et puis on vous recommande de croire aveuglément. Jésus dit ; Ne soyez point comme le cheval, ni comme le mulet, qui sont sans intelligence. On note un passage dans le livre des Actes que les juifs examinaient chaque jour les Écritures pour voir si ce qu’on leur disait était exact. Alors, il faut tout analyser comme il est recommandé dernièrement dans le livre de 1 Thessaloniciens «N’éteignez pas l’esprit, ne méprisez pas les prophéties, mais examinez tout et retenez ce qui est bon. » Que vous soyez en quête de réponses, d’épanouissement spirituel ou simplement d’une connexion plus profonde avec votre être intérieur, ce livre sera votre compagnon fidèle dans cette quête sacrée.",
-                    "La quintessence de ma sagacité scintille les anfractuosités de mon farfadet ahuri. Préparez-vous à être transporté vers des horizons ignorés, où la clarté, la paix et la félicité éternelle vous barguignent. Aérez votre cœur et votre esprit pour comprendre les lignes de ces pages, alors que vous découvrez la voie du salut qui étincèlera votre trajectoire vers une vie saine, remplie de paix, de tranquillité, d’apaisement et de pacification dans ce bas monde ainsi que dans l’au-delà. Lisons donc avec l’esprit du discernement et embrassons la plénitude morale qui nous attend.",
-                    "Avec respect et amour",
-                    "Ahmed Said Aidara"
-                ]
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
             }
         },
         2: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۖ فِيهِ هُدًى لِّلْمُتَّقِينَ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful<br>This is the Book about which there is no doubt, a guidance for those conscious of Allah",
-            fr: "Préface",
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
             paragraphs: {
-                ar: [
-                    "سورة البقرة هي أطول سورة في القرآن الكريم، وهي سورة مدنية تتناول العديد من الأحكام والتشريعات التي تنظم حياة المسلمين.",
-                    "تبدأ السورة بالحديث عن القرآن ككتاب هداية، وتؤكد على أهمية التقوى والإيمان بالله كأساس لفهم الدين وتطبيق تعاليمه."
-                ],
-                en: [
-                    "Surah Al-Baqarah is the longest chapter in the Quran, a Medinan surah that addresses many laws and regulations governing the lives of Muslims.",
-                    "The surah begins by discussing the Quran as a book of guidance, emphasizing the importance of piety and faith in Allah as the foundation for understanding and applying its teachings."
-                ],
-                fr: [
-                    "Louange à Allah, le digne d’être adoré, je témoigne qu’il est la seule divinité. J’atteste que mouhamad et Jésus-Christ sont des messagers de la part d’Allah, que les prières et les bénédictions du Seigneur soient sur eux. Dans ce livre, ce sont les textes sacrés qui parlent. Avec attirance, l’ouvrage de mouhamad haydara s’impose par son degré d’argumentation et de pertinence. Il est bon d’inviter son prochain (non croyant) à devenir musulman, mais il serait meilleur qu’il soit certifié, assuré et textuel.",
-                    "Aujourd’hui, mouhamad haydara donne la chance aux croyants de défendre leur religion, assure la foi de plusieurs musulmans que l’islam est la vérité et nous invite à appeler les non-musulmans à venir consulter l’islam. Dieu dit dans le Coran, sourate 16, verset 125 : « Par la sagesse et la bonne exhortation, appelle (les gens) au sentier de ton Seigneur. Et discute avec eux de la meilleure façon ». Bien sûr, cela peut se faire, on peut ne pas être d’accord et avoir des points de divergence, mais cela n’empêche pas de vivre en paix, en considération et en cohésion sociale.",
-                    "L’auteur ne s’est pas mis ici à une attaque, mais à une étude comparative, à un avertissement. Cela fait de la voie du salut une invitation à son lecteur à entrer dans une sphère sérieuse qu’est la foi. Ce livre dévoile la Vraie Voie qui nous mène au Salut et qui est la clé du paradis.",
-                    "La première partie est consacrée à une révision des bases de l’islam et un petit coup d’œil au christianisme. Il aborde ensuite des interrogations profondes sur l’existence humaine, le sens de notre création, notre destinée, en illuminant majestueusement le chemin vers le Salut. Après cela, arrive la section intéressante pour les Chrétiens. La deuxième et dernière partie est consacrée à la voie du salut composée de plusieurs chapitres, dans lesquels sont inclus un appel et un rappel. Scannons ensemble le Coran et la Bible !",
-                    " Cheikh Abdallah Niass,",
-                    " PDG de l’institut Al Mouyassar"
-                ]
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
             }
         },
-        3: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۝ ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. Allah, there is no deity except Him, the Ever-Living, the Sustainer of existence", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Allah, il n'y a de divinité sauf Lui, le Vivant, le Subsistant" },
-        4: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُم", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord, who created you from one soul...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô hommes, craignez votre Seigneur qui vous a créés d'une seule âme..." },
-        5: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَوْفُوا۟ بِٱلْعُقُودِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O you who have believed, fulfill [all] contracts...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô vous qui avez cru, remplissez les contrats..." },
-        6: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِى خَلَقَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who created the heavens and the earth...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a créé les cieux et la terre..." },
-        7: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْمِيمْ ۚ صَدَقَ ٱللَّهُ ٱلْعَزِيزُ ٱلْحَكِيمُ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim Sad. Allah has spoken the truth, the Exalted in Might, the Wise...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim Sad. Allah a dit la vérité, le Tout-Puissant, le Sage..." },
-        8: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّبِىُّ ٱتَّقِ ٱللَّهَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O Prophet, fear Allah...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô Prophète, crains Allah..." },
-        9: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>بَرَاءَةٌ مِّنَ ٱللَّهِ وَرَسُولِهِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Freedom from obligation from Allah and His Messenger...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Dissociation d'Allah et de Son Messager..." },
-        10: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِىٓ أَنزَلَ عَلَىٰ عَبْدِهِ ٱلْكِتَٰبَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who has sent down to His servant the Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a fait descendre sur Son serviteur le Livre..." },
-        11: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلر ۚ كِتَٰبٌ أُنزِلَ إِلَيْكَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Ra. A Book which is revealed unto you...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Ra. Un Livre qui t'a été révélé..." },
-        12: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلر ۚ تِلْكَ آيَٰتُ ٱلْكِتَٰبِ ٱلْمُبِينِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Ra. These are the verses of the clear Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Ra. Ce sont les versets du Livre clair..." },
-        13: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْمِيمْ ۚ ٱلر ۚ كِتَٰبٌ أُنزِلَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim Ra. A Book which is revealed...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim Ra. Un Livre qui est révélé..." },
-        14: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلر ۚ كِتَٰبٌ أَنْزَلْنَٰهُ إِلَيْكَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Ra. A Book which We have revealed unto you...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Ra. Un Livre que Nous t'avons révélé..." },
-        15: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلر ۚ تِلْكَ آيَٰتُ ٱلْكِتَٰبِ وَقُرْآنٍ مُّبِينٍ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Ra. These are the verses of the Book and a clear Qur'an...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Ra. Ce sont les versets du Livre et un Coran clair..." },
-        16: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِى خَلَقَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who created the heavens and the earth...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a créé les cieux et la terre..." },
-        17: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>سُبْحَٰنَ ٱلَّذِىٓ أَسْرَىٰ بِعَبْدِهِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Glorified is He who took His servant by night...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Glorifié soit Celui qui a conduit Son serviteur..." },
-        18: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِىٓ أَنْزَلَ عَلَىٰ عَبْدِهِ ٱلْكِتَٰبَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who has sent down to His servant the Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a fait descendre sur Son serviteur le Livre..." },
-        19: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>كَهْيَعَصٓ ۚ ذِكْرُ رَحْمَتِ رَبِّكَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Kaf Ha Ya Ain Sad. A mention of the mercy of your Lord...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Kaf Ha Ya Ain Sad. Un rappel de la miséricorde de ton Seigneur..." },
-        20: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>طٰهٓ ۚ مَآ أَنزَلْنَا عَلَيْكَ ٱلْقُرْءَانَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ta Ha. We have not sent down to you the Qur'an...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ta Ha. Nous ne t'avons pas fait descendre le Coran..." },
-        21: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱقْتَرَبَ لِلنَّاسِ حِسَابُهُمْ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>[The time of] their account has approached for mankind...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Le compte des hommes s'est approché..." },
-        22: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمْ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô hommes, craignez votre Seigneur..." },
-        23: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>قَدْ أَفْلَحَ ٱلْمُؤْمِنُونَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Certainly will the believers have succeeded...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Les croyants ont certes réussi..." },
-        24: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>سُورَةٌ أَنزَلْنَٰهَا", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>[This is] a surah which We have sent down...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>[Ceci est] une sourate que Nous avons fait descendre..." },
-        25: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>تَبَارَكَ ٱلَّذِى نَزَّلَ ٱلْفُرْقَانَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Blessed is He who sent down the Criterion...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Béni soit Celui qui a fait descendre le Discernement..." },
-        26: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>طٰسٓمٓ ۚ تِلْكَ آيَٰتُ ٱلْقُرْءَانِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ta Sin Mim. These are the verses of the clear Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ta Sin Mim. Ce sont les versets du Coran clair..." },
-        27: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>طٰسٓ ۚ تِلْكَ آيَٰتُ ٱلْقُرْءَانِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ta Sin. These are the verses of the Qur'an...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ta Sin. Ce sont les versets du Coran..." },
-        28: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>طٰسٓمٓ ۚ تِلْكَ آيَٰتُ ٱلْكِتَٰبِ ٱلْمُبِينِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ta Sin Mim. These are the verses of the clear Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ta Sin Mim. Ce sont les versets du Livre clair..." },
-        29: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۚ أَحَسِبَ ٱلنَّاسُ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. Do the people think...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Les gens pensent-ils..." },
-        30: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۚ غُلِبَتِ ٱلرُّومُ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. The Romans have been defeated...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Les Romains ont été vaincus..." },
-        31: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۚ تِلْكَ آيَٰتُ ٱلْكِتَٰبِ ٱلْحَكِيمِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. These are the verses of the wise Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Ce sont les versets du Livre sage..." },
-        32: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>الم ۚ تَنْزِيلُ ٱلْكِتَٰبِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. The revelation of the Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. La révélation du Livre..." },
-        33: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّبِىُّ ٱتَّقِ ٱللَّهَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>O Prophet, fear Allah...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô Prophète, crains Allah..." },
-        34: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِى لَهُۥ مَا فِى ٱلسَّمَٰوَٰتِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, to whom belongs whatever is in the heavens...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, à qui appartient ce qui est dans les cieux..." },
-        35: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ فَاطِرِ ٱلسَّمَٰوَٰتِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, Creator of the heavens...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, Créateur des cieux..." },
-        36: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يٰسٓ ۚ وَٱلْقُرْءَانِ ٱلْحَكِيمِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ya Sin. By the wise Qur'an...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ya Sin. Par le Coran sage..." },
-        37: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>وَٱلصَّٰفَّاتِ صَفًّا", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>By those [angels] lined up in rows...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Par ceux qui sont rangés en rangs..." },
-        38: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>صٓ ۚ وَٱلْقُرْءَانِ ذِى ٱلذِّكْرِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Sad. By the Qur'an containing reminder...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Sad. Par le Coran porteur de rappel..." },
-        39: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ ٱلَّذِىٓ أَنزَلَ عَلَىٰ عَبْدِهِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, who has sent down upon His servant...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Louange à Allah, qui a fait descendre sur Son serviteur..." },
-        40: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حم ۚ تَنزِيلُ ٱلْكِتَٰبِ مِنَ ٱللَّهِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. The revelation of the Book is from Allah...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. La révélation du Livre vient d'Allah..." },
-        41: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حم ۚ عَسَقَ ۚ كِتَٰبٌ فُصِّلَتْ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. Ha Mim. A Book whose verses are detailed...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. Ha Mim. Un Livre dont les versets sont détaillés..." },
-        42: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حم ۚ عَسَقَ ۚ عَسْقَ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. Ha Mim. Ha Mim Ain Sin Qaf...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. Ha Mim. Ha Mim Ain Sin Qaf..." },
-        43: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حم ۚ وَٱلْكِتَٰبِ ٱلْمُبِينِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. By the clear Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. Par le Livre clair..." },
-        44: { ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حم ۚ وَٱلْكِتَٰبِ ٱلْمُبِينِ", en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. By the clear Book...", fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. Par le Livre clair..." }
+        3: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        4: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
+            }
+        },
+        5: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        6: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4", "Paragraph 5"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"]
+            }
+        },
+        7: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        8: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        9: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        10: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
+            }
+        },
+        11: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        12: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        13: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        14: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        15: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        16: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        17: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        18: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        19: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        20: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        21: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        22: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        23: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        24: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        25: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        26: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        27: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        28: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        29: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        30: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        31: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        32: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        33: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        34: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        35: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        36: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        37: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        38: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        39: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        40: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        41: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        42: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        43: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        },
+        44: {
+            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+            en: "In the name of Allah, the Most Gracious, the Most Merciful",
+            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+            paragraphs: {
+                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+            }
+        }
     };
 
     // Navigation
@@ -216,11 +566,13 @@ document.addEventListener('DOMContentLoaded', () => {
     fontSelect.addEventListener('change', (e) => {
         arabicText.style.fontFamily = e.target.value;
         textContent.style.fontFamily = e.target.value;
+        frenchText.style.fontFamily = e.target.value;
     });
 
     fontSize.addEventListener('input', (e) => {
         arabicText.style.fontSize = `${e.target.value}px`;
         textContent.style.fontSize = `${e.target.value}px`;
+        frenchText.style.fontSize = `${e.target.value}px`;
     });
 
     // Favoris
@@ -247,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         favorites.forEach(sura => {
             if (sura >= 1 && sura <= 44 && suraContents[sura]) {
                 const li = document.createElement('li');
-                li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre aya ${suraContents[sura].ar.split('<br>').length - 1} <i class="fas fa-mosque"></i>`;
+                li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre de paragraphes ${suraContents[sura].paragraphs[languageSelect.value].length} <i class="fas fa-mosque"></i>`;
                 li.addEventListener('click', () => {
                     currentSura = sura;
                     updateContent();
@@ -283,22 +635,25 @@ document.addEventListener('DOMContentLoaded', () => {
         currentFontSize = Math.min(currentFontSize + 2, 30);
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
+        frenchText.style.fontSize = `${currentFontSize}px`;
     });
 
     document.querySelector('.zoom-out-btn').addEventListener('click', () => {
         currentFontSize = Math.max(currentFontSize - 2, 12);
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
+        frenchText.style.fontSize = `${currentFontSize}px`;
     });
 
-    // Lecture à haute voix (maintenant dans le panneau de personnalisation)
+    // Lecture à haute voix
     voicePlayBtn.addEventListener('click', () => {
         if (isPlaying) {
             synth.cancel();
             isPlaying = false;
             voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
         } else {
-            const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
+            const targetText = languageSelect.value === 'ar' ? arabicText : (languageSelect.value === 'en' ? textContent : frenchText);
+            const textToRead = targetText.innerText;
             if (textToRead) {
                 const utterance = new SpeechSynthesisUtterance(textToRead);
                 utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : (languageSelect.value === 'en' ? 'en-US' : 'fr-FR');
@@ -365,13 +720,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const allText = {};
             for (let sura = 1; sura <= 44; sura++) {
                 ['ar', 'en', 'fr'].forEach(lang => {
-                    if (suraContents[sura] && suraContents[sura][lang]) {
-                        const lines = suraContents[sura][lang].split('<br>');
-                        lines.forEach((line, index) => {
-                            if (line.toLowerCase().includes(searchTerm)) {
+                    if (suraContents[sura] && suraContents[sura].paragraphs[lang]) {
+                        suraContents[sura].paragraphs[lang].forEach((paragraph, index) => {
+                            if (paragraph.toLowerCase().includes(searchTerm)) {
                                 if (!allText[sura]) allText[sura] = {};
                                 if (!allText[sura][lang]) allText[sura][lang] = [];
-                                allText[sura][lang].push({ text: line, lineIndex: index });
+                                allText[sura][lang].push({ text: paragraph, paraIndex: index });
                             }
                         });
                     }
@@ -388,21 +742,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentSura = parseInt(sura);
                             languageSelect.value = lang;
                             updateContent();
-                            const lines = suraContents[currentSura][lang].split('<br>');
-                            arabicText.innerHTML = suraContents[currentSura][lang];
-                            textContent.innerHTML = suraContents[currentSura][lang];
-                            if (lang === 'ar') {
-                                arabicText.style.display = 'block';
-                                textContent.style.display = 'none';
-                            } else {
-                                arabicText.style.display = 'none';
-                                textContent.style.display = 'block';
-                            }
-                            const targetElement = lang === 'ar' ? arabicText : textContent;
-                            const targetLines = targetElement.innerHTML.split('<br>');
-                            targetLines[result.lineIndex] = `<span style="background: yellow">${targetLines[result.lineIndex]}</span>`;
-                            targetElement.innerHTML = targetLines.join('<br>');
-                            targetElement.scrollTop = targetElement.scrollHeight * (result.lineIndex / targetLines.length);
+                            const targetElement = lang === 'ar' ? arabicText : (lang === 'en' ? textContent : frenchText);
+                            const paragraphs = suraContents[currentSura].paragraphs[lang];
+                            targetElement.innerHTML = `<p class="bismillah">${suraContents[currentSura][lang]}</p>` + paragraphs.map((p, i) => `<p${i === result.paraIndex ? ' style="background: yellow"' : ''}>${p}</p>`).join('');
+                            targetElement.scrollTop = targetElement.scrollHeight * (result.paraIndex / paragraphs.length);
                             searchResults.style.display = 'none';
                             searchBar.value = '';
                         });
@@ -439,28 +782,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateContent() {
-        const content = suraContents[currentSura] && suraContents[currentSura][languageSelect.value];
-        suraTitle.textContent = `La Voie du Salut ${currentSura}`;
+        const content = suraContents[currentSura];
         if (content) {
-            const lines = content.split('<br>');
-            const bismillahLine = lines[0];
-            const rest = lines.slice(1).join('<br>');
-            if (languageSelect.value === 'ar') {
-                arabicText.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
-                textContent.style.display = 'none';
-                arabicText.style.display = 'block';
-            } else {
-                textContent.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
-                arabicText.style.display = 'none';
-                textContent.style.display = 'block';
-            }
+            suraTitle.textContent = `La Voie du Salut ${currentSura}`;
+            const lang = languageSelect.value;
+            const targetElement = lang === 'ar' ? arabicText : (lang === 'en' ? textContent : frenchText);
+            const paragraphs = content.paragraphs[lang] || [];
+            targetElement.innerHTML = `<p class="bismillah">${content[lang]}</p>` + paragraphs.map(p => `<p>${p}</p>`).join('');
+            
+            // Afficher l'élément correspondant à la langue sélectionnée
+            arabicText.style.display = lang === 'ar' ? 'block' : 'none';
+            textContent.style.display = lang === 'en' ? 'block' : 'none';
+            frenchText.style.display = lang === 'fr' ? 'block' : 'none';
+            
             // Mettre à jour l'état de l'étoile des favoris
             favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
         } else {
-            arabicText.innerHTML = 'Contenu non disponible';
-            textContent.innerHTML = 'Content not available';
+            arabicText.innerHTML = '<p>Contenu non disponible</p>';
+            textContent.innerHTML = '<p>Content not available</p>';
+            frenchText.innerHTML = '<p>Contenu non disponible</p>';
             arabicText.style.display = 'block';
             textContent.style.display = 'none';
+            frenchText.style.display = 'none';
         }
     }
 
