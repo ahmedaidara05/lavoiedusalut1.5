@@ -1,4 +1,4 @@
-soit intelligent jai perdu 2h et pourtant ma demande est simple mon code html est complet je ne le modifie pas sauf la section page de lecture pour afficher les paragraphe 2. je tai envoyer mon script.js et mon html completement jespere que je nai pas besoin de toucher le css, rend le moi le html et le js complet avec 3 paragrap ou plus dans chaque chapitre etpour chaque langue nb le nombre de paragraphe nest pas fixe  voici le html   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -96,10 +96,22 @@ soit intelligent jai perdu 2h et pourtant ma demande est simple mon code html es
             <div class="search-results" id="searchResults" style="display: none;"></div>
             <div class="content" id="readingContent">
                 <div class="arabic-text" id="arabicText">
-                    بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ
+                    <p class="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                    <p>Paragraphe 1</p>
+                    <p>Paragraphe 2</p>
+                    <p>Paragraphe 3</p>
                 </div>
                 <div class="text-content" id="textContent" style="display: none;">
-                    In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, the Lord of all the worlds
+                    <p class="bismillah">In the name of Allah, the Most Gracious, the Most Merciful</p>
+                    <p>Paragraph 1</p>
+                    <p>Paragraph 2</p>
+                    <p>Paragraph 3</p>
+                </div>
+                <div class="text-content" id="frenchText" style="display: none;">
+                    <p class="bismillah">Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux</p>
+                    <p>Paragraphe 1</p>
+                    <p>Paragraphe 2</p>
+                    <p>Paragraphe 3</p>
                 </div>
                 <div class="navigation-buttons">
                     <button class="nav-btn prev-btn"><i class="fas fa-arrow-left"></i> Précédent</button>
@@ -158,17 +170,7 @@ soit intelligent jai perdu 2h et pourtant ma demande est simple mon code html es
                         <option value="Times New Roman">Times New Roman</option>
                         <option value="Verdana">Verdana</option>
                         <option value="Helvetica">Helvetica</option>
-                        <option value="Cambria">Cambria</option>
-                        <option value="Garamond">Garamond</option>
-                        <option value="Lora">Lora</option>
-                        <option value="Roboto">Roboto</option>
-                    </select>
-                </div>
-                <div class="setting">
-                    <label>Taille du texte</label>
-                    <input type="range" id="fontSize" min="12" max="30" value="16">
-                </div>
-                <div class="setting">
+                        <div class="setting">
                     <label>Connexion</label>
                     <input type="text" placeholder="Nom d'utilisateur" id="loginUsername">
                     <input type="password" placeholder="Mot de passe" id="loginPassword">
@@ -212,4 +214,4 @@ soit intelligent jai perdu 2h et pourtant ma demande est simple mon code html es
     </div>
     <script src="script.js"></script>
 </body>
-</html>                      et attend je tenvoie le js pour commencer attend , si ta pas compris ma demande pose les question 
+</html>
