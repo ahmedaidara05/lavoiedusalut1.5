@@ -103,27 +103,64 @@ document.addEventListener('DOMContentLoaded', () => {
         "en": "In the name of Allah, the Most Gracious, the Most Merciful<br>Alif Lam Mim. Allah, there is no deity except Him, the Ever-Living, the Sustainer of existence",
         "fr": "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Alif Lam Mim. Allah, il n'y a de divinité sauf Lui, le Vivant, le Subsistant",
         "paragraphs": {
-            "ar": ["تعليق على الآية 3 بالعربية...", "تعليق آخر..."],
-            "en": ["Commentary on verse 3 in English...", "Another comment..."],
-            "fr": ["Commentaire sur le verset 3 en français...", "Autre commentaire..."]
+            "ar": [
+                "تعليق 1 على الآية 3 بالعربية.",
+                "تعليق 2 على الآية 3 بالعربية.",
+                "تعليق 3 على الآية 3 بالعربية."
+            ],
+            "en": [
+                "Commentary 1 on verse 3 in English.",
+                "Commentary 2 on verse 3 in English.",
+                "Commentary 3 on verse 3 in English."
+            ],
+            "fr": [
+                "Commentaire 1 sur le verset 3 en français.",
+                "Commentaire 2 sur le verset 3 en français.",
+                "Commentaire 3 sur le verset 3 en français."
+            ]
         }
     },
     "4": {
         "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُم",
         "en": "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord, who created you from one soul...",
-        "fr": "TESTE<br>Naissance d’une conscience",
+        "fr": "Qui m’a créé et qui suis-je ?<br>Naissance d’une conscience",
         "paragraphs": {
             "ar": [
-                "سورة النساء هي سورة مدنية تُركز على حقوق المرأة والعدالة الاجتماعية، مع التأكيد على أهمية تقوى الله في جميع التعاملات.",
-                "تتناول السورة مواضيع مثل الميراث، الزواج، والمعاملات العادلة، داعية إلى بناء مجتمع قائم على العدل والرحمة."
+                "تعليق 1 على الآية 4 بالعربية.",
+                "تعليق 2 على الآية 4 بالعربية.",
+                "تعليق 3 على الآية 4 بالعربية."
             ],
             "en": [
-                "Surah An-Nisa is a Medinan surah that focuses on women’s rights and social justice, emphasizing the importance of God-consciousness in all dealings.",
-                "The surah addresses topics such as inheritance, marriage, and fair transactions, calling for the establishment of a society based on justice and compassion."
+                "Commentary 1 on verse 4 in English.",
+                "Commentary 2 on verse 4 in English.",
+                "Commentary 3 on verse 4 in English."
             ],
             "fr": [
-                "Au regard du Coran, l’Homme est un être d’exception ; il est la manifestation par excellence d’un dessein universel vers lequel tout converge...",
-                "..."
+                "Commentaire 1 sur le verset 4 en français.",
+                "Commentaire 2 sur le verset 4 en français.",
+                "Commentaire 3 sur le verset 4 en français."
+            ]
+        }
+    },
+    "5": {
+        "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَوْفُوا۟ بِٱلْعُقُودِ",
+        "en": "In the name of Allah, the Most Gracious, the Most Merciful<br>O you who have believed, fulfill [all] contracts...",
+        "fr": "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ô vous qui avez cru, remplissez les contrats...",
+        "paragraphs": {
+            "ar": [
+                "تعليق 1 على الآية 5 بالعربية.",
+                "تعليق 2 على الآية 5 بالعربية.",
+                "تعليق 3 على الآية 5 بالعربية."
+            ],
+            "en": [
+                "Commentary 1 on verse 5 in English.",
+                "Commentary 2 on verse 5 in English.",
+                "Commentary 3 on verse 5 in English."
+            ],
+            "fr": [
+                "Commentaire 1 sur le verset 5 en français.",
+                "Commentaire 2 sur le verset 5 en français.",
+                "Commentaire 3 sur le verset 5 en français."
             ]
         }
     },
