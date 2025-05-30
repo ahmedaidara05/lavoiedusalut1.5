@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Contenu des 44 sourates en arabe, anglais et français
     const suraContents = {
-        1: {
+        "1": {
             ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
             en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, the Lord of all the worlds",
             fr: "Préambule",
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
             }
         },
-        2: {
+        "2": {
             ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۖ فِيهِ هُدًى لِّلْمُتَّقِينَ",
             en: "In the name of Allah, the Most Gracious, the Most Merciful<br>This is the Book about which there is no doubt, a guidance for those conscious of Allah",
             fr: "Préface",
