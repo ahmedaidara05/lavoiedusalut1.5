@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "4": {
         "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>يَٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُم",
         "en": "In the name of Allah, the Most Gracious, the Most Merciful<br>O mankind, fear your Lord, who created you from one soul...",
-        "fr": "Qui m’a créé et qui suis-je ?<br>Naissance d’une conscience",
+        "fr": "TESTE<br>Naissance d’une conscience",
         "paragraphs": {
             "ar": [
                 "سورة النساء هي سورة مدنية تُركز على حقوق المرأة والعدالة الاجتماعية، مع التأكيد على أهمية تقوى الله في جميع التعاملات.",
