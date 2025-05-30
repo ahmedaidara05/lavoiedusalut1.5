@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const notesPage = document.getElementById('notesPage');
     const arabicText = document.getElementById('arabicText');
     const textContent = document.getElementById('textContent');
-    const frenchText = document.getElementById('frenchText');
     const suraTitle = document.getElementById('suraTitle');
     const languageSelect = document.getElementById('languageSelect');
     const themeSelect = document.getElementById('themeSelect');
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('searchResults');
     const customizePanel = document.getElementById('customizePanel');
     const favoriteBtn = document.querySelector('.favorite-btn');
-    const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn');
+    const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn'); // Mis à jour pour le panneau de personnalisation
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
@@ -49,448 +48,448 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFontSize = 16;
 
     // Contenu des 44 sourates en arabe, anglais et français
-    const suraContents = {
-        1: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        2: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
-            }
-        },
-        3: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        4: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
-            }
-        },
-        5: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        6: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4", "Paragraph 5"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"]
-            }
-        },
-        7: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        8: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        9: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        10: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
-            }
-        },
-        11: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        12: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        13: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        14: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        15: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        16: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        17: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        18: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        19: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        20: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        21: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        22: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        23: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        24: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        25: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        26: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        27: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        28: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        29: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        30: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        31: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        32: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        33: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        34: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        35: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        36: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        37: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        38: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        39: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        40: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        41: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        42: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        43: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
-        },
-        44: {
-            ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-            en: "In the name of Allah, the Most Gracious, the Most Merciful",
-            fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
-            paragraphs: {
-                ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
-                en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
-                fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
-            }
+const suraContents = {
+    1: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
         }
-    };
+    },
+    2: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
+        }
+    },
+    3: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    4: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
+        }
+    },
+    5: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    6: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4", "Paragraph 5"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4", "Paragraphe 5"]
+        }
+    },
+    7: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    8: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    9: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    10: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3", "Paragraph 4"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3", "Paragraphe 4"]
+        }
+    },
+    11: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    12: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    13: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    14: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    15: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    16: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    17: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    18: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    19: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    20: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    21: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    22: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    23: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    24: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    25: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    26: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    27: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    28: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    29: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    30: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    31: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    32: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    33: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    34: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    35: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    36: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    37: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    38: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    39: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    40: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    41: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    42: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    43: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    },
+    44: {
+        ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        en: "In the name of Allah, the Most Gracious, the Most Merciful",
+        fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux",
+        paragraphs: {
+            ar: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"],
+            en: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+            fr: ["Paragraphe 1", "Paragraphe 2", "Paragraphe 3"]
+        }
+    }
+};
 
     // Navigation
     document.querySelector('.start-btn').addEventListener('click', () => {
@@ -566,13 +565,11 @@ document.addEventListener('DOMContentLoaded', () => {
     fontSelect.addEventListener('change', (e) => {
         arabicText.style.fontFamily = e.target.value;
         textContent.style.fontFamily = e.target.value;
-        frenchText.style.fontFamily = e.target.value;
     });
 
     fontSize.addEventListener('input', (e) => {
         arabicText.style.fontSize = `${e.target.value}px`;
         textContent.style.fontSize = `${e.target.value}px`;
-        frenchText.style.fontSize = `${e.target.value}px`;
     });
 
     // Favoris
@@ -599,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
         favorites.forEach(sura => {
             if (sura >= 1 && sura <= 44 && suraContents[sura]) {
                 const li = document.createElement('li');
-                li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre de paragraphes ${suraContents[sura].paragraphs[languageSelect.value].length} <i class="fas fa-mosque"></i>`;
+                li.innerHTML = `<span class="sura-number">${sura}</span> La Voie du Salut ${sura}<br>Nombre aya ${suraContents[sura].ar.split('<br>').length - 1} <i class="fas fa-mosque"></i>`;
                 li.addEventListener('click', () => {
                     currentSura = sura;
                     updateContent();
@@ -635,25 +632,22 @@ document.addEventListener('DOMContentLoaded', () => {
         currentFontSize = Math.min(currentFontSize + 2, 30);
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
-        frenchText.style.fontSize = `${currentFontSize}px`;
     });
 
     document.querySelector('.zoom-out-btn').addEventListener('click', () => {
         currentFontSize = Math.max(currentFontSize - 2, 12);
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
-        frenchText.style.fontSize = `${currentFontSize}px`;
     });
 
-    // Lecture à haute voix
+    // Lecture à haute voix (maintenant dans le panneau de personnalisation)
     voicePlayBtn.addEventListener('click', () => {
         if (isPlaying) {
             synth.cancel();
             isPlaying = false;
             voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
         } else {
-            const targetText = languageSelect.value === 'ar' ? arabicText : (languageSelect.value === 'en' ? textContent : frenchText);
-            const textToRead = targetText.innerText;
+            const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
             if (textToRead) {
                 const utterance = new SpeechSynthesisUtterance(textToRead);
                 utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : (languageSelect.value === 'en' ? 'en-US' : 'fr-FR');
@@ -720,12 +714,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const allText = {};
             for (let sura = 1; sura <= 44; sura++) {
                 ['ar', 'en', 'fr'].forEach(lang => {
-                    if (suraContents[sura] && suraContents[sura].paragraphs[lang]) {
-                        suraContents[sura].paragraphs[lang].forEach((paragraph, index) => {
-                            if (paragraph.toLowerCase().includes(searchTerm)) {
+                    if (suraContents[sura] && suraContents[sura][lang]) {
+                        const lines = suraContents[sura][lang].split('<br>');
+                        lines.forEach((line, index) => {
+                            if (line.toLowerCase().includes(searchTerm)) {
                                 if (!allText[sura]) allText[sura] = {};
                                 if (!allText[sura][lang]) allText[sura][lang] = [];
-                                allText[sura][lang].push({ text: paragraph, paraIndex: index });
+                                allText[sura][lang].push({ text: line, lineIndex: index });
                             }
                         });
                     }
@@ -742,10 +737,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentSura = parseInt(sura);
                             languageSelect.value = lang;
                             updateContent();
-                            const targetElement = lang === 'ar' ? arabicText : (lang === 'en' ? textContent : frenchText);
-                            const paragraphs = suraContents[currentSura].paragraphs[lang];
-                            targetElement.innerHTML = `<p class="bismillah">${suraContents[currentSura][lang]}</p>` + paragraphs.map((p, i) => `<p${i === result.paraIndex ? ' style="background: yellow"' : ''}>${p}</p>`).join('');
-                            targetElement.scrollTop = targetElement.scrollHeight * (result.paraIndex / paragraphs.length);
+                            const lines = suraContents[currentSura][lang].split('<br>');
+                            arabicText.innerHTML = suraContents[currentSura][lang];
+                            textContent.innerHTML = suraContents[currentSura][lang];
+                            if (lang === 'ar') {
+                                arabicText.style.display = 'block';
+                                textContent.style.display = 'none';
+                            } else {
+                                arabicText.style.display = 'none';
+                                textContent.style.display = 'block';
+                            }
+                            const targetElement = lang === 'ar' ? arabicText : textContent;
+                            const targetLines = targetElement.innerHTML.split('<br>');
+                            targetLines[result.lineIndex] = `<span style="background: yellow">${targetLines[result.lineIndex]}</span>`;
+                            targetElement.innerHTML = targetLines.join('<br>');
+                            targetElement.scrollTop = targetElement.scrollHeight * (result.lineIndex / targetLines.length);
                             searchResults.style.display = 'none';
                             searchBar.value = '';
                         });
@@ -782,28 +788,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateContent() {
-        const content = suraContents[currentSura];
+        const content = suraContents[currentSura] && suraContents[currentSura][languageSelect.value];
+        suraTitle.textContent = `La Voie du Salut ${currentSura}`;
         if (content) {
-            suraTitle.textContent = `La Voie du Salut ${currentSura}`;
-            const lang = languageSelect.value;
-            const targetElement = lang === 'ar' ? arabicText : (lang === 'en' ? textContent : frenchText);
-            const paragraphs = content.paragraphs[lang] || [];
-            targetElement.innerHTML = `<p class="bismillah">${content[lang]}</p>` + paragraphs.map(p => `<p>${p}</p>`).join('');
-            
-            // Afficher l'élément correspondant à la langue sélectionnée
-            arabicText.style.display = lang === 'ar' ? 'block' : 'none';
-            textContent.style.display = lang === 'en' ? 'block' : 'none';
-            frenchText.style.display = lang === 'fr' ? 'block' : 'none';
-            
+            const lines = content.split('<br>');
+            const bismillahLine = lines[0];
+            const rest = lines.slice(1).join('<br>');
+            if (languageSelect.value === 'ar') {
+                arabicText.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
+                textContent.style.display = 'none';
+                arabicText.style.display = 'block';
+            } else {
+                textContent.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
+                arabicText.style.display = 'none';
+                textContent.style.display = 'block';
+            }
             // Mettre à jour l'état de l'étoile des favoris
             favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
         } else {
-            arabicText.innerHTML = '<p>Contenu non disponible</p>';
-            textContent.innerHTML = '<p>Content not available</p>';
-            frenchText.innerHTML = '<p>Contenu non disponible</p>';
+            arabicText.innerHTML = 'Contenu non disponible';
+            textContent.innerHTML = 'Content not available';
             arabicText.style.display = 'block';
             textContent.style.display = 'none';
-            frenchText.style.display = 'none';
         }
     }
 
