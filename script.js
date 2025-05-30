@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesPage = document.getElementById('favoritesPage');
     const notesPage = document.getElementById('notesPage');
     const arabicText = document.getElementById('arabicText');
+    const frenchText = document.getElementById('frenchText');
     const textContent = document.getElementById('textContent');
     const suraTitle = document.getElementById('suraTitle');
     const languageSelect = document.getElementById('languageSelect');
@@ -788,30 +789,30 @@ const suraContents = {
     });
 
     function updateContent() {
-        const content = suraContents[currentSura] && suraContents[currentSura][languageSelect.value];
+    const content = suraContents[currentSura];
+    if (content) {
         suraTitle.textContent = `La Voie du Salut ${currentSura}`;
-        if (content) {
-            const lines = content.split('<br>');
-            const bismillahLine = lines[0];
-            const rest = lines.slice(1).join('<br>');
-            if (languageSelect.value === 'ar') {
-                arabicText.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
-                textContent.style.display = 'none';
-                arabicText.style.display = 'block';
-            } else {
-                textContent.innerHTML = `<span class="bismillah">${bismillahLine}</span><br>${rest}`;
-                arabicText.style.display = 'none';
-                textContent.style.display = 'block';
-            }
-            // Mettre à jour l'état de l'étoile des favoris
-            favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
-        } else {
-            arabicText.innerHTML = 'Contenu non disponible';
-            textContent.innerHTML = 'Content not available';
-            arabicText.style.display = 'block';
-            textContent.style.display = 'none';
-        }
+        const lang = languageSelect.value;
+        const targetElement = lang === 'ar' ? arabicText : (lang === 'en' ? textContent : frenchText);
+        const paragraphs = content.paragraphs[lang] || [];
+        targetElement.innerHTML = `<p class="bismillah">${content[lang]}</p>` + paragraphs.map(p => `<p>${p}</p>`).join('');
+        
+        // Afficher l'élément correspondant à la langue sélectionnée
+        arabicText.style.display = lang === 'ar' ? 'block' : 'none';
+        textContent.style.display = lang === 'en' ? 'block' : 'none';
+        frenchText.style.display = lang === 'fr' ? 'block' : 'none';
+        
+        // Mettre à jour l'état de l'étoile des favoris
+        favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+    } else {
+        arabicText.innerHTML = '<p>Contenu non disponible</p>';
+        textContent.innerHTML = '<p>Content not available</p>';
+        frenchText.innerHTML = '<p>Contenu non disponible</p>';
+        arabicText.style.display = 'block';
+        textContent.style.display = 'none';
+        frenchText.style.display = 'none';
     }
+}
 
     // Initialisation
     updateContent();
