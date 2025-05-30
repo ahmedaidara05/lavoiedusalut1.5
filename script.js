@@ -372,18 +372,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Favoris
     favoriteBtn.addEventListener('click', () => {
-        if (!favorites.includes(currentSura)) {
-            favorites.push(currentSura);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            favoriteBtn.textContent = '★';
-            alert('Sourate ajoutée aux favoris !');
-        } else {
-            favorites = favorites.filter(f => f !== currentSura);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            favoriteBtn.textContent = '☆';
-            alert('Sourate retirée des favoris !');
-        }
-    });
+    if (!favorites.includes(currentSura)) {
+        favorites.push(currentSura);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        favoriteBtn.textContent = '★';
+        // Supprimer l'alerte ici pour éviter le message indésirable
+    } else {
+        favorites = favorites.filter(f => f !== currentSura);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        favoriteBtn.textContent = '☆';
+    }
+});
 
     function loadFavorites() {
         favoritesList.innerHTML = '';
