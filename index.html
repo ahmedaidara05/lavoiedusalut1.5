@@ -82,51 +82,50 @@
         </div>
 
         <!-- Page de lecture -->
-        <div class="reading-page" id="readingPage" style="display: none;">
-            <header>
-                <img src="logo.png" alt="Logo" class="logo">
-                <h1 id="suraTitle">La Voie du Salut 1</h1>
-                <div class="header-icons">
-                    <button class="icon-btn favorites-btn"><i class="fas fa-star"></i></button>
-                    <button class="icon-btn settings-btn"><i class="fas fa-cog"></i></button>
-                    <button class="icon-btn index-btn"><i class="fas fa-book-open"></i></button>
-                </div>
-            </header>
-            <input type="text" placeholder="Rechercher dans le livre..." class="search-bar" id="searchBar">
-            <div class="search-results" id="searchResults" style="display: none;"></div>
-            <div class="content" id="readingContent">
-                <div class="arabic-text" id="arabicText">
-                    بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ
-                </div>
-                <div class="text-content" id="textContent" style="display: none;">
-                    In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, the Lord of all the worlds
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn"><i class="fas fa-arrow-left"></i> Précédent</button>
-                    <button class="nav-btn next-btn">Suivant <i class="fas fa-arrow-right"></i></button>
-                </div>
-                <button class="favorite-btn">☆</button>
-                <button class="customize-btn"><i class="fas fa-paint-brush"></i></button>
-                <button class="ai-btn"><i class="fas fa-robot"></i> Assistant</button>
-            </div>
-            <div class="customize-panel" id="customizePanel" style="display: none;">
-                <button class="close-customize-btn"><i class="fas fa-times"></i></button>
-                <div class="color-icons">
-                    <button class="color-btn" style="background: #000;" data-color="#000"></button>
-                    <button class="color-btn" style="background: #d2c9a3;" data-color="#d2c9a3"></button>
-                    <button class="color-btn" style="background: #fff;" data-color="#fff"></button>
-                    <button class="color-btn" style="background: #e0e0e0;" data-color="#e0e0e0"></button>
-                    <button class="color-btn" style="background: #ffff00;" data-color="#ffff00"></button>
-                </div>
-                <div class="option-icons">
-                    <button class="option-btn voice-play-btn"><i class="fas fa-play"></i> Lecture à haute voix</button>
-                    <button class="option-btn zoom-in-btn"><i class="fas fa-plus"></i> Zoom +</button>
-                    <button class="option-btn zoom-out-btn"><i class="fas fa-minus"></i> Zoom -</button>
-                    <button class="option-btn note-btn"><i class="fas fa-sticky-note"></i> Note</button>
-                </div>
-            </div>
+<div class="reading-page" id="readingPage" style="display: none;">
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1 id="suraTitle">La Voie du Salut</h1>
+        <div class="header-icons">
+            <button class="icon-btn favorites-btn"><i class="fas fa-star"></i></button>
+            <button class="icon-btn settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="icon-btn index-btn"><i class="fas fa-book-open"></i></button>
         </div>
-
+    </header>
+    <input type="text" placeholder="Rechercher dans le livre..." class="search-bar" id="searchBar">
+    <div class="search-results" id="searchResults" style="display: none;"></div>
+    <div class="content" id="readingContent">
+        <div class="arabic-text" id="arabicText"></div>
+        <div class="text-content" id="textContent">
+            <div class="english-text" id="englishText"></div>
+            <div class="french-text" id="frenchText"></div>
+        </div>
+        <div class="paragraphs-content" id="paragraphsContent"></div> <!-- Nouveau conteneur pour les paragraphes -->
+        <div class="navigation-buttons">
+            <button class="nav-btn prev-btn"><i class="fas fa-arrow-left"></i> Précédent</button>
+            <button class="nav-btn next-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <button class="favorite-btn">☆</button>
+        <button class="customize-btn"><i class="fas fa-paint-brush"></i></button>
+        <button class="ai-btn"><i class="fas fa-robot"></i> Assistant</button>
+    </div>
+    <div class="customize-panel" id="customizePanel" style="display: none;">
+        <button class="close-customize-btn"><i class="fas fa-times"></i></button>
+        <div class="color-icons">
+            <button class="color-btn" style="background: #000;" data-color="#000"></button>
+            <button class="color-btn" style="background: #d2c9a3;" data-color="#d2c9a3"></button>
+            <button class="color-btn" style="background: #fff;" data-color="#fff"></button>
+            <button class="color-btn" style="background: #e0e0e0;" data-color="#e0e0e0"></button>
+            <button class="color-btn" style="background: #ffff00;" data-color="#ffff00"></button>
+        </div>
+        <div class="option-icons">
+            <button class="option-btn voice-play-btn"><i class="fas fa-play"></i> Lecture à haute voix</button>
+            <button class="option-btn zoom-in-btn"><i class="fas fa-plus"></i> Zoom +</button>
+            <button class="option-btn zoom-out-btn"><i class="fas fa-minus"></i> Zoom -</button>
+            <button class="option-btn note-btn"><i class="fas fa-sticky-note"></i> Note</button>
+        </div>
+    </div>
+</div>
         <!-- Page Paramètres -->
         <div class="settings-panel" id="settingsPanel" style="display: none;">
             <header>
