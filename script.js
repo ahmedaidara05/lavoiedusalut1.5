@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSura = 1;
     let isPlaying = false;
     const synth = window.speechSynthesis;
-    let synth = window.speechSynthesis;
     let currentFontSize = 16;
 
     // Contenu des 44 sourates en arabe, anglais et français (avec 4 paragraphes pour 1-5 et 44)
