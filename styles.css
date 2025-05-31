@@ -425,9 +425,9 @@ body.dark .highlight-verse {
 
 .favorites-page {
     padding: 60px 20px 2px;
-    height: auto;
-    min-height: calc(100vh - 80px);
-    max-height: 100vh;
+    height: auto; /* Laisser la hauteur s'adapter au contenu */
+    min-height: 0; /* Supprimer la hauteur minimale pour éviter l'espace vide */
+    max-height: 100vh; /* Garder la limite maximale pour le défilement */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     background: #fff;
@@ -454,6 +454,12 @@ body.dark .highlight-verse {
 
 #favoritesList li:hover {
     background: #e0e0e0;
+}
+
+/* Ajouter une règle pour le dernier élément de la liste pour supprimer l'espace résiduel */
+#favoritesList li:last-child {
+    border-bottom: none; /* Supprimer la bordure du dernier élément pour éviter un espace visuel */
+    padding-bottom: 0; /* Supprimer le padding-bottom du dernier élément */
 }
 
 .notes-page {
