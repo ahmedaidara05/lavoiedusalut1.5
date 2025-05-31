@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
     let isPlaying = false;
+    const synth = window.speechSynthesis;
     let synth = window.speechSynthesis;
     let currentFontSize = 16;
 
@@ -444,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Compter les occurrences totales et collecter les résultats
+    // Compter les occurrences totales et collecter
     let totalOccurrences = 0;
     let resultsBySura = {};
 
@@ -538,83 +539,95 @@ document.addEventListener('click', (e) => {
     // Lecture à haute voix
 voicePlayBtn.addEventListener('click', () => {
     if (!window.speechSynthesis) {
-        console.warn("Synthèse vocale non prise en charge par ce navigateur.");
+        console.log("Synthèse vocale non prise en charge par ce navigateur.");
         return;
     }
 
+    const synth = window.speechSynthesis;
+    
     if (isPlaying) {
         synth.cancel();
         isPlaying = false;
         voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-    } else {
-        // Toujours lire tout le contenu du chapitre
-        const textToRead = arabicText.innerText || textContent.innerText;
-        
-        if (!textToRead) {
-            console.warn("Aucun texte disponible pour la lecture.");
-            return;
-        }
-
-        const utterance = new SpeechSynthesisUtterance(textToRead);
-        utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
-
-        // Sélectionner une voix agréable
-        const selectVoice = () => {
-            const voices = synth.getVoices();
-            let selectedVoice;
-
-            if (languageSelect.value === 'fr') {
-                // Préférer une voix masculine française
-                selectedVoice = voices.find(voice => 
-                    voice.lang === 'fr-FR' && 
-                    (voice.name.includes('Thomas') || voice.name.includes('Male') || voice.name.includes('Homme'))
-                ) || voices.find(voice => voice.lang === 'fr-FR'); // Fallback à n'importe quelle voix française
-            } else if (languageSelect.value === 'en') {
-                // Préférer une voix masculine anglaise
-                selectedVoice = voices.find(voice => 
-                    voice.lang === 'en-US' && 
-                    (voice.name.includes('Guy') || voice.name.includes('Male') || voice.name.includes('Daniel'))
-                ) || voices.find(voice => voice.lang === 'en-US'); // Fallback à n'importe quelle voix anglaise
-            } else if (languageSelect.value === 'ar') {
-                // Préférer une voix arabe
-                selectedVoice = voices.find(voice => 
-                    voice.lang === 'ar-SA' && 
-                    (voice.name.includes('Male') || voice.name.includes('Homme'))
-                ) || voices.find(voice => voice.lang === 'ar-SA'); // Fallback à n'importe quelle voix arabe
-            }
-
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-            }
-        };
-
-        // Charger les voix et sélectionner
-        if (synth.getVoices().length === 0) {
-            synth.onvoiceschanged = selectVoice;
-        } else {
-            selectVoice();
-        }
-
-        // Configurer les paramètres de la voix
-        utterance.volume = 1; // Volume (0 à 1)
-        utterance.rate = 1; // Vitesse (0.1 à 10)
-        utterance.pitch = 1; // Hauteur (0 à 2)
-
-        utterance.onend = () => {
-            isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-        };
-
-        utterance.onerror = (event) => {
-            console.warn('Erreur de synthèse vocale:', event.error);
-            isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-        };
-
-        synth.speak(utterance);
-        isPlaying = true;
-        voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+        return;
     }
+
+    // Extraire tout le contenu du chapitre
+    const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
+    
+    if (!textToRead || textToRead.trim() === '') {
+        console.log("Aucun texte disponible pour la lecture.");
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+    utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+
+    // Sélectionner une voix
+    const selectVoice = () => {
+        const voices = synth.getVoices();
+        let selectedVoice;
+
+        if (languageSelect.value === 'fr') {
+            selectedVoice = voices.find(voice => 
+                voice.lang === 'fr-FR' && 
+                (voice.name.toLowerCase().includes('thomas') || 
+                 voice.name.toLowerCase().includes('male') || 
+                 voice.name.toLowerCase().includes('homme'))
+            ) || voices.find(voice => voice.lang === 'fr-FR') || voices[0];
+        } else if (languageSelect.value === 'en') {
+            selectedVoice = voices.find(voice => 
+                voice.lang === 'en-US' && 
+                (voice.name.toLowerCase().includes('guy') || 
+                 voice.name.toLowerCase().includes('male') || 
+                 voice.name.toLowerCase().includes('daniel'))
+            ) || voices.find(voice => voice.lang === 'en-US') || voices[0];
+        } else if (languageSelect.value === 'ar') {
+            selectedVoice = voices.find(voice => 
+                voice.lang === 'ar-SA' && 
+                (voice.name.toLowerCase().includes('male') || 
+                 voice.name.toLowerCase().includes('homme'))
+            ) || voices.find(voice => voice.lang === 'ar-SA') || voices[0];
+        }
+
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+            console.log(`Voix sélectionnée : ${selectedVoice.name}`);
+        } else {
+            console.log("Aucune voix spécifique trouvée, utilisation de la voix par défaut.");
+        }
+    };
+
+    // Charger les voix
+    if (synth.getVoices().length === 0) {
+        synth.onvoiceschanged = () => {
+            selectVoice();
+            synth.speak(utterance);
+        };
+    } else {
+        selectVoice();
+        synth.speak(utterance);
+    }
+
+    // Paramètres de la voix
+    utterance.volume = 1;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    utterance.onend = () => {
+        isPlaying = false;
+        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+        console.log("Lecture terminée.");
+    };
+
+    utterance.onerror = (event) => {
+        isPlaying = false;
+        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+        console.log(`Erreur de synthèse vocale : ${event.error}`);
+    };
+
+    isPlaying = true;
+    voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
 });
 
     // Zoom
