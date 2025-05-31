@@ -278,15 +278,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelectorAll('.close-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (indexPage.style.display === 'block') indexPage.style.display = 'none';
-            if (readingPage.style.display === 'block') readingPage.style.display = 'none';
-            if (settingsPanel.style.display === 'block') settingsPanel.style.display = 'none';
-            if (favoritesPage.style.display === 'block') favoritesPage.style.display = 'none';
-            if (notesPage.style.display === 'block') notesPage.style.display = 'none';
+    btn.addEventListener('click', () => {
+        if (indexPage.style.display === 'block') {
+            indexPage.style.display = 'none';
             homePage.style.display = 'block';
-        });
+        } else if (settingsPanel.style.display === 'block') {
+            settingsPanel.style.display = 'none';
+            readingPage.style.display = 'block'; // Retour à la page de lecture
+        } else if (favoritesPage.style.display === 'block') {
+            favoritesPage.style.display = 'none';
+            readingPage.style.display = 'block'; // Retour à la page de lecture
+        } else if (notesPage.style.display === 'block') {
+            notesPage.style.display = 'none';
+            readingPage.style.display = 'block'; // Retour à la page de lecture
+        } else if (readingPage.style.display === 'block') {
+            readingPage.style.display = 'none';
+            homePage.style.display = 'block';
+        }
     });
+});
 
     document.querySelectorAll('.index-page li').forEach(li => {
         li.addEventListener('click', () => {
