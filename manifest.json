@@ -1,0 +1,46 @@
+{
+  "name": "La Voie du Salut",
+  "short_name": "La Voie",
+  "description": "Une application pour explorer et méditer sur les sourates avec des outils de personnalisation et de lecture à haute voix.",
+  "start_url": "https://ahmedaidara05.github.io/",
+  "scope": "https://ahmedaidara05.github.io/",
+  "display": "standalone",
+  "background_color": "#f5f5f0",
+  "theme_color": "#2e7d32",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Index des Chapitres",
+      "short_name": "Index",
+      "description": "Accéder directement à l'index des chapitres",
+      "url": "https://ahmedaidara05.github.io/index.html",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Favoris",
+      "short_name": "Favoris",
+      "description": "Voir les chapitres favoris",
+      "url": "https://ahmedaidara05.github.io/#favorites",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    }
+  ]
+}
