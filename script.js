@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Afficher le nom de la sourate en gras
         const suraDiv = document.createElement('div');
         suraDiv.className = 'result-sura';
-        suraDiv.innerHTML = `<strong>Sourate ${sura}</strong>`;
+        suraDiv.innerHTML = `<strong>Chapitre ${sura}</strong>`;
         searchResults.appendChild(suraDiv);
 
         // Afficher chaque verset correspondant
