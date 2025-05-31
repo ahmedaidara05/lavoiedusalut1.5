@@ -450,19 +450,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let sura in suraContents) {
         const content = suraContents[sura][languageSelect.value] || '';
-        // Séparer par <br> pour préserver le formatage
         const verses = content.split('<br>').filter(verse => verse.trim());
         let suraMatches = [];
 
         verses.forEach((verse, verseIndex) => {
-            const lowerVerse = verse.toLowerCase().replace(/<[^>]+>/g, ''); // Nettoyer les balises pour la recherche uniquement
+            const lowerVerse = verse.toLowerCase().replace(/<[^>]+>/g, '');
             let matchCount = (lowerVerse.match(new RegExp(`\\b${query}\\b`, 'g')) || []).length;
             
             if (matchCount > 0) {
                 totalOccurrences += matchCount;
                 suraMatches.push({
-                    verseText: verse, // Conserver le texte original avec balises HTML
-                    verseIndex: verseIndex + 1, // Numérotation des versets commence à 1
+                    verseText: verse,
+                    verseIndex: verseIndex + 1,
                     occurrences: matchCount
                 });
             }
@@ -482,20 +481,20 @@ document.addEventListener('DOMContentLoaded', () => {
     totalDiv.textContent = `Total occurrences: ${totalOccurrences}`;
     searchResults.appendChild(totalDiv);
 
-    // Afficher les résultats par sourate
+    // Afficher les résultats par chapitre
     for (let sura in resultsBySura) {
-        // Afficher le nom de la sourate en gras
+        // Afficher le nom du chapitre en gras
         const suraDiv = document.createElement('div');
         suraDiv.className = 'result-sura';
         suraDiv.innerHTML = `<strong>Chapitre ${sura}</strong>`;
         searchResults.appendChild(suraDiv);
 
-        // Afficher chaque verset correspondant
+        // Afficher chaque paragraphe correspondant
         resultsBySura[sura].forEach(match => {
             const verseDiv = document.createElement('div');
             verseDiv.className = 'result-item';
             
-            // Mettre en surbrillance le mot recherché tout en préservant les balises HTML
+            // Mettre en surbrillance le mot recherché
             const highlightedText = match.verseText.replace(
                 new RegExp(`\\b${query}\\b`, 'gi'),
                 match => `<span class="highlight">${match}</span>`
@@ -505,17 +504,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Ajouter un événement de clic pour rediriger
             verseDiv.addEventListener('click', () => {
-    currentSura = parseInt(sura);
-    currentVerseIndex = match.verseIndex; // Mettre à jour currentVerseIndex
-    loadSuraContent(match.verseIndex);
-    searchResults.style.display = 'none';
-    const verseElement = document.getElementById(`verse-${match.verseIndex}`);
-    if (verseElement) {
-        verseElement.scrollIntoView({ behavior: 'smooth' });
-        verseElement.classList.add('highlight-verse');
-        setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
-    }
-});
+                currentSura = parseInt(sura);
+                loadSuraContent(match.verseIndex);
+                searchResults.style.display = 'none';
+                const verseElement = document.getElementById(`verse-${match.verseIndex}`);
+                if (verseElement) {
+                    verseElement.scrollIntoView({ behavior: 'smooth' });
+                    verseElement.classList.add('highlight-verse');
+                    setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+                }
+            });
             
             searchResults.appendChild(verseDiv);
         });
@@ -540,7 +538,7 @@ document.addEventListener('click', (e) => {
     // Lecture à haute voix
 voicePlayBtn.addEventListener('click', () => {
     if (!window.speechSynthesis) {
-        alert("Désolé, la synthèse vocale n'est pas prise en charge par votre navigateur.");
+        console.warn("Synthèse vocale non prise en charge par ce navigateur.");
         return;
     }
 
@@ -549,14 +547,11 @@ voicePlayBtn.addEventListener('click', () => {
         isPlaying = false;
         voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
     } else {
-        // Sélectionner le texte à lire
-        const verseIndex = window.currentVerseIndex; // Variable globale pour stocker l'index du paragraphe sélectionné
-        const textToRead = verseIndex 
-            ? document.getElementById(`verse-${verseIndex}`)?.innerText 
-            : (arabicText.innerText || textContent.innerText);
+        // Toujours lire tout le contenu du chapitre
+        const textToRead = arabicText.innerText || textContent.innerText;
         
         if (!textToRead) {
-            alert("Aucun texte disponible pour la lecture.");
+            console.warn("Aucun texte disponible pour la lecture.");
             return;
         }
 
@@ -593,7 +588,7 @@ voicePlayBtn.addEventListener('click', () => {
             }
         };
 
-        // Charger les voix et sélectionner (les voix peuvent ne pas être disponibles immédiatement)
+        // Charger les voix et sélectionner
         if (synth.getVoices().length === 0) {
             synth.onvoiceschanged = selectVoice;
         } else {
@@ -611,8 +606,7 @@ voicePlayBtn.addEventListener('click', () => {
         };
 
         utterance.onerror = (event) => {
-            console.error('Erreur de synthèse vocale:', event.error);
-            alert("Une erreur s'est produite lors de la lecture vocale.");
+            console.warn('Erreur de synthèse vocale:', event.error);
             isPlaying = false;
             voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
         };
@@ -674,9 +668,6 @@ voicePlayBtn.addEventListener('click', () => {
     arabicText.style.fontSize = `${currentFontSize}px`;
     textContent.style.fontSize = `${currentFontSize}px`;
     favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
-    
-    // Mettre à jour currentVerseIndex
-    currentVerseIndex = verseIndex;
     
     if (verseIndex) {
         const verseElement = document.getElementById(`verse-${verseIndex}`);
