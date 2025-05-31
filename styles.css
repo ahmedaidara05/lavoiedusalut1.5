@@ -156,28 +156,45 @@ header h1 {
 }
 
 .search-results {
-    position: fixed;
-    top: 100px;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border: 1px solid #d2c9a3;
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: absolute;
+    width: 100%;
     z-index: 1000;
+}
+
+.result-header {
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
 }
 
-.search-results .result-item {
-    padding: 5px;
-    border-bottom: 1px solid #d2c9a3;
+.result-sura {
+    padding: 8px 10px;
+    background: #f8f8f8;
+    font-size: 1.1em;
+}
+
+.result-item {
+    padding: 8px 10px;
     cursor: pointer;
-    transition: background 0.3s ease;
 }
 
-.search-results .result-item:hover {
-    background: #e0e0e0;
+.result-item:hover {
+    background: #f0f0f0;
+}
+
+.highlight {
+    background: #ffeb3b;
+    font-weight: bold;
+}
+
+.highlight-verse {
+    background: #fff3cd;
+    transition: background 0.5s;
 }
 
 .content {
