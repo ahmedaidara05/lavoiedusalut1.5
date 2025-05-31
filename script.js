@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 match => `<span class="highlight">${match}</span>`
             );
             
-            verseDiv.innerHTML = `Verset ${match.verseIndex}: ${highlightedText} (${match.occurrences} occurrence${match.occurrences > 1 ? 's' : ''})`;
+            verseDiv.innerHTML = `Paragraphe ${match.verseIndex}: ${highlightedText} (${match.occurrences} occurrence${match.occurrences > 1 ? 's' : ''})`;
             
             // Ajouter un événement de clic pour rediriger
             verseDiv.addEventListener('click', () => {
