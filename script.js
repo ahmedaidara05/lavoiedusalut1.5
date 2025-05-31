@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (settingsPanel.style.display === 'block') settingsPanel.style.display = 'none';
             if (favoritesPage.style.display === 'block') favoritesPage.style.display = 'none';
             if (notesPage.style.display === 'block') notesPage.style.display = 'none';
-            homePage.style.display = 'block';
+            lastPage.style.display = 'block';
         });
     });
 
@@ -310,22 +310,26 @@ document.addEventListener('DOMContentLoaded', () => {
             loadSuraContent();
         }
     });
-
+    
     document.querySelector('.settings-btn').addEventListener('click', () => {
-        settingsPanel.style.display = 'block';
-        readingPage.style.display = 'none';
-    });
+    lastPage = readingPage; // On était dans la page de lecture
+    settingsPanel.style.display = 'block';
+    readingPage.style.display = 'none';
+});
 
-    document.querySelector('.favorites-btn').addEventListener('click', () => {
-        loadFavorites();
-        favoritesPage.style.display = 'block';
-        readingPage.style.display = 'none';
-    });
+document.querySelector('.favorites-btn').addEventListener('click', () => {
+    lastPage = readingPage;
+    loadFavorites();
+    favoritesPage.style.display = 'block';
+    readingPage.style.display = 'none';
+});
 
-    document.querySelector('.index-btn').addEventListener('click', () => {
-        indexPage.style.display = 'block';
-        readingPage.style.display = 'none';
-    });
+document.querySelector('.index-btn').addEventListener('click', () => {
+    lastPage = readingPage;
+    indexPage.style.display = 'block';
+    readingPage.style.display = 'none';
+});
+
 
     document.querySelector('.customize-btn').addEventListener('click', () => {
         customizePanel.style.display = 'block';
