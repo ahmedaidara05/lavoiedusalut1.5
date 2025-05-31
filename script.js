@@ -272,47 +272,43 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Fonctions de navigation
-    document.querySelector('.start-btn').addEventListener('click', () => {
-        homePage.style.display = 'none';
-        indexPage.style.display = 'block';
-    });
+   // Initialisation
+let currentSura = 1;
+let lastPage = null;
 
-    document.querySelectorAll('.close-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (indexPage.style.display === 'block') indexPage.style.display = 'none';
-            if (readingPage.style.display === 'block') readingPage.style.display = 'none';
-            if (settingsPanel.style.display === 'block') settingsPanel.style.display = 'none';
-            if (favoritesPage.style.display === 'block') favoritesPage.style.display = 'none';
-            if (notesPage.style.display === 'block') notesPage.style.display = 'none';
-            lastPage.style.display = 'block';
-        });
-    });
+// Fonctions de navigation
+document.querySelector('.start-btn').addEventListener('click', () => {
+    homePage.style.display = 'none';
+    indexPage.style.display = 'block';
+    lastPage = indexPage;
+});
 
-    document.querySelectorAll('.index-page li').forEach(li => {
-        li.addEventListener('click', () => {
-            currentSura = parseInt(li.getAttribute('data-sura'));
-            loadSuraContent();
-            indexPage.style.display = 'none';
-            readingPage.style.display = 'block';
-        });
+document.querySelectorAll('.index-page li').forEach(li => {
+    li.addEventListener('click', () => {
+        currentSura = parseInt(li.getAttribute('data-sura'));
+        loadSuraContent();
+        indexPage.style.display = 'none';
+        readingPage.style.display = 'block';
+        lastPage = readingPage;
     });
+});
 
-    document.querySelector('.prev-btn').addEventListener('click', () => {
-        if (currentSura > 1) {
-            currentSura--;
-            loadSuraContent();
-        }
-    });
+document.querySelector('.prev-btn').addEventListener('click', () => {
+    if (currentSura > 1) {
+        currentSura--;
+        loadSuraContent();
+    }
+});
 
-    document.querySelector('.next-btn').addEventListener('click', () => {
-        if (currentSura < 44) {
-            currentSura++;
-            loadSuraContent();
-        }
-    });
-    
-    document.querySelector('.settings-btn').addEventListener('click', () => {
-    lastPage = readingPage; // On était dans la page de lecture
+document.querySelector('.next-btn').addEventListener('click', () => {
+    if (currentSura < 44) {
+        currentSura++;
+        loadSuraContent();
+    }
+});
+
+document.querySelector('.settings-btn').addEventListener('click', () => {
+    lastPage = readingPage;
     settingsPanel.style.display = 'block';
     readingPage.style.display = 'none';
 });
@@ -330,18 +326,34 @@ document.querySelector('.index-btn').addEventListener('click', () => {
     readingPage.style.display = 'none';
 });
 
+document.querySelector('.customize-btn').addEventListener('click', () => {
+    customizePanel.style.display = 'block';
+});
 
-    document.querySelector('.customize-btn').addEventListener('click', () => {
-        customizePanel.style.display = 'block';
-    });
+document.querySelector('.close-customize-btn').addEventListener('click', () => {
+    customizePanel.style.display = 'none';
+});
 
-    document.querySelector('.close-customize-btn').addEventListener('click', () => {
+document.querySelector('.ai-btn').addEventListener('click', () => {
+    alert('Assistant IA non implémenté dans cette version.');
+});
+
+document.querySelectorAll('.close-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        indexPage.style.display = 'none';
+        readingPage.style.display = 'none';
+        settingsPanel.style.display = 'none';
+        favoritesPage.style.display = 'none';
+        notesPage.style.display = 'none';
         customizePanel.style.display = 'none';
-    });
 
-    document.querySelector('.ai-btn').addEventListener('click', () => {
-        alert('Assistant IA non implémenté dans cette version.');
+        if (lastPage) {
+            lastPage.style.display = 'block';
+        } else {
+            homePage.style.display = 'block';
+        }
     });
+});
 
     // Gestion des paramètres
     languageSelect.addEventListener('change', loadSuraContent);
