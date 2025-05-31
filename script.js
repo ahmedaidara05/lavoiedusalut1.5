@@ -432,67 +432,110 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Recherche intelligente
-    searchBar.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.trim().toLowerCase();
-        searchResults.style.display = searchTerm ? 'block' : 'none';
-        searchResults.innerHTML = '';
+    searchBar.addEventListener('input', () => {
+    const query = searchBar.value.toLowerCase().trim();
+    const searchResults = document.getElementById('searchResults');
+    
+    // Réinitialiser les résultats
+    searchResults.innerHTML = '';
+    
+    if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+    }
 
-        if (searchTerm) {
-            const allText = {};
-            for (let sura = 1; sura <= 44; sura++) {
-                ['ar', 'en', 'fr'].forEach(lang => {
-                    if (suraContents[sura] && suraContents[sura][lang]) {
-                        const lines = suraContents[sura][lang].split('<br>');
-                        lines.forEach((line, index) => {
-                            if (line.toLowerCase().includes(searchTerm)) {
-                                if (!allText[sura]) allText[sura] = {};
-                                if (!allText[sura][lang]) allText[sura][lang] = [];
-                                allText[sura][lang].push({ text: line, lineIndex: index });
-                            }
-                        });
-                    }
+    // Compter les occurrences totales et collecter les résultats
+    let totalOccurrences = 0;
+    let resultsBySura = {};
+
+    for (let sura in suraContents) {
+        const content = suraContents[sura][languageSelect.value] || '';
+        const verses = content.split('\n'); // Supposons que les versets sont séparés par des sauts de ligne
+        let suraMatches = [];
+
+        verses.forEach((verse, verseIndex) => {
+            const lowerVerse = verse.toLowerCase();
+            let matchCount = (lowerVerse.match(new RegExp(`\\b${query}\\b`, 'g')) || []).length;
+            
+            if (matchCount > 0) {
+                totalOccurrences += matchCount;
+                suraMatches.push({
+                    verseText: verse,
+                    verseIndex: verseIndex + 1, // Numérotation des versets commence à 1
+                    occurrences: matchCount
                 });
             }
+        });
 
-            for (let sura in allText) {
-                for (let lang in allText[sura]) {
-                    allText[sura][lang].forEach(result => {
-                        const div = document.createElement('div');
-                        div.className = 'result-item';
-                        div.innerHTML = `<strong>La Voie du Salut ${sura} (${lang.toUpperCase()})</strong><br>${result.text}`;
-                        div.addEventListener('click', () => {
-                            if (sura <= 7 || hasPurchased) {
-                                currentSura = parseInt(sura);
-                                languageSelect.value = lang;
-                                updateContent();
-                                const lines = suraContents[currentSura][lang].split('<br>');
-                                arabicText.innerHTML = suraContents[currentSura][lang];
-                                textContent.innerHTML = suraContents[currentSura][lang];
-                                if (lang === 'ar') {
-                                    arabicText.style.display = 'block';
-                                    textContent.style.display = 'none';
-                                } else {
-                                    arabicText.style.display = 'none';
-                                    textContent.style.display = 'block';
-                                }
-                                const targetElement = lang === 'ar' ? arabicText : textContent;
-                                const targetLines = targetElement.innerHTML.split('<br>');
-                                targetLines[result.lineIndex] = `<span style="background: yellow">${targetLines[result.lineIndex]}</span>`;
-                                targetElement.innerHTML = targetLines.join('<br>');
-                                targetElement.scrollTop = targetElement.scrollHeight * (result.lineIndex / targetLines.length);
-                                searchResults.style.display = 'none';
-                                searchBar.value = '';
-                            } else {
-                                paymentModal.style.display = 'flex';
-                            }
-                        });
-                        searchResults.appendChild(div);
-                    });
-                }
-            }
+        if (suraMatches.length > 0) {
+            resultsBySura[sura] = suraMatches;
         }
-    });
+    }
 
+    // Afficher les résultats
+    searchResults.style.display = 'block';
+    
+    // Afficher le nombre total d'occurrences
+    const totalDiv = document.createElement('div');
+    totalDiv.className = 'result-header';
+    totalDiv.textContent = `Total occurrences: ${totalOccurrences}`;
+    searchResults.appendChild(totalDiv);
+
+    // Afficher les résultats par sourate
+    for (let sura in resultsBySura) {
+        // Afficher le nom de la sourate en gras
+        const suraDiv = document.createElement('div');
+        suraDiv.className = 'result-sura';
+        suraDiv.innerHTML = `<strong>Sourate ${sura}</strong>`;
+        searchResults.appendChild(suraDiv);
+
+        // Afficher chaque verset correspondant
+        resultsBySura[sura].forEach(match => {
+            const verseDiv = document.createElement('div');
+            verseDiv.className = 'result-item';
+            
+            // Mettre en surbrillance le mot recherché
+            const highlightedText = match.verseText.replace(
+                new RegExp(`\\b${query}\\b`, 'gi'),
+                match => `<span class="highlight">${match}</span>`
+            );
+            
+            verseDiv.innerHTML = `Verset ${match.verseIndex}: ${highlightedText} (${match.occurrences} occurrence${match.occurrences > 1 ? 's' : ''})`;
+            
+            // Ajouter un événement de clic pour rediriger
+            verseDiv.addEventListener('click', () => {
+                currentSura = parseInt(sura);
+                loadSuraContent(match.verseIndex); // Modifier loadSuraContent pour accepter un index de verset
+                searchResults.style.display = 'none';
+                // Faire défiler jusqu'au verset
+                const verseElement = document.getElementById(`verse-${match.verseIndex}`);
+                if (verseElement) {
+                    verseElement.scrollIntoView({ behavior: 'smooth' });
+                    verseElement.classList.add('highlight-verse');
+                    setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+                }
+            });
+            
+            searchResults.appendChild(verseDiv);
+        });
+    }
+
+    // Si aucun résultat
+    if (totalOccurrences === 0) {
+        const noResultDiv = document.createElement('div');
+        noResultDiv.className = 'result-item';
+        noResultDiv.textContent = 'Aucun résultat trouvé';
+        searchResults.appendChild(noResultDiv);
+    }
+});
+
+// Fermer les résultats si clic en dehors
+document.addEventListener('click', (e) => {
+    if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+    }
+});
+    
     // Lecture à haute voix
     voicePlayBtn.addEventListener('click', () => {
         if (isPlaying) {
