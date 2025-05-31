@@ -432,33 +432,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Recherche intelligente
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.toLowerCase();
-        if (query.length < 2) {
-            searchResults.style.display = 'none';
-            return;
-        }
+    searchBar.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.trim().toLowerCase();
+        searchResults.style.display = searchTerm ? 'block' : 'none';
         searchResults.innerHTML = '';
-        searchResults.style.display = 'block';
-        for (let sura in suraContents) {
-            const content = suraContents[sura][languageSelect.value] || '';
-            if (content.toLowerCase().includes(query)) {
-                const div = document.createElement('div');
-                div.className = 'result-item';
-                div.textContent = `Sourate ${sura}`;
-                div.addEventListener('click', () => {
-                    currentSura = parseInt(sura);
-                    loadSuraContent();
-                    searchResults.style.display = 'none';
-                });
-                searchResults.appendChild(div);
-            }
-        }
-    });
 
-    document.addEventListener('click', (e) => {
-        if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
-            searchResults.style.display = 'none';
+        if (searchTerm) {
+            const allText = {};
+            for (let sura = 1; sura <= 44; sura++) {
+                ['ar', 'en', 'fr'].forEach(lang => {
+                    if (suraContents[sura] && suraContents[sura][lang]) {
+                        const lines = suraContents[sura][lang].split('<br>');
+                        lines.forEach((line, index) => {
+                            if (line.toLowerCase().includes(searchTerm)) {
+                                if (!allText[sura]) allText[sura] = {};
+                                if (!allText[sura][lang]) allText[sura][lang] = [];
+                                allText[sura][lang].push({ text: line, lineIndex: index });
+                            }
+                        });
+                    }
+                });
+            }
+
+            for (let sura in allText) {
+                for (let lang in allText[sura]) {
+                    allText[sura][lang].forEach(result => {
+                        const div = document.createElement('div');
+                        div.className = 'result-item';
+                        div.innerHTML = `<strong>La Voie du Salut ${sura} (${lang.toUpperCase()})</strong><br>${result.text}`;
+                        div.addEventListener('click', () => {
+                            if (sura <= 7 || hasPurchased) {
+                                currentSura = parseInt(sura);
+                                languageSelect.value = lang;
+                                updateContent();
+                                const lines = suraContents[currentSura][lang].split('<br>');
+                                arabicText.innerHTML = suraContents[currentSura][lang];
+                                textContent.innerHTML = suraContents[currentSura][lang];
+                                if (lang === 'ar') {
+                                    arabicText.style.display = 'block';
+                                    textContent.style.display = 'none';
+                                } else {
+                                    arabicText.style.display = 'none';
+                                    textContent.style.display = 'block';
+                                }
+                                const targetElement = lang === 'ar' ? arabicText : textContent;
+                                const targetLines = targetElement.innerHTML.split('<br>');
+                                targetLines[result.lineIndex] = `<span style="background: yellow">${targetLines[result.lineIndex]}</span>`;
+                                targetElement.innerHTML = targetLines.join('<br>');
+                                targetElement.scrollTop = targetElement.scrollHeight * (result.lineIndex / targetLines.length);
+                                searchResults.style.display = 'none';
+                                searchBar.value = '';
+                            } else {
+                                paymentModal.style.display = 'flex';
+                            }
+                        });
+                        searchResults.appendChild(div);
+                    });
+                }
+            }
         }
     });
 
