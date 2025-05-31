@@ -450,17 +450,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let sura in suraContents) {
         const content = suraContents[sura][languageSelect.value] || '';
-        const verses = content.split('\n'); // Supposons que les versets sont séparés par des sauts de ligne
+        // Séparer par <br> pour préserver le formatage
+        const verses = content.split('<br>').filter(verse => verse.trim());
         let suraMatches = [];
 
         verses.forEach((verse, verseIndex) => {
-            const lowerVerse = verse.toLowerCase();
+            const lowerVerse = verse.toLowerCase().replace(/<[^>]+>/g, ''); // Nettoyer les balises pour la recherche uniquement
             let matchCount = (lowerVerse.match(new RegExp(`\\b${query}\\b`, 'g')) || []).length;
             
             if (matchCount > 0) {
                 totalOccurrences += matchCount;
                 suraMatches.push({
-                    verseText: verse,
+                    verseText: verse, // Conserver le texte original avec balises HTML
                     verseIndex: verseIndex + 1, // Numérotation des versets commence à 1
                     occurrences: matchCount
                 });
@@ -494,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const verseDiv = document.createElement('div');
             verseDiv.className = 'result-item';
             
-            // Mettre en surbrillance le mot recherché
+            // Mettre en surbrillance le mot recherché tout en préservant les balises HTML
             const highlightedText = match.verseText.replace(
                 new RegExp(`\\b${query}\\b`, 'gi'),
                 match => `<span class="highlight">${match}</span>`
@@ -505,9 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ajouter un événement de clic pour rediriger
             verseDiv.addEventListener('click', () => {
                 currentSura = parseInt(sura);
-                loadSuraContent(match.verseIndex); // Modifier loadSuraContent pour accepter un index de verset
+                loadSuraContent(match.verseIndex); // Passer l'index du verset
                 searchResults.style.display = 'none';
-                // Faire défiler jusqu'au verset
                 const verseElement = document.getElementById(`verse-${match.verseIndex}`);
                 if (verseElement) {
                     verseElement.scrollIntoView({ behavior: 'smooth' });
@@ -583,17 +583,41 @@ document.addEventListener('click', (e) => {
     });
 
     // Charger le contenu de la sourate
-    function loadSuraContent() {
-        const suraData = suraContents[currentSura] || suraContents[1];
-        suraTitle.textContent = `La Voie du Salut ${currentSura}`;
-        arabicText.innerHTML = suraData.ar || '';
-        textContent.innerHTML = suraData[languageSelect.value] || suraData.en;
-        textContent.style.display = languageSelect.value === 'ar' ? 'none' : 'block';
-        arabicText.style.display = languageSelect.value === 'ar' ? 'block' : 'none';
-        arabicText.style.fontSize = `${currentFontSize}px`;
-        textContent.style.fontSize = `${currentFontSize}px`;
-        favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+    function loadSuraContent(verseIndex = null) {
+    const suraData = suraContents[currentSura] || suraContents[1];
+    suraTitle.textContent = `La Voie du Salut ${currentSura}`;
+    const content = suraData[languageSelect.value] || suraData.en;
+    const verses = content.split('<br>').filter(verse => verse.trim()); // Séparer par <br>
+    
+    // Créer des div pour chaque verset avec un identifiant
+    const html = verses.map((verse, index) => 
+        `<div id="verse-${index + 1}" class="verse">${verse}</div>`
+    ).join('');
+    
+    // Afficher selon la langue sélectionnée
+    if (languageSelect.value === 'ar') {
+        arabicText.innerHTML = html;
+        textContent.style.display = 'none';
+        arabicText.style.display = 'block';
+    } else {
+        textContent.innerHTML = html;
+        arabicText.style.display = 'none';
+        textContent.style.display = 'block';
     }
+    
+    arabicText.style.fontSize = `${currentFontSize}px`;
+    textContent.style.fontSize = `${currentFontSize}px`;
+    favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+    
+    if (verseIndex) {
+        const verseElement = document.getElementById(`verse-${verseIndex}`);
+        if (verseElement) {
+            verseElement.scrollIntoView({ behavior: 'smooth' });
+            verseElement.classList.add('highlight-verse');
+            setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+        }
+    }
+}
 
     // Charger les paramètres sauvegardés
     const savedTheme = localStorage.getItem('theme');
