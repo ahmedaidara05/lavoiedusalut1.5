@@ -536,19 +536,37 @@ document.addEventListener('click', (e) => {
 });
     
     // Lecture à haute voix
-voicePlayBtn.addEventListener('click', () => {
+voicePlayBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // Éviter tout comportement par défaut
+    handleSpeech();
+});
+
+// Ajouter un événement touchstart pour mobile
+voicePlayBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Éviter le double déclenchement
+    handleSpeech();
+});
+
+function handleSpeech() {
     if (!window.speechSynthesis) {
         console.log("Synthèse vocale non prise en charge par ce navigateur.");
         return;
     }
 
     const synth = window.speechSynthesis;
-    
+
+    // Arrêter la lecture si en cours
     if (isPlaying) {
         synth.cancel();
         isPlaying = false;
         voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+        console.log("Lecture arrêtée.");
         return;
+    }
+
+    // Forcer une réinitialisation sur mobile
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        synth.cancel(); // Réinitialiser l'état
     }
 
     // Extraire tout le contenu du chapitre
@@ -593,20 +611,9 @@ voicePlayBtn.addEventListener('click', () => {
             utterance.voice = selectedVoice;
             console.log(`Voix sélectionnée : ${selectedVoice.name}`);
         } else {
-            console.log("Aucune voix spécifique trouvée, utilisation de la voix par défaut.");
+            console.log("Aucune voix trouvée, utilisation de la voix par défaut.");
         }
     };
-
-    // Charger les voix
-    if (synth.getVoices().length === 0) {
-        synth.onvoiceschanged = () => {
-            selectVoice();
-            synth.speak(utterance);
-        };
-    } else {
-        selectVoice();
-        synth.speak(utterance);
-    }
 
     // Paramètres de la voix
     utterance.volume = 1;
@@ -625,9 +632,31 @@ voicePlayBtn.addEventListener('click', () => {
         console.log(`Erreur de synthèse vocale : ${event.error}`);
     };
 
-    isPlaying = true;
-    voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
-});
+    // Précharger les voix et démarrer
+    const startSpeech = () => {
+        selectVoice();
+        synth.speak(utterance);
+        isPlaying = true;
+        voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
+        console.log("Lecture démarrée.");
+    };
+
+    // Gérer le chargement des voix
+    if (synth.getVoices().length === 0) {
+        synth.onvoiceschanged = () => {
+            console.log("Voix chargées :", synth.getVoices());
+            startSpeech();
+        };
+        // Forcer un délai sur mobile pour garantir le chargement
+        setTimeout(() => {
+            if (synth.getVoices().length > 0 && !isPlaying) {
+                startSpeech();
+            }
+        }, 1000);
+    } else {
+        startSpeech();
+    }
+}
 
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
