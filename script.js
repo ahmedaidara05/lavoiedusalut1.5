@@ -505,16 +505,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Ajouter un événement de clic pour rediriger
             verseDiv.addEventListener('click', () => {
-                currentSura = parseInt(sura);
-                loadSuraContent(match.verseIndex); // Passer l'index du verset
-                searchResults.style.display = 'none';
-                const verseElement = document.getElementById(`verse-${match.verseIndex}`);
-                if (verseElement) {
-                    verseElement.scrollIntoView({ behavior: 'smooth' });
-                    verseElement.classList.add('highlight-verse');
-                    setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
-                }
-            });
+    currentSura = parseInt(sura);
+    currentVerseIndex = match.verseIndex; // Mettre à jour currentVerseIndex
+    loadSuraContent(match.verseIndex);
+    searchResults.style.display = 'none';
+    const verseElement = document.getElementById(`verse-${match.verseIndex}`);
+    if (verseElement) {
+        verseElement.scrollIntoView({ behavior: 'smooth' });
+        verseElement.classList.add('highlight-verse');
+        setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+    }
+});
             
             searchResults.appendChild(verseDiv);
         });
@@ -537,23 +538,90 @@ document.addEventListener('click', (e) => {
 });
     
     // Lecture à haute voix
-    voicePlayBtn.addEventListener('click', () => {
-        if (isPlaying) {
-            synth.cancel();
+voicePlayBtn.addEventListener('click', () => {
+    if (!window.speechSynthesis) {
+        alert("Désolé, la synthèse vocale n'est pas prise en charge par votre navigateur.");
+        return;
+    }
+
+    if (isPlaying) {
+        synth.cancel();
+        isPlaying = false;
+        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+    } else {
+        // Sélectionner le texte à lire
+        const verseIndex = window.currentVerseIndex; // Variable globale pour stocker l'index du paragraphe sélectionné
+        const textToRead = verseIndex 
+            ? document.getElementById(`verse-${verseIndex}`)?.innerText 
+            : (arabicText.innerText || textContent.innerText);
+        
+        if (!textToRead) {
+            alert("Aucun texte disponible pour la lecture.");
+            return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+
+        // Sélectionner une voix agréable
+        const selectVoice = () => {
+            const voices = synth.getVoices();
+            let selectedVoice;
+
+            if (languageSelect.value === 'fr') {
+                // Préférer une voix masculine française
+                selectedVoice = voices.find(voice => 
+                    voice.lang === 'fr-FR' && 
+                    (voice.name.includes('Thomas') || voice.name.includes('Male') || voice.name.includes('Homme'))
+                ) || voices.find(voice => voice.lang === 'fr-FR'); // Fallback à n'importe quelle voix française
+            } else if (languageSelect.value === 'en') {
+                // Préférer une voix masculine anglaise
+                selectedVoice = voices.find(voice => 
+                    voice.lang === 'en-US' && 
+                    (voice.name.includes('Guy') || voice.name.includes('Male') || voice.name.includes('Daniel'))
+                ) || voices.find(voice => voice.lang === 'en-US'); // Fallback à n'importe quelle voix anglaise
+            } else if (languageSelect.value === 'ar') {
+                // Préférer une voix arabe
+                selectedVoice = voices.find(voice => 
+                    voice.lang === 'ar-SA' && 
+                    (voice.name.includes('Male') || voice.name.includes('Homme'))
+                ) || voices.find(voice => voice.lang === 'ar-SA'); // Fallback à n'importe quelle voix arabe
+            }
+
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+        };
+
+        // Charger les voix et sélectionner (les voix peuvent ne pas être disponibles immédiatement)
+        if (synth.getVoices().length === 0) {
+            synth.onvoiceschanged = selectVoice;
+        } else {
+            selectVoice();
+        }
+
+        // Configurer les paramètres de la voix
+        utterance.volume = 1; // Volume (0 à 1)
+        utterance.rate = 1; // Vitesse (0.1 à 10)
+        utterance.pitch = 1; // Hauteur (0 à 2)
+
+        utterance.onend = () => {
             isPlaying = false;
             voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-        } else {
-            const utterance = new SpeechSynthesisUtterance(arabicText.innerText || textContent.innerText);
-            utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
-            utterance.onend = () => {
-                isPlaying = false;
-                voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            };
-            synth.speak(utterance);
-            isPlaying = true;
-            voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-        }
-    });
+        };
+
+        utterance.onerror = (event) => {
+            console.error('Erreur de synthèse vocale:', event.error);
+            alert("Une erreur s'est produite lors de la lecture vocale.");
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+        };
+
+        synth.speak(utterance);
+        isPlaying = true;
+        voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+    }
+});
 
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
@@ -587,14 +655,12 @@ document.addEventListener('click', (e) => {
     const suraData = suraContents[currentSura] || suraContents[1];
     suraTitle.textContent = `La Voie du Salut ${currentSura}`;
     const content = suraData[languageSelect.value] || suraData.en;
-    const verses = content.split('<br>').filter(verse => verse.trim()); // Séparer par <br>
+    const verses = content.split('<br>').filter(verse => verse.trim());
     
-    // Créer des div pour chaque verset avec un identifiant
     const html = verses.map((verse, index) => 
         `<div id="verse-${index + 1}" class="verse">${verse}</div>`
     ).join('');
     
-    // Afficher selon la langue sélectionnée
     if (languageSelect.value === 'ar') {
         arabicText.innerHTML = html;
         textContent.style.display = 'none';
@@ -608,6 +674,9 @@ document.addEventListener('click', (e) => {
     arabicText.style.fontSize = `${currentFontSize}px`;
     textContent.style.fontSize = `${currentFontSize}px`;
     favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+    
+    // Mettre à jour currentVerseIndex
+    currentVerseIndex = verseIndex;
     
     if (verseIndex) {
         const verseElement = document.getElementById(`verse-${verseIndex}`);
