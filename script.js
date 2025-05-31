@@ -272,107 +272,72 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Fonctions de navigation
-  // Initialisation des pages
-const homePage = document.querySelector('.home-page');
-const indexPage = document.querySelector('.index-page');
-const readingPage = document.querySelector('.reading-page');
-const settingsPanel = document.querySelector('.settings-panel');
-const favoritesPage = document.querySelector('.favorites-page');
-const notesPage = document.querySelector('.notes-page');
-const customizePanel = document.querySelector('.customize-panel');
-
-let currentSura = 1;
-let previousPage = null; // Pour garder la trace de la dernière page active
-
-// Page d'accueil → Sommaire
-document.querySelector('.start-btn').addEventListener('click', () => {
-    homePage.style.display = 'none';
-    indexPage.style.display = 'block';
-    previousPage = homePage;
-});
-
-// Cliquer sur un chapitre dans le sommaire
-document.querySelectorAll('.index-page li').forEach(li => {
-    li.addEventListener('click', () => {
-        currentSura = parseInt(li.getAttribute('data-sura'));
-        loadSuraContent();
-        indexPage.style.display = 'none';
-        readingPage.style.display = 'block';
-        previousPage = indexPage;
+    document.querySelector('.start-btn').addEventListener('click', () => {
+        homePage.style.display = 'none';
+        indexPage.style.display = 'block';
     });
-});
 
-// Boutons Précédent / Suivant dans la lecture
-document.querySelector('.prev-btn').addEventListener('click', () => {
-    if (currentSura > 1) {
-        currentSura--;
-        loadSuraContent();
-    }
-});
-
-document.querySelector('.next-btn').addEventListener('click', () => {
-    if (currentSura < 44) {
-        currentSura++;
-        loadSuraContent();
-    }
-});
-
-// Paramètres
-document.querySelector('.settings-btn').addEventListener('click', () => {
-    previousPage = readingPage;
-    settingsPanel.style.display = 'block';
-    readingPage.style.display = 'none';
-});
-
-// Favoris
-document.querySelector('.favorites-btn').addEventListener('click', () => {
-    previousPage = readingPage;
-    loadFavorites();
-    favoritesPage.style.display = 'block';
-    readingPage.style.display = 'none';
-});
-
-// Retour au sommaire
-document.querySelector('.index-btn').addEventListener('click', () => {
-    previousPage = readingPage;
-    indexPage.style.display = 'block';
-    readingPage.style.display = 'none';
-});
-
-// Personnalisation
-document.querySelector('.customize-btn').addEventListener('click', () => {
-    customizePanel.style.display = 'block';
-    previousPage = settingsPanel;
-});
-
-// Fermer personnalisation
-document.querySelector('.close-customize-btn').addEventListener('click', () => {
-    customizePanel.style.display = 'none';
-    if (previousPage) previousPage.style.display = 'block';
-});
-
-// Assistant IA
-document.querySelector('.ai-btn').addEventListener('click', () => {
-    alert('Assistant IA non implémenté dans cette version.');
-});
-
-// Boutons "retour" universels (fermeture d'une section)
-document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Fermer toutes les pages secondaires
-        [indexPage, readingPage, settingsPanel, favoritesPage, notesPage, customizePanel].forEach(page => {
-            page.style.display = 'none';
-        });
-
-        // Revenir à la page précédente
-        if (previousPage) {
-            previousPage.style.display = 'block';
-        } else {
+    document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (indexPage.style.display === 'block') indexPage.style.display = 'none';
+            if (readingPage.style.display === 'block') readingPage.style.display = 'none';
+            if (settingsPanel.style.display === 'block') settingsPanel.style.display = 'none';
+            if (favoritesPage.style.display === 'block') favoritesPage.style.display = 'none';
+            if (notesPage.style.display === 'block') notesPage.style.display = 'none';
             homePage.style.display = 'block';
+        });
+    });
+
+    document.querySelectorAll('.index-page li').forEach(li => {
+        li.addEventListener('click', () => {
+            currentSura = parseInt(li.getAttribute('data-sura'));
+            loadSuraContent();
+            indexPage.style.display = 'none';
+            readingPage.style.display = 'block';
+        });
+    });
+
+    document.querySelector('.prev-btn').addEventListener('click', () => {
+        if (currentSura > 1) {
+            currentSura--;
+            loadSuraContent();
         }
     });
-});
 
+    document.querySelector('.next-btn').addEventListener('click', () => {
+        if (currentSura < 44) {
+            currentSura++;
+            loadSuraContent();
+        }
+    });
+
+    document.querySelector('.settings-btn').addEventListener('click', () => {
+        settingsPanel.style.display = 'block';
+        readingPage.style.display = 'none';
+    });
+
+    document.querySelector('.favorites-btn').addEventListener('click', () => {
+        loadFavorites();
+        favoritesPage.style.display = 'block';
+        readingPage.style.display = 'none';
+    });
+
+    document.querySelector('.index-btn').addEventListener('click', () => {
+        indexPage.style.display = 'block';
+        readingPage.style.display = 'none';
+    });
+
+    document.querySelector('.customize-btn').addEventListener('click', () => {
+        customizePanel.style.display = 'block';
+    });
+
+    document.querySelector('.close-customize-btn').addEventListener('click', () => {
+        customizePanel.style.display = 'none';
+    });
+
+    document.querySelector('.ai-btn').addEventListener('click', () => {
+        alert('Assistant IA non implémenté dans cette version.');
+    });
 
     // Gestion des paramètres
     languageSelect.addEventListener('change', loadSuraContent);
@@ -387,6 +352,22 @@ document.querySelectorAll('.close-btn').forEach(btn => {
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+    // Ciblage du bouton retour dans les paramètres
+    const settingsBackBtn = document.querySelector('#settingsPanel .close-btn');
+    const readingPage = document.getElementById('readingPage');
+    const settingsPanel = document.getElementById('settingsPanel');
+
+    if (settingsBackBtn) {
+        settingsBackBtn.addEventListener('click', () => {
+            // On cache les paramètres
+            settingsPanel.style.display = 'none';
+            // On montre la page de lecture
+            readingPage.style.display = 'block';
+        });
+    }
+});
 
     // Authentification
     document.querySelectorAll('.auth-btn').forEach(btn => {
@@ -571,37 +552,19 @@ document.addEventListener('click', (e) => {
 });
     
     // Lecture à haute voix
-voicePlayBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // Éviter tout comportement par défaut
-    handleSpeech();
-});
-
-// Ajouter un événement touchstart pour mobile
-voicePlayBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Éviter le double déclenchement
-    handleSpeech();
-});
-
-function handleSpeech() {
+voicePlayBtn.addEventListener('click', () => {
     if (!window.speechSynthesis) {
         console.log("Synthèse vocale non prise en charge par ce navigateur.");
         return;
     }
 
     const synth = window.speechSynthesis;
-
-    // Arrêter la lecture si en cours
+    
     if (isPlaying) {
         synth.cancel();
         isPlaying = false;
         voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-        console.log("Lecture arrêtée.");
         return;
-    }
-
-    // Forcer une réinitialisation sur mobile
-    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        synth.cancel(); // Réinitialiser l'état
     }
 
     // Extraire tout le contenu du chapitre
@@ -646,9 +609,20 @@ function handleSpeech() {
             utterance.voice = selectedVoice;
             console.log(`Voix sélectionnée : ${selectedVoice.name}`);
         } else {
-            console.log("Aucune voix trouvée, utilisation de la voix par défaut.");
+            console.log("Aucune voix spécifique trouvée, utilisation de la voix par défaut.");
         }
     };
+
+    // Charger les voix
+    if (synth.getVoices().length === 0) {
+        synth.onvoiceschanged = () => {
+            selectVoice();
+            synth.speak(utterance);
+        };
+    } else {
+        selectVoice();
+        synth.speak(utterance);
+    }
 
     // Paramètres de la voix
     utterance.volume = 1;
@@ -667,31 +641,9 @@ function handleSpeech() {
         console.log(`Erreur de synthèse vocale : ${event.error}`);
     };
 
-    // Précharger les voix et démarrer
-    const startSpeech = () => {
-        selectVoice();
-        synth.speak(utterance);
-        isPlaying = true;
-        voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
-        console.log("Lecture démarrée.");
-    };
-
-    // Gérer le chargement des voix
-    if (synth.getVoices().length === 0) {
-        synth.onvoiceschanged = () => {
-            console.log("Voix chargées :", synth.getVoices());
-            startSpeech();
-        };
-        // Forcer un délai sur mobile pour garantir le chargement
-        setTimeout(() => {
-            if (synth.getVoices().length > 0 && !isPlaying) {
-                startSpeech();
-            }
-        }, 1000);
-    } else {
-        startSpeech();
-    }
-}
+    isPlaying = true;
+    voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
+});
 
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
