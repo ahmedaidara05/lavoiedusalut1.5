@@ -272,27 +272,37 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Fonctions de navigation
-   // Initialisation
-let currentSura = 1;
-let lastPage = null;
+  // Initialisation des pages
+const homePage = document.querySelector('.home-page');
+const indexPage = document.querySelector('.index-page');
+const readingPage = document.querySelector('.reading-page');
+const settingsPanel = document.querySelector('.settings-panel');
+const favoritesPage = document.querySelector('.favorites-page');
+const notesPage = document.querySelector('.notes-page');
+const customizePanel = document.querySelector('.customize-panel');
 
-// Fonctions de navigation
+let currentSura = 1;
+let previousPage = null; // Pour garder la trace de la dernière page active
+
+// Page d'accueil → Sommaire
 document.querySelector('.start-btn').addEventListener('click', () => {
     homePage.style.display = 'none';
     indexPage.style.display = 'block';
-    lastPage = indexPage;
+    previousPage = homePage;
 });
 
+// Cliquer sur un chapitre dans le sommaire
 document.querySelectorAll('.index-page li').forEach(li => {
     li.addEventListener('click', () => {
         currentSura = parseInt(li.getAttribute('data-sura'));
         loadSuraContent();
         indexPage.style.display = 'none';
         readingPage.style.display = 'block';
-        lastPage = readingPage;
+        previousPage = indexPage;
     });
 });
 
+// Boutons Précédent / Suivant dans la lecture
 document.querySelector('.prev-btn').addEventListener('click', () => {
     if (currentSura > 1) {
         currentSura--;
@@ -307,53 +317,62 @@ document.querySelector('.next-btn').addEventListener('click', () => {
     }
 });
 
+// Paramètres
 document.querySelector('.settings-btn').addEventListener('click', () => {
-    lastPage = readingPage;
+    previousPage = readingPage;
     settingsPanel.style.display = 'block';
     readingPage.style.display = 'none';
 });
 
+// Favoris
 document.querySelector('.favorites-btn').addEventListener('click', () => {
-    lastPage = readingPage;
+    previousPage = readingPage;
     loadFavorites();
     favoritesPage.style.display = 'block';
     readingPage.style.display = 'none';
 });
 
+// Retour au sommaire
 document.querySelector('.index-btn').addEventListener('click', () => {
-    lastPage = readingPage;
+    previousPage = readingPage;
     indexPage.style.display = 'block';
     readingPage.style.display = 'none';
 });
 
+// Personnalisation
 document.querySelector('.customize-btn').addEventListener('click', () => {
     customizePanel.style.display = 'block';
+    previousPage = settingsPanel;
 });
 
+// Fermer personnalisation
 document.querySelector('.close-customize-btn').addEventListener('click', () => {
     customizePanel.style.display = 'none';
+    if (previousPage) previousPage.style.display = 'block';
 });
 
+// Assistant IA
 document.querySelector('.ai-btn').addEventListener('click', () => {
     alert('Assistant IA non implémenté dans cette version.');
 });
 
+// Boutons "retour" universels (fermeture d'une section)
 document.querySelectorAll('.close-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        indexPage.style.display = 'none';
-        readingPage.style.display = 'none';
-        settingsPanel.style.display = 'none';
-        favoritesPage.style.display = 'none';
-        notesPage.style.display = 'none';
-        customizePanel.style.display = 'none';
+        // Fermer toutes les pages secondaires
+        [indexPage, readingPage, settingsPanel, favoritesPage, notesPage, customizePanel].forEach(page => {
+            page.style.display = 'none';
+        });
 
-        if (lastPage) {
-            lastPage.style.display = 'block';
+        // Revenir à la page précédente
+        if (previousPage) {
+            previousPage.style.display = 'block';
         } else {
             homePage.style.display = 'block';
         }
     });
 });
+
 
     // Gestion des paramètres
     languageSelect.addEventListener('change', loadSuraContent);
