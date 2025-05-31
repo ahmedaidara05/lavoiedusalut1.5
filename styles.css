@@ -92,9 +92,11 @@ header h1 {
 
 .index-page {
     padding: 60px 20px 2px;
-    height: auto;
-    min-height: calc(100vh - 80px)
-    overflow-y: auto;
+    height: auto; /* Laisser la hauteur s'adapter */
+    min-height: calc(100vh - 80px); /* Hauteur minimale conservée */
+    max-height: 100vh; /* Limite maximale pour éviter un débordement hors écran */
+    overflow-y: auto; /* Forcer le défilement vertical */
+    -webkit-overflow-scrolling: touch; /* Améliorer le défilement sur mobile */
     background: #fff;
     box-sizing: border-box;
 }
@@ -419,9 +421,11 @@ body.dark .highlight-verse {
 
 .favorites-page {
     padding: 60px 20px 2px;
-    height: auto; /* Adapter la hauteur au contenu */
+    height: auto;
     min-height: calc(100vh - 80px);
+    max-height: 100vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: #fff;
     box-sizing: border-box;
 }
@@ -430,7 +434,8 @@ body.dark .highlight-verse {
     list-style: none;
     padding: 0;
     margin: 0;
-    padding-bottom: 2px;
+    padding-bottom: 0; /* Supprimer le padding-bottom pour éviter l'espace supplémentaire */
+    margin-bottom: 0; /* Assurer qu'aucune marge n'ajoute d'espace */
 }
 
 #favoritesList li {
