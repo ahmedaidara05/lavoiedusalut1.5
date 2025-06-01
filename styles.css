@@ -671,3 +671,27 @@ body.dark .bot {
 body.dark #send {
   color: #FFD700; /* Garder doré en mode sombre */
 }
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #FFD700; /* Doré pour correspondre au thème */
+  color: #1E1E1E;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#close-chatbot {
+  background: none;
+  border: none;
+  color: #1E1E1E;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#close-chatbot:hover {
+  color: #FF5555; /* Rouge au survol pour indiquer la fermeture */
+}
