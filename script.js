@@ -746,3 +746,53 @@ voicePlayBtn.addEventListener('click', () => {
     loadSuraContent();
     loadFavorites();
 });
+
+const API_KEY = "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";
+const MODEL = "mistralai/mistral-7b-instruct";
+
+const contexte = `
+Tu es un assistant IA basé uniquement sur le livre "La Voie du Salut".
+Réponds uniquement aux questions liées au contenu du livre. Pour les salutations simples comme 'bonjour', 'salut', ou 'merci', réponds poliment (ex. 'Bonjour ! Comment puis-je vous aider avec "La Voie du Salut" ?') sans sortir du contexte du livre.
+Si la question n’est ni une salutation ni liée au livre, dis : "Désolé, je ne peux répondre qu'aux questions ou salutations liées au livre."
+`;
+
+document.getElementById("send").onclick = async () => {
+  const input = document.getElementById("input");
+  const messages = document.getElementById("messages");
+
+  const question = input.value.trim();
+  if (!question) return;
+
+  messages.innerHTML += `<div class="message user">👤 Vous : ${question}</div>`;
+  input.value = "";
+
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: "system", content: contexte },
+          { role: "user", content: question }
+        ]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || "Pas de réponse.";
+    messages.innerHTML += `<div class="message bot">🤖 IA : ${reply}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  } catch (err) {
+    messages.innerHTML += `<div class="message bot">⚠️ Erreur : ${err.message}</div>`;
+  }
+};
+
+// Gestion de l'affichage du chatbot avec le bouton .ai-btn
+document.querySelector('.ai-btn').addEventListener('click', () => {
+    const chatbot = document.getElementById('chatbot');
+    chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
+});
