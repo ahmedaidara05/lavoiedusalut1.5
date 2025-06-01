@@ -759,6 +759,7 @@ Si la question n’est ni une salutation ni liée au livre, dis : "Désolé, je 
 `;
 
 document.getElementById("send").onclick = async () => {
+  console.log("Bouton Envoyer cliqué");
   const input = document.getElementById("input");
   const messages = document.getElementById("messages");
 
