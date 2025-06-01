@@ -752,18 +752,24 @@ voicePlayBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const suraContents = {
     1: {
-      ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br><strong>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ</strong><br><br><span style='font-size: 24px;'>هذا النص هو مثال لمحتوى الفقرة الأولى في السورة الأولى.</span> يمكن أن يكون هذا النص طويلاً أو قصيرًا حسب الحاجة، وهو هنا فقط لمحاكاة المحتوى الحقيقي الذي ستقوم بإضافته لاحقًا.<br><br>هذه الفقرة الثانية تتحدث عن موضوع آخر. <strong>ربما تكون هذه الفقرة تتناول تفاصيل إضافية أو قصة معينة مرتبطة بالسورة.</strong> يمكن أن تكون هذه الجملة أطول قليلاً لتوضيح الفكرة بشكل أفضل.<br><br><span style='font-size: 16px;'>الفقرة الثالثة قد تحتوي على تعليمات أو دروس مستفادة.</span> هنا يمكن أن نضيف بعض التفاصيل التي تجعل النص أكثر غنى وإفادة، مع الحفاظ على اللغة الطبيعية والسلسة.<br><br>أما الفقرة الرابعة فهي الختامية. يمكن أن تكون هذه الفقرة دعاء أو تأمل يلخص المعاني التي تم تناولها في السورة، مع إضافة بعض العبارات التي تعزز من الروحانية.",
+      ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br><strong>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ</strong><br><br><span style='font-size: 24px;'>هذا النص هو مثال لمحتوى الفقرة الأولى في السورة الأولى.</span> يمكن أن يكون هذا النص طويلاً أو قصيرًا حسب الحاجة، وهو هنا فقط لمحاكاة المحتوى الحقيقي الذي ستقوم بإضافته لاحقًا.<br><br>هذه الفقرة الثانية تتحدث عن موضوع آخر. <strong>ربما تكون هذه الفقرة تتناول تفاصيل إضافية أو قصة معينة مرتبطة بالسورة.</strong> يمكن أن تكون هذه الجملة أطول قليلاً لتوضيح الفكرة بشكل أفضل.<br><br><span style='font-size: 16px;'>الفقرة الثالثة قد تحتوي على تعليمات أو دروس مستفادة.</span> هنا يمكن أن نضيف بعض التفاصيل التي تجعل النص أكثر غنى وإفادة، مع الحفاظ على اللغة الطبيعية والسلسة.<br><br>أما الفقرة الرابعة فهي الختamية. يمكن أن تكون هذه الفقرة دعاء أو تأمل يلخص المعاني التي تم تناولها في السورة، مع إضافة بعض العبارات التي تعزز من الروحانية.",
       en: "In the name of Allah, the Most Gracious, the Most Merciful<br><strong>Praise be to Allah, the Lord of all the worlds</strong><br><br><span style='font-size: 24px;'>This text is an example of the first paragraph in the first chapter.</span> It can be long or short depending on the need, and it’s here just to simulate the real content you’ll add later.<br><br>The second paragraph discusses another topic. <strong>Perhaps this paragraph delves into additional details or a specific story related to the chapter.</strong> This sentence might be a bit longer to better clarify the idea.<br><br><span style='font-size: 16px;'>The third paragraph might contain instructions or lessons learned.</span> Here we can add some details that make the text richer and more informative, while keeping the language natural and smooth.<br><br>As for the fourth paragraph, it’s the concluding one. This paragraph could be a prayer or a reflection summarizing the meanings discussed in the chapter, with some phrases added to enhance the spiritual tone.",
       fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br><strong>Louange à Allah, Seigneur des mondes</strong><br><br><span style='font-size: 25px;'>Ce texte est un exemple du premier paragraphe du premier chapitre.</span> Il peut être long ou court selon les besoins, et il est ici uniquement pour simuler le contenu réel que vous ajouterez plus tard.<br><br>Le deuxième paragraphe aborde un autre sujet. <strong>Peut-être que ce paragraphe explore des détails supplémentaires ou une histoire spécifique liée au chapitre.</strong> Cette phrase peut être un peu plus longue pour mieux clarifier l’idée.<br><br><span style='font-size: 16px;'>Le troisième paragraphe peut contenir des instructions ou des leçons tirées.</span> Ici, nous pouvons ajouter des détails qui rendent le texte plus riche et informatif, tout en maintenant un langage naturel et fluide.<br><br>Quant au quatrième paragraphe, il est conclusif. Ce paragraphe pourrait être une prière ou une réflexion résumant les significations abordées dans le chapitre, avec quelques phrases ajoutées pour renforcer la tonalité spirituelle."
     },
-    // Ajoutez d'autres chapitres si nécessaire, mais commencez avec 1 pour tester
+    // Ajoutez les autres chapitres ici (2 à 44) avec leur contenu
+    44: {
+      ar: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>حٰمٓ ۚ وَٱلْكِتَٰبِ ٱلْمُبِينِ<br><br>هذه الفقرة الأولى تتحدث عن وضوح الكتاب. يمكن أن نذكر هنا كيف أن هذا الكتاب يحتوي على آيات واضحة تهدي الناس إلى الحق.<br><br>الفقرة الثانية تتناول قصة موسى وفرعون. يمكن أن نتحدث عن كيف أن الله أنقذ بني إسرائيل من فرعون، مع التركيز على عظمة الله.<br><br>في الفقرة الثالثة، يمكننا مناقشة أهمية الشكر لله. هذه السورة تحتوي على دروس حول شكر النعم في أوقات الرخاء والشدة.<br><br>أخيرًا، الفقرة الرابعة تكون دعاء للشكر. يمكن أن نضيف هنا دعاء يطلب من الله زيادة النعم وقبول الشكر.",
+      en: "In the name of Allah, the Most Gracious, the Most Merciful<br>Ha Mim. By the clear Book...<br><br>This first paragraph talks about the clarity of the Book. We can mention here how this Book contains clear verses that guide people to the truth.<br><br>The second paragraph addresses the story of Musa and Pharaoh. We can talk about how Allah saved the Children of Israel from Pharaoh, focusing on Allah’s greatness.<br><br>In the third paragraph, we can discuss the importance of gratitude to Allah. This chapter contains lessons about thanking Allah in times of ease and hardship.<br><br>Finally, the fourth paragraph is a prayer for gratitude. We can add here a prayer asking Allah for an increase in blessings and acceptance of gratitude.",
+      fr: "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux<br>Ha Mim. Par le Livre clair...<br><br>Ce premier paragraphe parle de la clarté du Livre. Nous pouvons mentionner ici comment ce Livre contient des versets clairs qui guident les gens vers la vérité.<br><br>Le deuxième paragraphe aborde l’histoire de Musa et Pharaon. Nous pouvons parler de la manière dont Allah a sauvé les Enfants d’Israël de Pharaon, en mettant l’accent sur la grandeur d’Allah.<br><br>Dans le troisième paragraphe, nous pouvons discuter de l’importance de la gratitude envers Allah. Ce chapitre contient des leçons sur le fait de remercier Allah en temps de facilité et de difficulté.<br><br>Enfin, le quatrième paragraphe est une prière pour la gratitude. Nous pouvons ajouter ici une prière demandant à Allah une augmentation des bienfaits et l’acceptation de la gratitude."
+    }
+    // Ajoutez les chapitres 2 à 43 avec leur contenu si vous les avez
   };
 
   let currentSura = 1; // Synchronisé avec votre logique existante
 
   const sendButton = document.getElementById("send");
   if (sendButton) {
-    sendButton.onclick = () => { // Supprimons "async" pour l'instant
+    sendButton.onclick = () => {
       console.log("Bouton Envoyer cliqué");
       const input = document.getElementById("input");
       const messages = document.getElementById("messages");
@@ -774,22 +780,29 @@ document.addEventListener('DOMContentLoaded', () => {
       messages.innerHTML += `<div class="message user">👤 Vous : ${input.value}</div>`;
       input.value = "";
 
-      // Réponse locale basée sur le contenu
       let reply = "Pas de réponse.";
-      const currentContent = suraContents[currentSura];
+      const keywords = question.split(" ").filter(word => word);
+
+      // Recherche dans tout suraContents
+      for (let sura in suraContents) {
+        const content = suraContents[sura];
+        const fullText = `${content.ar} ${content.en} ${content.fr}`.toLowerCase();
+        if (keywords.some(keyword => fullText.includes(keyword))) {
+          if (question.includes("première ligne") || question.includes("first line")) {
+            reply = `Première ligne du chapitre ${sura} : ${content.fr.split('<br>')[0]}`;
+          } else if (question.includes("enseignements") || question.includes("teachings")) {
+            reply = `Les enseignements du chapitre ${sura} incluent des réflexions spirituelles et des leçons de gratitude.`;
+          } else {
+            reply = `Extrait du chapitre ${sura} (Français) : ${content.fr.split('<br>').slice(0, 2).join('<br>')}`;
+          }
+          break;
+        }
+      }
 
       if (question === "bonjour" || question === "salut" || question === "merci") {
         reply = "Bonjour ! Comment puis-je vous aider avec 'La Voie du Salut' ?";
-      } else if (question.includes("chapitre 1") || question.includes("sourate 1")) {
-        if (question.includes("première ligne")) {
-          reply = `La première ligne du chapitre 1 est : ${currentContent.ar.split('<br>')[0]}`;
-        } else if (question.includes("enseignements")) {
-          reply = "Les enseignements du chapitre 1 incluent la louange à Allah et des réflexions spirituelles.";
-        } else {
-          reply = `Contenu du chapitre 1 : ${currentContent.fr.split('<br>').slice(0, 2).join('<br>')}`; // Exemple avec les deux premières lignes
-        }
-      } else {
-        reply = "Désolé, je ne peux répondre qu'aux questions ou salutations liées à ce chapitre.";
+      } else if (!reply.startsWith("Extrait") && !reply.startsWith("Première") && !reply.startsWith("Les")) {
+        reply = "Désolé, je ne peux répondre qu'aux questions ou salutations liées au livre.";
       }
 
       messages.innerHTML += `<div class="message bot">🤖 IA : ${reply}</div>`;
@@ -812,7 +825,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Sura mise à jour : ${currentSura}`);
   }
 
-  // Exemple : Intégrez avec vos boutons de navigation
   document.querySelector('.prev-btn')?.addEventListener('click', () => {
     if (currentSura > 1) {
       updateCurrentSura(currentSura - 1);
