@@ -814,10 +814,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Gestion de l'affichage du chatbot avec le bouton .ai-btn
   document.querySelector('.ai-btn').addEventListener('click', () => {
-    console.log('Bouton cliqué');
-    const chatbot = document.getElementById('chatbot');
-    chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
-  });
+  console.log('Bouton cliqué');
+  const chatbot = document.getElementById('chatbot');
+  chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
+});
+
+// Ajout de l'écouteur pour fermer le chatbot
+document.getElementById('close-chatbot').addEventListener('click', () => {
+  const chatbot = document.getElementById('chatbot');
+  chatbot.style.display = 'none';
+});
 
   // Synchronisation avec votre logique existante
   function updateCurrentSura(newSura) {
