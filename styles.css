@@ -566,3 +566,47 @@ body.dark .start-btn {
 @media print {
     .container { display: none; }
 }
+
+#chatbot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  display: none; /* Initialement caché, affiché via JavaScript */
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+#messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message { margin-bottom: 10px; }
+.user { color: blue; font-weight: bold; }
+.bot { color: green; }
+
+#inputArea {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+#input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+}
+
+#send {
+  border: none;
+  background: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+}
