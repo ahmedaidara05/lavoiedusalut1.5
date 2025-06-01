@@ -345,10 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
         customizePanel.style.display = 'none';
     });
 
-    document.querySelector('.ai-btn').addEventListener('click', () => {
-        alert('Assistant IA non implémenté dans cette version.');
-    });
-
     // Gestion des paramètres
     languageSelect.addEventListener('change', loadSuraContent);
     themeSelect.addEventListener('change', (e) => {
