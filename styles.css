@@ -424,7 +424,7 @@ body.dark .highlight-verse {
 }
 
 .favorites-page {
-    padding: 60px 20px 2px;
+    padding: 60px 20px 0;
     height: auto; /* Laisser la hauteur s'adapter au contenu */
     min-height: 0; /* Supprimer la hauteur minimale pour éviter l'espace vide */
     max-height: 100vh; /* Garder la limite maximale pour le défilement */
