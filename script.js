@@ -298,6 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+    document.querySelector('.ai-btn').addEventListener('click', () => {
+    console.log('Bouton cliqué');
+    const chatbot = document.getElementById('chatbot');
+    chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
+});
+    
     document.querySelectorAll('.index-page li').forEach(li => {
         li.addEventListener('click', () => {
             currentSura = parseInt(li.getAttribute('data-sura'));
