@@ -354,9 +354,14 @@ document.addEventListener('DOMContentLoaded', () => {
     themeSelect.addEventListener('change', (e) => {
         document.body.className = e.target.value === 'dark' ? 'dark' : '';
     });
+    
     fontSelect.addEventListener('change', (e) => {
-        document.body.style.fontFamily = e.target.value + ', serif';
+    const selectedFont = e.target.value + ', serif';
+    document.body.style.fontFamily = selectedFont; // Appliquer au body
+    document.getElementById('arabicText').style.fontFamily = selectedFont; // Appliquer à arabicText
+    document.getElementById('textContent').style.fontFamily = selectedFont; // Appliquer à textContent
     });
+    
     fontSize.addEventListener('input', (e) => {
         currentFontSize = e.target.value;
         arabicText.style.fontSize = `${currentFontSize}px`;
@@ -733,24 +738,6 @@ voicePlayBtn.addEventListener('click', () => {
         arabicText.style.fontSize = `${currentFontSize}px`;
         textContent.style.fontSize = `${currentFontSize}px`;
     }
-
-    // Quand l'utilisateur change la police, applique-la immédiatement
-fontSelect.addEventListener('change', function () {
-    const selectedFont = this.value;
-    const bookContent = document.querySelector('.book-content'); // zone de lecture
-
-    // Appliquer la nouvelle police à la zone de lecture
-    if (bookContent) {
-        bookContent.style.fontFamily = selectedFont + ', serif';
-    }
-
-    // Tu peux aussi l'appliquer au body si tu veux :
-    document.body.style.fontFamily = selectedFont + ', serif';
-
-    // Et on sauvegarde ce choix
-    localStorage.setItem('font', selectedFont);
-});
-
 
     const savedBgColor = localStorage.getItem('backgroundColor');
     if (savedBgColor) document.body.style.backgroundColor = savedBgColor;
