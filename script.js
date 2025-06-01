@@ -824,6 +824,17 @@ document.getElementById('close-chatbot').addEventListener('click', () => {
   chatbot.style.display = 'none';
 });
 
+    document.getElementById('close-chatbot').addEventListener('click', () => {
+  const chatbot = document.getElementById('chatbot');
+  chatbot.style.display = 'none';
+});
+
+// Ajout de l'écouteur pour effacer l'historique
+document.getElementById('clear-history').addEventListener('click', () => {
+  const messages = document.getElementById('messages');
+  messages.innerHTML = ''; // Efface tout le contenu de la conversation
+});
+    
   // Synchronisation avec votre logique existante
   function updateCurrentSura(newSura) {
     currentSura = newSura;
