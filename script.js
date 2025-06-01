@@ -734,6 +734,24 @@ voicePlayBtn.addEventListener('click', () => {
         textContent.style.fontSize = `${currentFontSize}px`;
     }
 
+    // Quand l'utilisateur change la police, applique-la immédiatement
+fontSelect.addEventListener('change', function () {
+    const selectedFont = this.value;
+    const bookContent = document.querySelector('.book-content'); // zone de lecture
+
+    // Appliquer la nouvelle police à la zone de lecture
+    if (bookContent) {
+        bookContent.style.fontFamily = selectedFont + ', serif';
+    }
+
+    // Tu peux aussi l'appliquer au body si tu veux :
+    document.body.style.fontFamily = selectedFont + ', serif';
+
+    // Et on sauvegarde ce choix
+    localStorage.setItem('font', selectedFont);
+});
+
+
     const savedBgColor = localStorage.getItem('backgroundColor');
     if (savedBgColor) document.body.style.backgroundColor = savedBgColor;
 
