@@ -770,44 +770,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendButton = document.getElementById("send");
   if (sendButton) {
     sendButton.onclick = () => {
-      console.log("Bouton Envoyer cliqué");
-      const input = document.getElementById("input");
-      const messages = document.getElementById("messages");
+  console.log("Bouton Envoyer cliqué");
+  const input = document.getElementById("input");
+  const messages = document.getElementById("messages");
 
-      const question = input.value.trim().toLowerCase();
-      if (!question) return;
+  const question = input.value.trim().toLowerCase();
+  if (!question) return;
 
-      messages.innerHTML += `<div class="message user">👤 Vous : ${input.value}</div>`;
-      input.value = "";
+  messages.innerHTML += `<div class="message user">${input.value}</div>`;
+  input.value = "";
 
-      let reply = "Pas de réponse.";
-      const keywords = question.split(" ").filter(word => word);
+  let reply = "Pas de réponse.";
+  const keywords = question.split(" ").filter(word => word);
 
-      // Recherche dans tout suraContents
-      for (let sura in suraContents) {
-        const content = suraContents[sura];
-        const fullText = `${content.ar} ${content.en} ${content.fr}`.toLowerCase();
-        if (keywords.some(keyword => fullText.includes(keyword))) {
-          if (question.includes("première ligne") || question.includes("first line")) {
-            reply = `Première ligne du chapitre ${sura} : ${content.fr.split('<br>')[0]}`;
-          } else if (question.includes("enseignements") || question.includes("teachings")) {
-            reply = `Les enseignements du chapitre ${sura} incluent des réflexions spirituelles et des leçons de gratitude.`;
-          } else {
-            reply = `Extrait du chapitre ${sura} (Français) : ${content.fr.split('<br>').slice(0, 2).join('<br>')}`;
-          }
-          break;
-        }
+  for (let sura in suraContents) {
+    const content = suraContents[sura];
+    const fullText = `${content.ar} ${content.en} ${content.fr}`.toLowerCase();
+    if (keywords.some(keyword => fullText.includes(keyword))) {
+      if (question.includes("première ligne") || question.includes("first line")) {
+        reply = `Première ligne du chapitre ${sura} : ${content.fr.split('<br>')[0]}`;
+      } else if (question.includes("enseignements") || question.includes("teachings")) {
+        reply = `Les enseignements du chapitre ${sura} incluent des réflexions spirituelles et des leçons de gratitude.`;
+      } else {
+        reply = `Extrait du chapitre ${sura} (Français) : ${content.fr.split('<br>').slice(0, 2).join('<br>')}`;
       }
+      break;
+    }
+  }
 
-      if (question === "bonjour" || question === "salut" || question === "merci") {
-        reply = "Bonjour ! Comment puis-je vous aider avec 'La Voie du Salut' ?";
-      } else if (!reply.startsWith("Extrait") && !reply.startsWith("Première") && !reply.startsWith("Les")) {
-        reply = "Désolé, je ne peux répondre qu'aux questions ou salutations liées au livre.";
-      }
+  if (question === "bonjour" || question === "salut" || question === "merci") {
+    reply = "Bonjour ! Comment puis-je vous aider avec 'La Voie du Salut' ?";
+  } else if (!reply.startsWith("Extrait") && !reply.startsWith("Première") && !reply.startsWith("Les")) {
+    reply = "Désolé, je ne peux répondre qu'aux questions ou salutations liées au livre.";
+  }
 
-      messages.innerHTML += `<div class="message bot">🤖 IA : ${reply}</div>`;
-      messages.scrollTop = messages.scrollHeight;
-    };
+  messages.innerHTML += `<div class="message bot">${reply}</div>`;
+  messages.scrollTop = messages.scrollHeight;
+};
   } else {
     console.error("Bouton #send non trouvé dans le DOM");
   }
