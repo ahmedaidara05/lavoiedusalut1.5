@@ -695,3 +695,35 @@ body.dark #send {
 #close-chatbot:hover {
   color: #FF5555; /* Rouge au survol pour indiquer la fermeture */
 }
+
+.chat-footer {
+  padding: 5px 15px;
+  text-align: right;
+}
+
+#clear-history {
+  background: #FF5555; /* Rouge pour indiquer une action destructive */
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50px; /* Bouton circulaire */
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.3s;
+}
+
+#clear-history i {
+  font-size: 12px;
+}
+
+#clear-history:hover {
+  background: #FF3333;
+}
+
+body.dark #clear-history {
+  background: #FF7777;
+  color: #1E1E1E;
+}
