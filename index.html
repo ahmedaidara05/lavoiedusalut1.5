@@ -109,23 +109,6 @@
                 <button class="favorite-btn">☆</button>
                 <button class="customize-btn"><i class="fas fa-paint-brush"></i></button>
                 <button class="ai-btn"><i class="fas fa-robot"></i> Assistant</button>
-                <input type="text" placeholder="Rechercher dans le livre..." class="search-bar" id="searchBar">
-<div class="search-results" id="searchResults" style="display: none;"></div>
-<div class="content" id="readingContent">
-    <div class="arabic-text" id="arabicText">
-        بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ
-    </div>
-    <div class="text-content" id="textContent" style="display: none;">
-        In the name of Allah, the Most Gracious, the Most Merciful<br>Praise be to Allah, the Lord of all the worlds
-    </div>
-    <div class="navigation-buttons">
-        <button class="nav-btn prev-btn"><i class="fas fa-arrow-left"></i> Précédent</button>
-        <button class="nav-btn next-btn">Suivant <i class="fas fa-arrow-right"></i></button>
-    </div>
-    <button class="favorite-btn">☆</button>
-    <button class="customize-btn"><i class="fas fa-paint-brush"></i></button>
-    <button class="ai-btn"><i class="fas fa-robot"></i> Assistant</button>
-</div>
             </div>
             <div class="customize-panel" id="customizePanel" style="display: none;">
                 <button class="close-customize-btn"><i class="fas fa-times"></i></button>
@@ -214,7 +197,8 @@
             </header>
             <ul id="favoritesList"></ul>
         </div>
-
+        
+        
         <!-- Page Notes -->
         <div class="notes-page" id="notesPage" style="display: none;">
             <header>
@@ -229,5 +213,15 @@
         </div>
     </div>
     <script src="script.js"></script>
+    
+    <!-- ASSISTANT IA -->
+        <div id="chatbot">
+  <div id="messages"></div>
+  <div id="inputArea">
+    <input type="text" id="input" placeholder="Pose ta question..." />
+    <button id="send">Envoyer</button>
+  </div>
+</div>
+    
 </body>
 </html>
