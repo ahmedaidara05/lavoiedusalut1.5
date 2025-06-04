@@ -739,10 +739,21 @@ voicePlayBtn.addEventListener('click', () => {
     loadFavorites();
 });
 
+// Initialiser Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registered');
+    }).catch(err => console.error('Service Worker registration failed:', err));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const suraContents = {
-    // Votre contenu existant pour les chapitres (1 à 44)
-              1: {
+    const suraContents = {
+        // Votre contenu existant pour les chapitres (1 à 44)
+                1: {
             ar: "<b>المُقَدِّمَة</b><br>بَعِيدًا عَنْ رُوحِ التَّنَقُّصِ وَقَرِيبًا مِنْ رُوحِ الإِيقَاظِ، أُخَاطِبُكَ يَا رَجُلَ اللهِ، يَا أَخِي فِي الإِيمَانِ، بِدَافِعِ حُبِّ الحَقِيقَةِ وَالاحْتِرَامِ لِغَيْرِ المُسْلِمِينَ، لِأُشَارِكَ مَا حَصَلْتُ عَلَيْهِ بَعْدَ التَّأَمُّلِ فِي كَلِمَةِ اللهِ. مَكْتُوبٌ فِي يُوشَعَ: «لاَ يَبْرَحْ سِفْرُ الشَّرِيعَةِ هَذَا مِنْ فَمِكَ، بَلْ تَهَجَّ بِهِ نَهَارًا وَلَيْلًا، لِتَعْمَلَ بِمَا فِيهِ، فَتَنْجَحَ». قَالَ اللهُ فِي القُرْآنِ: ﴿وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِنْ مُدَّكِرٍ﴾ (سُورَةُ القَمَرِ، 54:17)<br><br>يَدْعُوكَ هَذَا الكِتَابُ لِرِحْلَةٍ رُوحَانِيَّةٍ سَاحِرَةٍ لِاكْتِشَافِ طَرِيقِ النَّجَاةِ، وَاسْتِكْشَافِ جَوْهَرِكَ العَمِيقِ، وَلِقَاءِ الإِلَهِيِّ فِيكَ، مِنْ خِلَالِ تَحْلِيلَاتٍ مُؤَثِّرَةٍ وَتَأَمُّلَاتٍ خَالِدَةٍ.<br><br>دَعْ حِكْمَةَ الإِسْلَامِ وَتَعَالِيمَهُ الغَنِيَّةَ وَنُورَهُ يَهْدِيكَ نَحْوَ السَّلَامِ وَالتَّحْرِيرِ.<br><br>أَدْعُوكَ لِلْتَحَقُّقِ مِنْ كُلِّ حُجَّةٍ لِتَقْدِيرِ صِدْقِهَا، فَأَنَا مَسْؤُولٌ عَمَّا أَكْتُبُ، لَا عَنْ فَهْمِكَ. اغْمُرْ نَفْسَكَ فِي هَذِهِ الرِّحْلَةِ الرُّوحَانِيَّةِ، اقْرَأْ لِتَفْهَمَ، لَا لِتَمُرَّ فَقَطْ، كَمَا قَالَ عِيسَى: «لَا تَكُنْ كَالفَرَسِ أَوِ البَغْلِ بِلَا فَهْمٍ» (مَزْمُورٌ 32:9). كَانَ اليَهُودُ يَفْحَصُونَ الكُتُبَ المُقَدَّسَةَ لِيَتَحَقَّقُوا مِنَ الحَقِيقَةِ (الأَعْمَالُ)، وَيُوصِي تَسَالُونِيكِي الأَوَّلُ: «لَا تُطْفِئُوا الرُّوحَ، افْحَصُوا كُلَّ شَيْءٍ وَتَمَسَّكُوا بِالصَّالِحِ» (تَسَالُونِيكِي الأَوَّلُ 5:19-21).<br><br>سَوَاءٌ كُنْتَ تَبْحَثُ عَنْ إِجَابَاتٍ أَوْ اتِّصَالٍ أَعْمَقَ، سَيَكُونُ هَذَا الكِتَابُ رَفِيقَكَ الأَمِينَ فِي هَذِهِ الرِّحْلَةِ المُقَدَّسَةِ، يَقُودُكَ إِلَى الوُضُوحِ وَالسَّلَامِ وَالسَّعَادَةِ الأَبَدِيَّةِ.<br><br>مَعَ الاحْتِرَامِ وَالمَحَبَّةِ<br><br>أَحْمَدُ سَعِيدُ عَيْدَارَا<br>",
             en: "<b>Preamble</b><br>Far from the spirit of denigration, but close to the spirit of awakening, I address you, man of God, brother in faith, motivated by the love of truth and respect for all non-Muslims, to share what I’ve gained after meditating on God’s word. It is written in Joshua: “This Book of the Law shall not depart from your mouth, but you shall meditate on it day and night, so that you may do all that is written in it, for then you will prosper.” Allah says in the Qur’an: “And We have certainly made the Qur’an easy for remembrance, so is there any who will remember?” (Al-Qamar, 54:17, Sahih International)<br><br>This book invites you to a fascinating spiritual journey to discover the path of salvation, explore your deepest essence, and meet the divine within you, through impactful analyses and timeless reflections.<br><br>Let the wisdom of Islam, its rich teachings, and its light guide you toward peace and liberation.<br><br>I urge you to verify each argument to appreciate its truth, for I am responsible for what I write, not for your understanding. Dive into this spiritual quest, read to understand, not just to pass, as Jesus said: “Do not be like the horse or mule, which have no understanding” (Psalm 32:9, NIV). The Jews examined the Scriptures to verify the truth (Acts), and 1 Thessalonians advises: “Do not quench the Spirit, test everything, hold fast what is good” (1 Thessalonians 5:19-21, NIV).<br><br>Whether seeking answers or a deeper connection, this book will be your faithful companion in this sacred quest, leading you to clarity, peace, and eternal bliss.<br><br>With respect and love<br><br>Ahmed Said Aidara<br>",
     fr: "<b>Préambule</b><br>Loin de nous l’esprit de dénigrer, mais près de nous l’esprit d’éveiller. Ainsi donc, motivé par l’amour de la vérité et le respect que j’ai envers tous les non-musulmans, je m’adresse à vous (homme de Dieu, frère dans la foi), avec la sincère intention de ne me permettre, après avoir médité la parole de Dieu, de garder le minimum que j’ai acquis. Il est écrit dans le livre de Josué ; Que ce livre de la loi ne s’éloigne pas de ta bouche, et médite-le jour et nuit, afin que tu prennes garde à faire selon tout ce qui y est écrit ; car alors, tu feras réussir tes voies, et alors, tu prospéreras. Dieu dit dans le Coran ; Et Nous avons rendu le Coran facile à retenir. L’un de vous souhaite-t-il apprendre ?<br><br>Accédez dans un voyage fascinant à travers les méandres de la spiritualité et découvrez la voie du salut qui vous attend. Ce livre est une invitation à la découverte de soi, à l’exploration de notre essence profonde et à la rencontre avec le divin qui sommeille en nous. Contemplez la voie du salut, une voie parsemée d’émerveillement, de transformation et de libération.<br><br>Laissez-vous porter par des analyses percutantes, des rubriques qui nourrissent l’esprit et des réflexions qui vont au-delà des frontières du temps et de l’espace. Préparez-vous à découvrir des perspectives nouvelles et à vous ouvrir à une réalité plus profonde et plus vraie. Plongez dans la sagesse véritable de l’Islam, laissez-vous guider par une quête spirituelle qui touchera votre cœur et éclairera votre chemin, explorez ses enseignements riches et laissez-vous toucher par la beauté et la lumière qui en émanent, sur la voie du salut.<br><br>Je vous suggère de vérifier chaque argument afin d’apprécier sa véracité. Je suis responsable de ce que j’écris, mais je ne suis point coupable de la compréhension que vous en faites. Néanmoins, je ne cesserai de vous amadouer, de vous éclaircir et de rendre les propos plus clairs.<br><br>Plongeons ensemble dans cette pantomime qui n’arrête de nous inviter. Hôtes serons-nous ? Écrivain serai-je ! Je noircis des pages pour orner le chemin et éclairer l’abysse. Assombrir pour ne pas sombrer. Pour extérioriser et évacuer nos gnoses, j’écris en argument et preuve pour nourrir votre méninge et cerner vos tohu-bohu. Certes, il ne sert à rien de lire pour passer, mais lisez pour comprendre.<br><br>Ouvrez votre esprit et laissez la vérité s’y installer. Ne consommez pas tout enseignement que l’on vous donne et puis on vous recommande de croire aveuglément. Jésus dit ; Ne soyez point comme le cheval, ni comme le mulet, qui sont sans intelligence. On note un passage dans le livre des Actes que les juifs examinaient chaque jour les Écritures pour voir si ce qu’on leur disait était exact. Alors, il faut tout analyser comme il est recommandé dernièrement dans le livre de 1 Thessaloniciens «N’éteignez pas l’esprit, ne méprisez pas les prophéties, mais examinez tout et retenez ce qui est bon. » Que vous soyez en quête de réponses, d’épanouissement spirituel ou simplement d’une connexion plus profonde avec votre être intérieur, ce livre sera votre compagnon fidèle dans cette quête sacrée.<br><br>La quintessence de ma sagacité scintille les anfractuosités de mon farfadet ahuri. Préparez-vous à être transporté vers des horizons ignorés, où la clarté, la paix et la félicité éternelle vous barguignent. Aérez votre cœur et votre esprit pour comprendre les lignes de ces pages, alors que vous découvrez la voie du salut qui étincèlera votre trajectoire vers une vie saine, remplie de paix, de tranquillité, d’apaisement et de pacification dans ce bas monde ainsi que dans l’au-delà. Lisons donc avec l’esprit du discernement et embrassons la plénitude morale qui nous attend.<br><br>Avec respect et amour<br><br>Ahmed Said Aidara<br>"
@@ -792,115 +803,111 @@ document.addEventListener('DOMContentLoaded', () => {
             en: "<b>The Miracles of Jesus</b><br>The Quran is clear on this point: Jesus performed miracles by the will and permission of Allah, just like the prophets who came before him. The Quran says: (3:49) <b>“And [make him] a messenger to the Children of Israel, [who will say], ‘Indeed, I have come to you with a sign from your Lord. I create for you from clay the form of a bird, then I breathe into it, and it becomes a bird by Allah’s permission. And I heal the blind and the leper, and I give life to the dead by Allah’s permission. And I inform you of what you eat and what you store in your houses. Indeed, in that is a sign for you, if you are believers.’”</b><br><br>The Bible confirms this, as Jesus said: <b>“By the finger of God, I cast out demons”</b> (Luke 11:20). Before raising Lazarus, Jesus first prayed to God and asked Him to grant his request: (John 11) <b>“38 Jesus, once more deeply moved, came to the tomb. It was a cave with a stone laid across the entrance. 39 ‘Take away the stone,’ he said. ‘But, Lord,’ said Martha, the sister of the dead man, ‘by this time there is a bad odor, for he has been there four days.’ 40 Then Jesus said, ‘Did I not tell you that if you believe, you will see the glory of God?’ 41 So they took away the stone. Then Jesus looked up and said, ‘Father, I thank you that you have heard me. 42 I knew that you always hear me, but I said this for the benefit of the people standing here, that they may believe that you sent me.’ 43 When he had said this, Jesus called in a loud voice, ‘Lazarus, come out!’ 44 The dead man came out, his hands and feet wrapped with strips of linen, and a cloth around his face. Jesus said to them, ‘Take off the grave clothes and let him go.’”</b><br><br>Thus, Jesus could do nothing without Allah’s permission, as he himself stated: <b>“By myself I can do nothing; I judge only as I hear, and my judgment is just, for I seek not to please myself but him who sent me”</b> (John 5:30).<br><br>Nowadays, many Christians from various sects testify that they have experienced or heard accounts of healings and exorcisms performed in the name of Jesus! But we, as Muslims, are not surprised by this, because God and His Prophet have already warned us about these <b>“deceivers”</b>, and even Jesus warned about those who perform <b>“miracles”</b> in his name. We read in (Matthew 24:24): <b>“For false messiahs and false prophets will appear and perform great signs and wonders to deceive, if possible, even the elect.”</b><br><br>They claim this power based primarily on verses reported by only one evangelist (Mark 16:9-20), which are placed in brackets, meaning they do not appear in some manuscripts of the New Testament (according to the Bible).<br><br>Moreover, Jesus, on the Day of Judgment, will testify against those Christians who claim to perform <b>“miracles”</b> in his name. Jesus already warned them in (Matthew 7): <b>“22 Many will say to me on that day, ‘Lord, Lord, did we not prophesy in your name and in your name drive out demons and in your name perform many miracles?’ 23 Then I will tell them plainly, ‘I never knew you. Away from me, you evildoers!’”</b><br><br><b>“Evildoing”</b> refers to a great injustice, defined in the Quran in verse 13 of Surah Luqman: <b>“O my son, do not associate [anything] with Allah, for association [with Him] is a tremendous injustice.”</b><br><br>The <b>“tremendous injustice”</b> attributed to Christians is that they have made Jesus, the prophet, into a god. These <b>“extraordinary things”</b> exist even in other religions, including Islam. But people must be cautious about this, as the Antichrist (Dajjal) will perform great signs to deceive and mislead many. Thus, this is not a reliable indicator of truth.<br><br>This tremendous injustice is not limited to claiming that Jesus is the incarnate Son of God, but it goes beyond bounds by suggesting:",
             fr: "<b>Les miracles de Jésus</b><br>Le Coran est clair sur ce point, Jésus accomplissait les miracles par la volonté et la permission d’Allah, tout comme les autres prophètes qui étaient venus avant lui. Le Coran dit : (3/49) <b>« Et il sera le messager aux enfants d’Israël, [et leur dira] : « En vérité, je viens à vous avec un signe de la part de votre Seigneur. Pour vous, je forme de la glaise comme la figure d’un oiseau, puis je souffle dedans : et, par la permission de dieu, cela devient un oiseau. Et je guéris l’aveugle-né et le lépreux, et je ressuscite les morts, par la permission de dieu. Et je vous apprends ce que vous mangez et ce que vous amassez dans vos maisons. Voilà bien là un signe, pour vous, si vous êtes croyants ! »</b><br><br>La bible nous confirme cela, en effet Jésus disait : <b>« C’est par le doigt de dieu que moi, je chasse les démons »</b> (Luc 11/20). Avant de ressusciter Lazare, Jésus avait d’abord prié Dieu, et Lui demanda de l’exaucer : (Jean 11) <b>« 38 Jésus frémissant de nouveau en lui-même, se rendit au sépulcre. C’était une grotte, et une pierre était placée devant. 39 Jésus dit : Ôtez la pierre. Marthe, la sœur du mort, lui dit : Seigneur, il sent déjà, car il y a quatre jours qu’il est là. 40 Jésus lui dit : Ne t’ai-je pas dit que, si tu crois, tu verras la gloire de dieu ? 41 Ils ôtèrent donc la pierre. Et Jésus leva les yeux en haut, et dit : Père, je te rends grâces de ce que tu m’as exaucé. 42 Pour moi, je savais que tu m’exauces toujours ; mais j’ai parlé à cause de la foule qui m’entoure, afin qu’ils croient que c’est toi qui m’as envoyé. 43 Ayant dit cela, il cria d’une voix forte : Lazare, sors ! 44 Et le mort sortit, les pieds et les mains liés de bandes, et le visage enveloppé d’un linge. Jésus leur dit : Déliez-le, et laissez-le aller. »</b><br><br>Donc Jésus ne peut faire quoi que ce soit sans la permission d’Allah, n’affirmait-il pas : <b>« Je ne puis rien faire de moi-même : selon que j’entends, je juge ; et mon jugement est juste, parce que je ne cherche pas ma volonté, mais la volonté de celui qui m’a envoyé. »</b> (Jean 5/30).<br><br>De nos jours, beaucoup de chrétiens de différentes sectes témoignent qu’ils vécurent ou entendirent des témoignages de guérison et d’exorcisme accomplis au nom de Jésus ! Mais nous, les musulmans, cela ne nous étonne guère, parce que Dieu et Son prophète nous ont déjà avertis de ces <b>« dajjâlines »</b>, et même Jésus avait averti de ces gens-là qui font des <b>« miracles »</b> en Son nom. On lit dans (Matthieu 24/24) : <b>« Car il s’élèvera de faux Christs et de faux prophètes ; ils feront de grands prodiges et des miracles, au point de séduire, s’il était possible. »</b><br><br>Ils se donnent ce pouvoir en se basant essentiellement sur les seuls versets rapportés par le seul évangéliste (Marc 16/9-20), d’ailleurs ce sont des versets mis entre crochets, ce qui veut dire qu’ils sont des versets qui ne figurent pas dans certains manuscrits du Nouveau Testament (selon la Bible).<br><br>Et puis, Jésus, au Jugement dernier, témoignera contre ces chrétiens qui prétendent faire des <b>« miracles »</b> en Son nom. Jésus les a déjà avertis, dans (Matthieu 7) : <b>« 22 Plusieurs me diront en ce jour-là : Seigneur, Seigneur, n’avons-nous pas prophétisé par ton nom ? N’avons-nous pas chassé des démons par ton nom ? Et n’avons-nous pas fait beaucoup de miracles par ton nom ? 23 Alors je leur dirai ouvertement : Je ne vous ai jamais connus, retirez-vous de moi, vous qui commettez l’iniquité. »</b><br><br><b>« L’iniquité »</b> veut dire une grande injustice, elle est définie dans le Coran dans le verset 13 de la sourate 31 : <b>« Ô mon fils, ne donne pas d’associé à dieu, car l’association à [dieu] est vraiment une injustice énorme. »</b><br><br><b>« L’injustice énorme »</b> qui est reprochée aux chrétiens, c’est qu’ils ont fait de Jésus, le prophète, un Dieu. Ces <b>« choses extraordinaires »</b> existent même dans d’autres religions, même dans l’Islam. Mais les gens doivent faire attention à cela, l’antéchrist (dajjâl) opérera de grands signes pour séduire et égarer beaucoup de gens. Donc ce n’est pas une référence pour connaître la vérité.<br><br>Cette injustice énorme ne se limite pas à prétendre aussi que Jésus est fils de Dieu incarné, mais elle dépasse les limites en évoquant :<br>"
         },
-  };
-
-  let currentSura = 1;
-
-  const sendButton = document.getElementById("send");
-  if (sendButton) {
-    sendButton.onclick = () => {
-      console.log("Bouton Envoyer cliqué");
-      const input = document.getElementById("input");
-      const messages = document.getElementById("messages");
-
-      const question = input.value.trim().toLowerCase();
-      if (!question) return;
-
-      messages.innerHTML += `<div class="message user">${input.value}</div>`;
-      input.value = "";
-
-      // Liste de mots courants à ignorer
-      const stopWords = ['le', 'la', 'et', 'de', 'à', 'en', 'un', 'une', 'des', 'du', 'les', 'est', 'ce', 'cette', 'pour', 'dans', 'sur', 'avec', 'par'];
-      const keywords = question.split(" ").filter(word => word.length > 2 && !stopWords.includes(word));
-
-      let reply = "Désolé, je ne peux répondre qu'aux questions liées au livre 'La Voie du Salut'. Essayez de poser une question sur un chapitre ou un enseignement spécifique.";
-      let matchFound = false;
-
-      // Vérifier si la question est une salutation
-      if (["bonjour", "salut", "merci", "hello", "hi", "thank you"].includes(question)) {
-        reply = "Bonjour ! Comment puis-je vous aider avec 'La Voie du Salut' ?";
-        matchFound = true;
-      } else if (keywords.length > 0) {
-        // Parcourir les chapitres pour trouver une correspondance
-        for (let sura in suraContents) {
-          const content = suraContents[sura];
-          const fullText = `${content.ar} ${content.en} ${content.fr}`.toLowerCase();
-          
-          // Compter les mots-clés correspondants
-          const matchedKeywords = keywords.filter(keyword => fullText.includes(keyword));
-          if (matchedKeywords.length >= 2) { // Exiger au moins 2 mots-clés correspondants
-            matchFound = true;
-            if (question.includes("première ligne") || question.includes("first line")) {
-              reply = `Première ligne du chapitre ${sura} : ${content.fr.split('<br>')[0]}`;
-            } else if (question.includes("enseignements") || question.includes("teachings")) {
-              reply = `Les enseignements du chapitre ${sura} incluent des réflexions spirituelles et des leçons de gratitude.`;
-            } else {
-              reply = `Extrait du chapitre ${sura} (Français) : ${content.fr.split('<br>').slice(0, 2).join('<br>')}`;
-            }
-            break;
-          }
-        }
-      }
-
-      // Si aucune correspondance n'est trouvée, ne pas renvoyer de chapitre
-      if (!matchFound) {
-        reply = "Désolé, votre question ne semble pas liée au livre 'La Voie du Salut'. Veuillez poser une question sur un chapitre ou un enseignement spécifique.";
-      }
-
-      messages.innerHTML += `<div class="message bot">${reply}</div>`;
-      messages.scrollTop = messages.scrollHeight;
+        // Laissez ceci tel quel si vous l'utilisez ailleurs dans le code
     };
-  } else {
-    console.error("Bouton #send non trouvé dans le DOM");
-  }
+    let currentSura = 1;
 
-  // Gestion de l'affichage du chatbot avec le bouton .ai-btn
-  // Variable d'état pour suivre si le chatbot est ouvert
-let isChatOpen = false;
+    const sendButton = document.getElementById("send");
+    if (sendButton) {
+        sendButton.onclick = async () => {
+            console.log("Bouton Envoyer cliqué");
+            const input = document.getElementById("input");
+            const messages = document.getElementById("messages");
 
-// Gestion de l'affichage du chatbot avec le bouton .ai-btn
-document.querySelector('.ai-btn').addEventListener('click', () => {
-  console.log('Bouton cliqué');
-  const chatbot = document.getElementById('chatbot');
-  if (!isChatOpen) {
-    chatbot.style.display = 'flex';
-    isChatOpen = true;
-  }
-});
+            const question = input.value.trim();
+            if (!question) return;
 
-// Gestion de la fermeture du chatbot
-document.getElementById('close-chatbot').addEventListener('click', () => {
-  const chatbot = document.getElementById('chatbot');
-  chatbot.style.display = 'none';
-  isChatOpen = false;
-});
+            // Afficher le message de l'utilisateur
+            messages.innerHTML += `<div class="message user">${question}</div>`;
+            input.value = "";
 
+            // Contexte du livre pour le prompt
+            const bookContext = `
+                Le livre *La Voie du Salut* est un ouvrage spirituel qui enseigne la gratitude, la foi, la moralité et la connexion avec des valeurs divines. L'auteur promeut une vision de la vie centrée sur l'humilité, la réflexion spirituelle et la quête de vérité intérieure. Les réponses doivent refléter cette idéologie et s'appuyer sur les enseignements du livre.
+            `;
+
+            // Prompt pour l'API
+            const prompt = `
+                Tu es Grok, créé par xAI. Réponds à la question suivante en te basant exclusivement sur le livre *La Voie du Salut* et en respectant l'idéologie de son auteur. Fournis une réponse claire, intelligente et concise, en évitant de citer directement des chapitres entiers sauf si cela est explicitement demandé. Si la question n'est pas liée au livre, réponds poliment que tu ne peux répondre qu'aux questions concernant *La Voie du Salut*. Voici le contexte du livre : ${bookContext}
+                Question : ${question}
+            `;
+
+            try {
+                // Appel à l'API xAI
+                const response = await fetch('https://api.x.ai/v1/grok', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer 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'
+                    },
+                    body: JSON.stringify({
+                        model: 'grok-3',
+                        prompt: prompt,
+                        max_tokens: 500,
+                        temperature: 0.7
+                    })
+                });
+
+                const data = await response.json();
+                let reply = data.choices[0].text.trim();
+
+                // Si la réponse est vide ou non pertinente
+                if (!reply) {
+                    reply = "Désolé, je ne peux répondre qu'aux questions liées au livre *La Voie du Salut*. Essayez de poser une question sur un chapitre ou un enseignement spécifique.";
+                }
+
+                // Afficher la réponse du bot
+                messages.innerHTML += `<div class="message bot">${reply}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                console.error('Erreur lors de l’appel à l’API xAI:', error);
+                messages.innerHTML += `<div class="message bot">Une erreur est survenue. Veuillez réessayer plus tard.</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            }
+        };
+    } else {
+        console.error("Bouton #send non trouvé dans le DOM");
+    }
+
+    // Gestion de l'affichage du chatbot avec le bouton .ai-btn
+    let isChatOpen = false;
+    document.querySelector('.ai-btn').addEventListener('click', () => {
+        console.log('Bouton cliqué');
+        const chatbot = document.getElementById('chatbot');
+        if (!isChatOpen) {
+            chatbot.style.display = 'flex';
+            isChatOpen = true;
+        }
+    });
+
+    // Gestion de la fermeture du chatbot
     document.getElementById('close-chatbot').addEventListener('click', () => {
-  const chatbot = document.getElementById('chatbot');
-  chatbot.style.display = 'none';
-});
+        const chatbot = document.getElementById('chatbot');
+        chatbot.style.display = 'none';
+        isChatOpen = false;
+    });
 
-// Gestion de l'effacement de l'historique
-document.getElementById('clear-history').addEventListener('click', () => {
-  const messages = document.getElementById('messages');
-  messages.innerHTML = '';
-});
-    
-  // Synchronisation avec votre logique existante
-  function updateCurrentSura(newSura) {
-    currentSura = newSura;
-    console.log(`Sura mise à jour : ${currentSura}`);
-  }
+    // Gestion de l'effacement de l'historique
+    document.getElementById('clear-history').addEventListener('click', () => {
+        const messages = document.getElementById('messages');
+        messages.innerHTML = '';
+    });
 
-  document.querySelector('.prev-btn')?.addEventListener('click', () => {
-    if (currentSura > 1) {
-      updateCurrentSura(currentSura - 1);
+    // Synchronisation avec votre logique existante
+    function updateCurrentSura(newSura) {
+        currentSura = newSura;
+        console.log(`Sura mise à jour : ${currentSura}`);
     }
-  });
 
-  document.querySelector('.next-btn')?.addEventListener('click', () => {
-    if (currentSura < 44) {
-      updateCurrentSura(currentSura + 1);
-    }
-  });
+    document.querySelector('.prev-btn')?.addEventListener('click', () => {
+        if (currentSura > 1) {
+            updateCurrentSura(currentSura - 1);
+        }
+    });
+
+    document.querySelector('.next-btn')?.addEventListener('click', () => {
+        if (currentSura < 44) {
+            updateCurrentSura(currentSura + 1);
+        }
+    });
 });
