@@ -1,3 +1,4 @@
+// main.js
 // Configuration et initialisation de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAljojXHODwHjStePWkhthWLRzrw3pUslQ",
@@ -15,18 +16,21 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').then(() => {
-        console.log('Service Worker registered');
-    }).catch(err => console.error('Service Worker registration failed:', err));
+    navigator.serviceWorker.register('service-worker.js').then(() => {
+        console.log('Service Worker enregistré');
+    }).catch(err => console.error('Erreur d’enregistrement du Service Worker :', err));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Importer les réponses du chatbot
+    const { default: chatbotResponses } = await import('./chatbotResponses.js');
+
     const homePage = document.getElementById('homePage');
-    const indexPage = document.getElementById('indexPage');
+    const indexPage = document.getElementById('index-page');
     const readingPage = document.getElementById('readingPage');
     const settingsPanel = document.getElementById('settingsPanel');
     const favoritesPage = document.getElementById('favoritesPage');
-    const notesPage = document.getElementById('notesPage');
+    const notesPage = document.getElementById('notes-page');
     const arabicText = document.getElementById('arabicText');
     const textContent = document.getElementById('textContent');
     const suraTitle = document.getElementById('suraTitle');
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('searchResults');
     const customizePanel = document.getElementById('customizePanel');
     const favoriteBtn = document.querySelector('.favorite-btn');
-    const voicePlayBtn = document.querySelector('.customize-panel .voice-play-btn');
+    const voicePlayBtn = document.querySelector('.customize .voice-play-btn');
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
@@ -47,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const synth = window.speechSynthesis;
     let currentFontSize = 16;
 
+    // Contenu des 44 chapitres
+    const suraContents = {
     // Contenu des 44 sourates en arabe, anglais et français (avec 4 paragraphes pour 1-5 et 44)
     const suraContents = {
         1: {
@@ -261,6 +267,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    };
+
+    let isChatOpen = false;
+
+    // Gestion du chatbot
+    document.querySelector('.ai-btn').addEventListener('click', () => {
+        console.log('Bouton AI cliqué');
+        const chatbot = document.getElementById('chatBot');
+        if (!isChatOpen) {
+            chatbot.style.display = 'flex';
+            isChatOpen = true;
+        } else {
+            chatbot.style.display = 'none';
+            isChatOpen = false;
+        }
+    });
+
+    document.getElementById('closeChatBot').addEventListener('click', () => {
+        const chatbot = document.getElementById('chatBot');
+        chatbot.style.display = 'none';
+        isChatOpen = false;
+    });
+
+    document.getElementById('clearHistory').addEventListener('click', () => {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML = '';
+    });
+
+    const sendBtn = document.getElementById("send");
+    if (sendButton) {
+        sendButton.onclick = () => {
+            console.log("Bouton Envoyer cliqué");
+            const input = document.getElementById("input");
+            const messagesDiv = document.getElementById("messages");
+
+            const question = input.value.trim().toLowerCase();
+            if (!question) return;
+
+            messagesDiv.innerHTML += `<div class="message user">${input.value}</div>`;
+            input.value = '';
+
+            // Extraire les mots-clés de la question
+            const stopWords = new Set(['le', 'la', 'et', 'de', 'à', 'en', 'un', 'une', 'des', 'du', 'les', 'est', 'ce', 'cette', 'pour', 'dans', 'sur', 'avec', 'par']);
+            const keywords = question.split(/\s+/).filter(word => word.length > 2 && !stopWords.has(word));
+
+            // Trouver une réponse correspondante
+            let response = "Désolé, je ne peux répondre qu’aux questions liées à *La Voie du Salut*. Veuillez poser une question sur un chapitre ou un enseignement spécifique.";
+            let bestMatchScore = 0;
+
+            chatbotResponses.forEach((entry, index) => {
+                const matchedKeywords = keywords.filter(kw => entry.keywords.some(ekw => kw.includes(ekw.toLowerCase()));
+                const matchScore = matchedKeywords.length;
+
+                if (matchScore > bestMatchScore) {
+                    bestMatchScore = matchScore;
+                    response = entry.response;
+                }
+            });
+
+            // Vérifier si un chapitre est mentionné
+            const chapterMatch = question.match(/chapitre\s+(\d+)/);
+            if (chapterMatch && !bestMatchScore) {
+                const chapterNum = parseInt(chapterMatch[1]);
+                if (suraContents[chapterNum]) {
+                    response = `Extrait du chapitre ${chapterNum} (français) : ${suraContents[chapterNum].fr.substring(0, 200)}... Explorez ce chapitre pour plus de détails !`;
+                } else {
+                    response = "Ce chapitre n’est pas disponible. Veuillez vérifier le numéro du chapitre.";
+                }
+            }
+
+            messagesDiv.innerHTML += `<div class="message" bot">${response}</div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+    } else {
+        console.error("Erreur log : : Bouton #send non trouvé dans le DOM");
+    }
 
     // Fonctions de navigation
     document.querySelector('.start-btn').addEventListener('click', () => {
@@ -287,8 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 homePage.style.display = 'block';
             }
         });
-    });
-
     document.querySelectorAll('.index-page li').forEach(li => {
         li.addEventListener('click', () => {
             currentSura = parseInt(li.getAttribute('data-sura'));
@@ -336,111 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
         customizePanel.style.display = 'none';
     });
 
-    // Gestion du chatbot
-    let isChatOpen = false;
-    document.querySelector('.ai-btn').addEventListener('click', () => {
-        console.log('Bouton AI cliqué');
-        const chatbot = document.getElementById('chatbot');
-        if (!isChatOpen) {
-            chatbot.style.display = 'flex';
-            isChatOpen = true;
-        } else {
-            chatbot.style.display = 'none';
-            isChatOpen = false;
-        }
-    });
-
-    document.getElementById('close-chatbot').addEventListener('click', () => {
-        const chatbot = document.getElementById('chatbot');
-        chatbot.style.display = 'none';
-        isChatOpen = false;
-    });
-
-    document.getElementById('clear-history').addEventListener('click', () => {
-        const messages = document.getElementById('messages');
-        messages.innerHTML = '';
-    });
-
-    const sendButton = document.getElementById("send");
-    if (sendButton) {
-        sendButton.onclick = async () => {
-            console.log("Bouton Envoyer cliqué");
-            const input = document.getElementById("input");
-            const messages = document.getElementById("messages");
-
-            const question = input.value.trim();
-            if (!question) return;
-
-            messages.innerHTML += `<div class="message user">${question}</div>`;
-            input.value = "";
-
-            // Contexte du livre
-            const bookContext = `
-                Le livre *La Voie du Salut* d'Ahmed Said Aidara est un ouvrage spirituel qui invite à une quête intérieure vers la foi, l'humilité, la gratitude et la vérité divine. L'auteur s'adresse aux croyants avec respect et amour, encourageant une méditation profonde sur la parole de Dieu, en s'appuyant sur des références du Coran (comme Al-Qamar 54:17) et de la Bible (comme Josué, Psaume 32:9, 1 Thessaloniciens 5:19-21). Il promeut une approche de vérification des vérités ("examinez tout, retenez ce qui est bon") et une connexion profonde avec les valeurs spirituelles de l'Islam. Les réponses doivent :
-                - Être précises, concises et directement liées au contenu ou aux enseignements du livre.
-                - Refléter le ton respectueux, spirituel et interreligieux de l'auteur.
-                - Ne pas citer de chapitres entiers sauf si explicitement demandé.
-                - Répondre exclusivement en français, avec clarté et profondeur.
-                - Si la question n'est pas liée au livre, répondre : "Je ne peux répondre qu'aux questions sur *La Voie du Salut*. Veuillez poser une question sur le livre ou ses enseignements."
-            `;
-
-            // Intégrer le contenu du chapitre actuel si pertinent
-            let chapterContext = '';
-            const chapterMatch = question.toLowerCase().match(/chapitre\s+(\d+)/);
-            const chapterNumber = chapterMatch ? parseInt(chapterMatch[1]) : currentSura;
-            if (suraContents[chapterNumber]) {
-                chapterContext = `Contenu du chapitre ${chapterNumber} (en français, extrait limité à 500 caractères) : ${suraContents[chapterNumber].fr.substring(0, 500)}...`;
-            }
-
-            // Prompt pour l'API
-            const prompt = `
-                Tu es Grok, créé par xAI. Réponds à la question suivante en te basant exclusivement sur le livre *La Voie du Salut* d'Ahmed Said Aidara et en respectant son idéologie spirituelle, respectueuse et interreligieuse. Voici le contexte du livre : ${bookContext}
-                ${chapterContext ? `Contexte supplémentaire : ${chapterContext}` : ''}
-                Question : ${question}
-            `;
-
-            try {
-                const response = await fetch('https://api.x.ai/v1/grok', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer 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'
-                    },
-                    body: JSON.stringify({
-                        model: 'grok-3',
-                        prompt: prompt,
-                        max_tokens: 500,
-                        temperature: 0.7
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                let reply = data.choices?.[0]?.text?.trim() || "Aucune réponse reçue de l'API.";
-
-                if (!reply || reply === "null") {
-                    reply = "Je ne peux répondre qu'aux questions sur *La Voie du Salut*. Veuillez poser une question sur le livre ou ses enseignements.";
-                }
-
-                messages.innerHTML += `<div class="message bot">${reply}</div>`;
-                messages.scrollTop = messages.scrollHeight;
-            } catch (error) {
-                console.error('Erreur lors de l’appel à l’API xAI:', error);
-                messages.innerHTML += `<div class="message bot">Une erreur est survenue : ${error.message}. Veuillez vérifier votre connexion ou la clé API.</div>`;
-                messages.scrollTop = messages.scrollHeight;
-            }
-        };
-    } else {
-        console.error("Bouton #send non trouvé dans le DOM");
-    }
-
     // Gestion des paramètres
     languageSelect.addEventListener('change', loadSuraContent);
+
     themeSelect.addEventListener('change', (e) => {
-        document.body.className = e.target.value === 'dark' ? 'dark' : '';
+        document.documentElement.className = e.target.value === 'dark' ? 'dark' : '';
         localStorage.setItem('theme', e.target.value);
     });
 
@@ -467,334 +447,336 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.textContent.includes('Se connecter')) {
                 auth.signInWithEmailAndPassword(username, password)
                     .then(() => alert('Connecté avec succès'))
-                    .catch(err => alert('Erreur de connexion: ' + err.message));
-            } else if (btn.textContent.includes('S\'inscrire')) {
+                    .catch(err => alert('Erreur de connexion : ' + err.message));
+                } else if (btn.textContent.includes('S\'ar')) {
                 auth.createUserWithEmailAndPassword(username, password)
                     .then(() => alert('Inscription réussie'))
-                    .catch(err => alert('Erreur d\'inscription: ' + err.message));
-            }
-        });
-    });
-
-    // Favoris
-    favoriteBtn.addEventListener('click', () => {
-        if (!favorites.includes(currentSura)) {
-            favorites.push(currentSura);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            favoriteBtn.textContent = '★';
-        } else {
-            favorites = favorites.filter(f => f !== currentSura);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            favoriteBtn.textContent = '☆';
-        }
-    });
-
-    function loadFavorites() {
-        favoritesList.innerHTML = '';
-        favorites.forEach(sura => {
-            const li = document.createElement('li');
-            li.textContent = `Chapitre ${sura}`;
-            li.addEventListener('click', () => {
-                currentSura = sura;
-                loadSuraContent();
-                favoritesPage.style.display = 'none';
-                readingPage.style.display = 'block';
-            });
-            favoritesList.appendChild(li);
-        });
-    }
-
-    // Notes
-    document.querySelector('.note-btn').addEventListener('click', () => {
-        notesPage.style.display = 'block';
-        readingPage.style.display = 'none';
-        loadNotes();
-    });
-
-    document.querySelector('.add-category-btn').addEventListener('click', () => {
-        const category = document.getElementById('newCategory').value;
-        if (category && !notes[category]) {
-            notes[category] = '';
-            localStorage.setItem('notes', JSON.stringify(notes));
-            loadNotes();
-            document.getElementById('newCategory').value = '';
-        }
-    });
-
-    function loadNotes() {
-        const categoriesList = document.getElementById('categoriesList');
-        categoriesList.innerHTML = '';
-        for (let category in notes) {
-            const div = document.createElement('div');
-            div.className = 'category';
-            div.innerHTML = `<h3>${category}</h3><textarea>${notes[category]}</textarea>`;
-            div.querySelector('textarea').addEventListener('input', (e) => {
-                notes[category] = e.target.value;
-                localStorage.setItem('notes', JSON.stringify(notes));
-            });
-            categoriesList.appendChild(div);
-        }
-    }
-
-    // Recherche intelligente
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.toLowerCase().trim();
-        searchResults.innerHTML = '';
-
-        if (query.length < 2) {
-            searchResults.style.display = 'none';
-            return;
-        }
-
-        let totalOccurrences = 0;
-        let resultsBySura = {};
-
-        for (let sura in suraContents) {
-            const content = suraContents[sura][languageSelect.value] || '';
-            const verses = content.split('<br>').filter(verse => verse.trim());
-            let suraMatches = [];
-
-            verses.forEach((verse, verseIndex) => {
-                const lowerVerse = verse.toLowerCase().replace(/<[^>]+>/g, '');
-                let matchCount = (lowerVerse.match(new RegExp(`\\b${query}\\b`, 'g')) || []).length;
-
-                if (matchCount > 0) {
-                    totalOccurrences += matchCount;
-                    suraMatches.push({
-                        verseText: verse,
-                        verseIndex: verseIndex + 1,
-                        occurrences: matchCount
-                    });
+                    .catch(err => alert('Erreur d’inscription : ' + err.message));
                 }
             });
+        });
 
-            if (suraMatches.length > 0) {
-                resultsBySura[sura] = suraMatches;
+        // Favoris
+    favoriteBtn.addEventListener('click', () => {
+            if (!favorites.includes(currentSura)) {
+                favorites.push(currentSura);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                favoriteBtn.textContent = '★';
+            } else {
+                favorites = favorites.filter(f => f !== currentSura);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                favoriteBtn.textContent = '☆';
+            }
+        });
+
+        function loadFavorites() {
+            favoritesList.innerHTML = '';
+            favorites.forEach(sura => {
+                const li = document.createElement('li');
+                li.textContent = `Chapitre ${sura}`;
+                li.addEventListener('click', () => {
+                    currentSura = sura;
+                    loadSuraContent();
+                    favoritesPage.style.display = 'none';
+                    readingPage.style.display = 'block';
+                });
+                favoritesList.appendChild(favoritesList);
+            });
+
+        // Notes
+        document.querySelector('.note-btn').addEventListener('click', () => {
+            notesPage.style.display = 'block';
+            readingPage.style.display = 'none';
+            loadNotes();
+        });
+
+        document.querySelector('.add-category-btn').addEventListener('click', () => {
+            const category = document.getElementById('newCategory').value;
+            if (category && !notes[category]) {
+                notes[category] = '';
+                localStorage.setItem('notes', JSON.stringify(notes));
+                loadNotes();
+                document.getElementById('newCategory').value = '';
+            }
+        });
+
+        function loadNotes() {
+            const categoriesList = document.getElementById('categoriesList');
+            categoriesList.innerHTML = '';
+            for (let category in notes) {
+                const div = document.createElement('div');
+                div.className = 'category';
+                div.innerHTML = `<h3>${category}</h3><textarea>${notes[category]}</textarea>`;
+                div.querySelector('textarea').addEventListener('input', (e) => {
+                    notes[category] = e.target.value;
+                    localStorage.setItem('notes', JSON.stringify(notes));
+                });
+                categoriesList.appendChild(div);
             }
         }
 
-        searchResults.style.display = 'block';
-        const totalDiv = document.createElement('div');
-        totalDiv.className = 'result-header';
-        totalDiv.textContent = `Total occurrences: ${totalOccurrences}`;
-        searchResults.appendChild(totalDiv);
+        // Recherche intelligente
+        searchBar.addEventListener('input', () => {
+            const query = searchBar.value.toLowerCase().trim();
+            searchResults.innerHTML = '';
 
-        for (let sura in resultsBySura) {
-            const suraDiv = document.createElement('div');
-            suraDiv.className = 'result-sura';
-            suraDiv.innerHTML = `<strong>Chapitre ${sura}</strong>`;
-            searchResults.appendChild(suraDiv);
+            if (!query || query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
 
-            resultsBySura[sura].forEach(match => {
-                const verseDiv = document.createElement('div');
-                verseDiv.className = 'result-item';
-                const highlightedText = match.verseText.replace(
-                    new RegExp(`\\b${query}\\b`, 'gi'),
-                    match => `<span class="highlight">${match}</span>`
-                );
-                verseDiv.innerHTML = `Paragraphe ${match.verseIndex}: ${highlightedText} (${match.occurrences} occurrence${match.occurrences > 1 ? 's' : ''})`;
-                verseDiv.addEventListener('click', () => {
-                    currentSura = parseInt(sura);
-                    loadSuraContent(match.verseIndex);
-                    searchResults.style.display = 'none';
-                    const verseElement = document.getElementById(`verse-${match.verseIndex}`);
-                    if (verseElement) {
-                        verseElement.scrollIntoView({ behavior: 'smooth' });
-                        verseElement.classList.add('highlight-verse');
-                        setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+            let totalOccurrences = 0;
+            let resultsBySura = {};
+
+            for (let sura in suraContents) {
+                const content = suraContents[sura][languageSelect.value] || '';
+                const verses = content.split('<br>').filter(verse => verse.trim());
+                let suraMatches = [];
+
+                verses.forEach((verse, verseIndex) => {
+                    const lowerVerse = verse.toLowerCase().replace(/<[^>]+>/g, '');
+                    let matchCount = (lowerVerse.match(new RegExp(`\\b${query}\\b`, 'g')) || []).length;
+
+                    if (matchCount > 0) {
+                        totalOccurrences += matchCount;
+                        suraMatches.push({
+                            verseText: verse,
+                            verseIndex: verseIndex + 1,
+                            occurrences: matchCount
+                        });
                     }
                 });
-                searchResults.appendChild(verseDiv);
-            });
-        }
 
-        if (totalOccurrences === 0) {
-            const noResultDiv = document.createElement('div');
-            noResultDiv.className = 'result-item';
-            noResultDiv.textContent = 'Aucun résultat trouvé';
-            searchResults.appendChild(noResultDiv);
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
-
-    // Lecture à haute voix
-    voicePlayBtn.addEventListener('click', () => {
-        if (!window.speechSynthesis) {
-            console.log("Synthèse vocale non prise en charge par ce navigateur.");
-            return;
-        }
-
-        if (isPlaying) {
-            synth.cancel();
-            isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            return;
-        }
-
-        const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
-
-        if (!textToRead || textToRead.trim() === '') {
-            console.log("Aucun texte disponible pour la lecture.");
-            return;
-        }
-
-        const utterance = new SpeechSynthesisUtterance(textToRead);
-        utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
-
-        const selectVoice = () => {
-            const voices = synth.getVoices();
-            let selectedVoice;
-
-            if (languageSelect.value === 'fr') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'fr-FR' &&
-                    (voice.name.toLowerCase().includes('thomas') ||
-                     voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('homme'))
-                ) || voices.find(voice => voice.lang === 'fr-FR') || voices[0];
-            } else if (languageSelect.value === 'en') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'en-US' &&
-                    (voice.name.toLowerCase().includes('guy') ||
-                     voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('daniel'))
-                ) || voices.find(voice => voice.lang === 'en-US') || voices[0];
-            } else if (languageSelect.value === 'ar') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'ar-SA' &&
-                    (voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('homme'))
-                ) || voices.find(voice => voice.lang === 'ar-SA') || voices[0];
+                if (suraMatches.length > 0) {
+                    resultsBySura[sura] = suraMatches;
+                }
             }
 
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-                console.log(`Voix sélectionnée : ${selectedVoice.name}`);
+            searchResults.style.display = 'block';
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'result-header';
+            totalDiv.textContent = `Total occurrences : ${totalOccurrences}`;
+            searchResults.appendChild(totalDiv);
+
+            for (let sura in resultsBySura) {
+                const suraDiv = document.createElement('div');
+                suraDiv.className = 'result-sura';
+                suraDiv.innerHTML = `<strong>Chapitre ${sura}</strong>`;
+                searchResults.appendChild(suraDiv);
+
+                resultsBySura[sura].forEach(match => {
+                    const verseDiv = document.createElement('div');
+                    verseDiv.className = 'result-item';
+                    const highlightedText = match.verseText.replace(
+                        new RegExp(`\\b${query}\\b`, 'gi'),
+                        match => `<span class="highlight">${match}</span>`
+                    );
+                    verseDiv.innerHTML = `Paragraphe ${match.verseIndex} : ${highlightedText} (${match.occurrences} occurrence${match.occurrences > 1 ? 's' : ''})`;
+                    verseDiv.addEventListener('click', () => {
+                        currentSura = parseInt(sura);
+                        loadSuraContent(match.verseIndex);
+                        searchResults.style.display = 'none';
+                        const verseElement = document.getElementById(`verse-${match.verseIndex}`);
+                        if (verseElement) {
+                            verseElement.scrollIntoView({ behavior: 'smooth' });
+                            verseElement.classList.add('highlight-verse');
+                            setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+                        }
+                    });
+                    searchResults.appendChild(verseDiv);
+                });
+            }
+
+            if (totalOccurrences === 0) {
+                const noResultDiv = document.createElement('div');
+                noResultDiv.className = 'result-item';
+                noResultDiv.textContent = 'Aucun résultat trouvé';
+                searchResults.appendChild(noResultDiv);
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Lecture à haute voix
+        voicePlayBtn.addEventListener('click', () => {
+            if (!window.speechSynthesis) {
+                console.error('Synthèse vocale non supportée par ce navigateur');
+                return;
+            }
+
+            if (isPlaying) {
+                synth.cancel();
+                isPlaying = false;
+                voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+                return;
+
+            }
+
+            const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
+
+            if (!textToRead || textToRead.trim() === '') {
+                console.error('Aucun texte disponible pour la lecture');
+                return;
+
+            }
+
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : 'languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+
+            const selectVoice = () => {
+                const voices = synth.getVoices();
+                let selectedVoice;
+
+                if (languageSelect.value === 'fr') {
+                    selectedVoice = voices.find(voice =>
+                        voice.lang === 'fr-FR' &&
+                        (voice.name.toLowerCase().includes('thomas') ||
+                         voice.name.toLowerCase().includes('male') ||
+                         voice.name.toLowerCase().includes('fr-fr'))
+                        ) || voices.find(voice => voice.lang === 'fr-FR') || voices[0];
+                    } else if (languageSelect.value === 'en') {
+                        voices.find(voice =>
+                            voice.lang === 'en-US' &&
+                            (voice.name.toLowerCase().includes('guy') ||
+                             voice.name.toLowerCase().includes('male') ||
+                             voice.name.toLowerCase().includes('daniel'))
+                        ) || voices.find(voice => voice.lang === 'en-US') || voices[0];
+                    } else if (languageSelect.value === 'ar') {
+                        selectedVoice = voices.find(voice =>
+                            voice.lang === 'ar-SA' &&
+                            (voice.name.toLowerCase().includes('male') ||
+                             voice.name.toLowerCase().includes('ar'))
+                        ) || voices.find(voice => voice.lang === 'ar-SA') || voices[0];
+
+                    }
+
+                    if (selectedVoice) {
+                        utterance.lang = selectedVoice;
+                        console.log(`Voix sélectionnée : ${selectedVoice.name}`);
+                    } else {
+                        console.log('Aucune voix spécifique trouvée, utilisation de la voix par défaut');
+                    }
+                };
+
+            if (synth.getVoices().length === 0) {
+                synth.onvoiceschanged = () => {
+                    selectVoice();
+                    synth.speak(utterance);
+                };
             } else {
-                console.log("Aucune voix spécifique trouvée, utilisation de la voix par défaut.");
-            }
-        };
-
-        if (synth.getVoices().length === 0) {
-            synth.onvoiceschanged = () => {
                 selectVoice();
                 synth.speak(utterance);
+            }
+
+            utterance.volume = 1;
+            utterance.rate = 1;
+            utterance.pitch = 1;
+
+            utterance.onend = () => {
+                isPlaying = false;
+                voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+                console.log('Lecture terminée');
             };
-        } else {
-            selectVoice();
-            synth.speak(utterance);
-        }
 
-        utterance.volume = 1;
-        utterance.rate = 1;
-        utterance.pitch = 1;
+            utterance.onerror = (e) => {
+                isPlaying = false;
+                voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+                console.error(`Erreur de synthèse vocale : ${e.error}`);
+            };
 
-        utterance.onend = () => {
-            isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            console.log("Lecture terminée.");
-        };
-
-        utterance.onerror = (event) => {
-            isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            console.log(`Erreur de synthèse vocale : ${event.error}`);
-        };
-
-        isPlaying = true;
-        voicePlayBtn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
-    });
-
-    // Zoom
-    document.querySelector('.zoom-in-btn').addEventListener('click', () => {
-        if (currentFontSize < 30) {
-            currentFontSize += 2;
-            fontSize.value = currentFontSize;
-            arabicText.style.fontSize = `${currentFontSize}px`;
-            textContent.style.fontSize = `${currentFontSize}px`;
-            localStorage.setItem('fontSize', currentFontSize);
-        }
-    });
-
-    document.querySelector('.zoom-out-btn').addEventListener('click', () => {
-        if (currentFontSize > 12) {
-            currentFontSize -= 2;
-            fontSize.value = currentFontSize;
-            arabicText.style.fontSize = `${currentFontSize}px`;
-            textContent.style.fontSize = `${currentFontSize}px`;
-            localStorage.setItem('fontSize', currentFontSize);
-        }
-    });
-
-    // Personnalisation des couleurs
-    document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.body.style.backgroundColor = btn.getAttribute('data-color');
-            localStorage.setItem('backgroundColor', btn.getAttribute('data-color'));
+            isPlaying = true;
+            voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
         });
-    });
 
-    // Charger le contenu de la sourate
-    function loadSuraContent(verseIndex = null) {
-        const suraData = suraContents[currentSura] || suraContents[1];
-        suraTitle.textContent = `La Voie du Salut ${currentSura}`;
-        const content = suraData[languageSelect.value] || suraData.en;
-        const verses = content.split('<br>').filter(verse => verse.trim());
+        // Zoom
+        document.querySelector('.zoom-in-btn').addEventListener('click', () => {
+            if (currentFontSize < 30) {
+                currentFontSize += 2;
+                fontSize.value = currentFontSize;
+                arabicText.style.fontSize = `${currentFontSize}px`;
+                textContent.style.fontSize = `${currentFontSize}px`;
+                localStorage.setItem('fontSize', currentFontSize);
+            }
+        });
 
-        const html = verses.map((verse, index) =>
-            `<div id="verse-${index + 1}" class="verse">${verse}</div>`
-        ).join('');
+        document.querySelector('.zoom-out-btn').addEventListener('click', () => {
+            if (currentFontSize > 12) {
+                currentFontSize -= 2;
+                fontSize.value = currentFontSize;
+                arabicText.style.fontSize = `${currentFontSize}px`;
+                textContent.style.fontSize = `${currentFontSize}px`;
+                localStorage.setItem('fontSize', currentFontSize);
+            }
+        });
 
-        if (languageSelect.value === 'ar') {
-            arabicText.innerHTML = html;
-            textContent.style.display = 'none';
-            arabicText.style.display = 'block';
-        } else {
-            textContent.innerHTML = html;
-            arabicText.style.display = 'none';
-            textContent.style.display = 'block';
-        }
+        // Personnalisation des couleurs
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.body.style.backgroundColor = btn.getAttribute('data-color');
+                localStorage.setItem('backgroundColor', btn.getAttribute('data-color'));
+            });
+        });
 
-        arabicText.style.fontSize = `${currentFontSize}px`;
-        textContent.style.fontSize = `${currentFontSize}px`;
-        favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+        // Charger le contenu de la chapitre
+        function loadSuraContent(verseIndex = null) {
+            const suraData = suraContents[currentSura] || suraContents[1];
+            suraTitle.textContent = `La Voie du Salut ${currentSura}`;
+            const content = suraData[languageSelect.value] || suraData.en;
+            const verses = content.split('<br>').filter(verse => verse.trim());
 
-        if (verseIndex) {
-            const verseElement = document.getElementById(`verse-${verseIndex}`);
-            if (verseElement) {
-                verseElement.scrollIntoView({ behavior: 'smooth' });
-                verseElement.classList.add('highlight-verse');
-                setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+            const html = verses.map((verse, index) =>
+                `<div id="verse-${index + 1}" class="verse">${verse}</div>`
+            ).join('');
+
+            if (languageSelect.value === 'ar') {
+                arabicText.innerHTML = html;
+                textContent.style.display = 'none';
+                arabicText.style.display = 'block';
+            } else {
+                textContent.innerHTML = html;
+                arabicText.style.display = 'none';
+                textContent.style.display = 'block';
+            }
+
+            arabicText.style.fontSize = `${currentFontSize}px`;
+            textContent.style.fontSize = `${currentFontSize}px`;
+            favoriteBtn.textContent = favorites.includes(currentSura) ? '★' : '☆';
+
+            if (verseIndex) {
+                const verseElement = document.getElementById(`verse-${verseIndex}`);
+                if (verseElement) {
+                    verseElement.scrollIntoView({ behavior: 'smooth' });
+                    verseElement.classList.add('highlight-verse');
+                    setTimeout(() => verseElement.classList.remove('highlight-verse'), 2000);
+                }
             }
         }
-    }
 
-    // Charger les paramètres sauvegardés
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) themeSelect.value = savedTheme;
-    document.body.className = savedTheme === 'dark' ? 'dark' : '';
+        // Charger les paramètres sauvegardés
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) themeSelect.value = savedTheme;
+        document.documentElement.className = savedTheme === 'dark' ? 'dark' : '';
 
-    const savedFont = localStorage.getItem('font');
-    if (savedFont) fontSelect.value = savedFont;
-    document.body.style.fontFamily = savedFont + ', serif' || 'Amiri, serif';
+        const savedFont = localStorage.getItem('font');
+        if (savedFont) fontSelect.value = savedFont;
+        document.body.style.font = savedFont + ', serif' || 'Amiri, serif';
 
-    const savedFontSize = localStorage.getItem('fontSize');
-    if (savedFontSize) {
-        currentFontSize = parseInt(savedFontSize);
-        fontSize.value = currentFontSize;
-        arabicText.style.fontSize = `${currentFontSize}px`;
-        textContent.style.fontSize = `${currentFontSize}px`;
-    }
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            currentFontSize = parseInt(savedFontSize);
+            fontSize.value = currentFontSize;
+            arabicText.style.fontSize = savedFontSize + 'px';
+            textContent.style.fontSize = savedFontSize + 'px';
+        }
 
-    const savedBgColor = localStorage.getItem('backgroundColor');
-    if (savedBgColor) document.body.style.backgroundColor = savedBgColor;
+        const savedBgColor = localStorage.getItem('backgroundColor');
+        if (savedBgColor) document.body.style.backgroundColor = savedBgColor;
 
-    // Initialisation
-    loadSuraContent();
-    loadFavorites();
-});
+        // Initialisation
+        loadSuraContent();
+        loadFavorites();
+    });
