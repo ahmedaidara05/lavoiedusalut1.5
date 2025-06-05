@@ -592,7 +592,7 @@ body.dark .start-btn {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
-  background: #ffffff; /* Fond des messages blanc */
+  background: #d2c9a3; /* Fond beige de la zone des messages (conservé) */
   color: #000000;
 }
 
