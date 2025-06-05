@@ -604,26 +604,26 @@ body.dark .start-btn {
 }
 
 .user {
-  background: #FFD700; /* Doré pour les messages envoyés */
+  background: #4d7949; /* Doré pour les messages envoyés */
   color: #1E1E1E; /* Texte sombre sur fond doré */
   margin-left: auto; /* Aligné à droite */
   border-bottom-right-radius: 0; /* Style moderne */
 }
 
 .bot {
-  background: #FFFFFF; /* Blanc pour les messages reçus en mode clair */
-  color: #1E1E1E;
+  background: #dddddd; /* Blanc pour les messages reçus en mode clair */
+  color: #d2c9a3;
   margin-right: auto; /* Aligné à gauche */
   border-bottom-left-radius: 0; /* Style moderne */
 }
 
 body.dark #chatbot {
-  background: #2E2E2E; /* Fond plus sombre en mode sombre */
+  background: #d2c9a3; /* Fond plus sombre en mode sombre */
 }
 
 body.dark .bot {
-  background: #000000; /* Noir pour les messages reçus en mode sombre */
-  color: #E0E0E0;
+  background: #d2c9a3; /* Noir pour les messages reçus en mode sombre */
+  color: #d2c9a3;
 }
 
 #inputArea {
