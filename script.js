@@ -25,6 +25,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Importer les réponses du chatbot
     const { default: chatbotResponses } = await import('./chatbotResponses.js');
 
+    // Gestion du carrousel
+let currentPage = 1;
+const totalPages = 3;
+
+function showPage(pageNumber) {
+    document.querySelectorAll('.carousel-page').forEach(page => {
+        page.style.display = 'none';
+        page.style.transform = 'translateX(100%)';
+    });
+    const currentPageElement = document.getElementById(`page${pageNumber}`);
+    currentPageElement.style.display = 'block';
+    currentPageElement.style.transform = 'translateX(0)';
+}
+
+document.querySelectorAll('.nav-arrow.left-arrow').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentPage = currentPage > 1 ? currentPage - 1 : totalPages;
+        showPage(currentPage);
+    });
+});
+
+document.querySelectorAll('.nav-arrow.right-arrow').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentPage = currentPage < totalPages ? currentPage + 1 : 1;
+        showPage(currentPage);
+    });
+});
+
+// Gestion des boutons "Commencer"
+document.querySelectorAll('.start-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        homePage.style.display = 'none';
+        indexPage.style.display = 'block';
+    });
+});
+
+// Initialisation de la première page
+showPage(currentPage);
+    
     // Sélection des éléments DOM
     const homePage = document.getElementById('homePage');
     const indexPage = document.getElementById('index-page');
