@@ -769,38 +769,51 @@ body.dark #clear-history {
     z-index: -1;
 }
 
-.page-content {
-    position: relative;
+.page-header {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 80%;
+    width: 100%;
     max-width: 800px;
-    text-align: center;
-    color: #ffffff; /* Texte blanc pour contraste sur fond d'image */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Ombre pour lisibilité */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 2; /* Au-dessus du texte défilant */
 }
 
 .page-title {
-    position: absolute;
-    left: 20px;
-    top: 0;
     font-size: 2rem;
     font-weight: bold;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     margin: 0;
 }
 
+.page-content {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px; /* Marges réduites */
+    z-index: 1;
+}
+
 .page-text {
-    max-height: 50vh; /* Limite la hauteur pour rester en dessous du milieu */
-    overflow-y: auto; /* Active le défilement vertical */
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour lisibilité */
-    border-radius: 10px;
+    max-height: 45vh; /* Légèrement réduit pour laisser de l'espace sous le titre */
+    overflow-y: auto;
+    text-align: center; /* Texte centré */
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Ombre pour lisibilité */
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.page-text p {
+    margin: 10px 0;
 }
 
 .start-btn {
-    position: absolute;
-    right: 20px;
-    top: 0;
     padding: 10px 20px;
     background-color: #2e7d32;
     color: white;
@@ -843,4 +856,3 @@ body.dark #clear-history {
 .nav-arrow:hover {
     background: rgba(0, 0, 0, 0.7);
 }
-
