@@ -573,7 +573,7 @@ body.dark .start-btn {
   right: 20px;
   width: 350px;
   max-height: 500px;
-  background: #1E1E1E; /* Fond sombre moderne */
+  background: #faf9f6; /* Fond sombre moderne */
   border-radius: 15px; /* Coins plus arrondis */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   display: none;
@@ -592,7 +592,7 @@ body.dark .start-btn {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
-  background: #2C2C2C; /* Fond des messages sombre */
+  background: #d2c9a3; /* Fond des messages sombre */
   color: #E0E0E0; /* Texte clair */
 }
 
