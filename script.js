@@ -82,8 +82,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    };
-
     let isChatOpen = false;
 
     // Gestion du chatbot
