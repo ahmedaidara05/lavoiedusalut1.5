@@ -770,7 +770,7 @@ body.dark #clear-history {
 }
 
 .page-header {
-    position: absolute;
+    position: fixed; /* Fixé pour éviter le chevauchement */
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
@@ -778,35 +778,36 @@ body.dark #clear-history {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    z-index: 2; /* Au-dessus du texte défilant */
+    padding: 0 10px; /* Marges réduites */
+    z-index: 10; /* Bien au-dessus du texte */
 }
 
 .page-title {
     font-size: 2rem;
     font-weight: bold;
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre renforcée pour lisibilité */
     margin: 0;
 }
 
 .page-content {
     position: absolute;
-    top: 50%;
+    top: calc(50% + 60px); /* Décalé sous le header pour éviter le chevauchement */
     width: 100%;
     max-width: 800px;
-    padding: 0 20px; /* Marges réduites */
+    padding: 0 10px; /* Marges très réduites */
     z-index: 1;
 }
 
 .page-text {
-    max-height: 45vh; /* Légèrement réduit pour laisser de l'espace sous le titre */
+    max-height: 40vh; /* Réduit pour rester sous le header */
     overflow-y: auto;
-    text-align: center; /* Texte centré */
+    text-align: center; /* Texte parfaitement centré */
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Ombre pour lisibilité */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre renforcée */
     font-size: 1rem;
     line-height: 1.5;
+    margin: 0 auto; /* Centrage horizontal */
 }
 
 .page-text p {
@@ -828,7 +829,7 @@ body.dark #clear-history {
 }
 
 .nav-arrow {
-    position: absolute;
+    position: fixed; /* Fixé pour rester visible */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.5);
@@ -846,11 +847,11 @@ body.dark #clear-history {
 }
 
 .nav-arrow.left-arrow {
-    left: 20px;
+    left: 10px;
 }
 
 .nav-arrow.right-arrow {
-    right: 20px;
+    right: 10px;
 }
 
 .nav-arrow:hover {
