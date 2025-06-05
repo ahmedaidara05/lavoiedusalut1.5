@@ -744,8 +744,8 @@ body.dark #clear-history {
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    margin: 0; /* Supprime tout contour */
-    padding: 0; /* Supprime tout contour */
+    margin: 0;
+    padding: 0;
 }
 
 .carousel-page {
@@ -758,19 +758,20 @@ body.dark #clear-history {
     flex-direction: column;
     align-items: center;
     transition: transform 0.5s ease-in-out;
+    background-color: #d2c9a3; /* Fond par défaut pour la partie inférieure */
 }
 
-.page-background {
-    position: fixed; /* Utilisation de fixed pour couvrir tout l'écran */
+.page-background-top {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw; /* Pleine largeur */
-    height: 100vh; /* Pleine hauteur */
+    width: 100%;
+    height: 50%; /* Occupe la moitié supérieure jusqu'au titre */
     background-size: cover;
     background-position: center;
-    z-index: -1;
-    margin: 0; /* Supprime tout contour */
-    padding: 0; /* Supprime tout contour */
+    z-index: 0; /* Derrière le header et les flèches */
+    margin: 0;
+    padding: 0;
 }
 
 .page-header {
@@ -782,12 +783,12 @@ body.dark #clear-history {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px; /* Marges réduites */
+    padding: 0 10px;
     z-index: 10;
 }
 
 .page-title {
-    font-size: 1.5rem; /* Taille réduite pour le titre */
+    font-size: 1.5rem;
     font-weight: bold;
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -796,19 +797,18 @@ body.dark #clear-history {
 
 .page-content {
     position: absolute;
-    top: calc(50% + 40px); /* Décalé légèrement plus haut pour centrage */
+    top: calc(50% + 40px); /* Décalé pour centrage vertical */
     width: 100%;
     max-width: 800px;
-    padding: 0 10px; /* Marges réduites */
+    padding: 0 10px;
     z-index: 1;
 }
 
 .page-text {
-    max-height: 45vh; /* Augmenté pour montrer la dernière ligne */
+    max-height: 45vh; /* Assure que la dernière ligne est visible */
     overflow-y: auto;
     text-align: center;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    color: #000000; /* Noir pour contraste sur fond #d2c9a3 */
     font-size: 1rem;
     line-height: 1.5;
     margin: 0 auto;
@@ -820,13 +820,13 @@ body.dark #clear-history {
 }
 
 .start-btn {
-    padding: 8px 16px; /* Taille réduite */
+    padding: 8px 16px;
     background-color: #2e7d32;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem; /* Taille réduite */
+    font-size: 0.9rem;
 }
 
 .start-btn:hover {
@@ -835,15 +835,15 @@ body.dark #clear-history {
 
 .nav-arrow {
     position: fixed;
-    top: calc(50% - 60px); /* Déplacées vers le haut */
+    top: calc(50% - 60px); /* Plus haut pour ne pas gêner */
     background: #2e7d32; /* Fond vert */
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px; /* Taille réduite */
-    height: 30px; /* Taille réduite */
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    font-size: 1rem; /* Taille réduite */
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -859,10 +859,10 @@ body.dark #clear-history {
 }
 
 .nav-arrow:hover {
-    background: #1b5e20; /* Vert plus foncé au survol */
+    background: #1b5e20;
 }
 
-/* Assurer la responsivité pour tous les écrans */
+/* Responsivité pour tous les écrans */
 @media (max-width: 600px) {
     .page-header {
         max-width: 90%;
@@ -870,7 +870,7 @@ body.dark #clear-history {
     }
 
     .page-title {
-        font-size: 1.2rem; /* Taille encore réduite sur mobile */
+        font-size: 1.2rem;
     }
 
     .page-content {
@@ -891,5 +891,9 @@ body.dark #clear-history {
         width: 25px;
         height: 25px;
         font-size: 0.8rem;
+    }
+
+    .page-background-top {
+        height: 40%; /* Ajustement pour petits écrans */
     }
 }
