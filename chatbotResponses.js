@@ -9,6 +9,11 @@ const chatbotResponses = [
         response: "L’auteur, dans le chapitre 1, insiste sur l’importance de vérifier chaque argument pour en apprécier la véracité, comme il l’écrit : « Je suis responsable de ce que j’écris, mais pas de votre compréhension. » Il s’inspire de 1 Thessaloniciens 5:19-21 : « Examinez tout, retenez ce qui est bon. »"
     },
     {
+  "keyword": "création",
+  "synonyms": ["origine", "genèse", "formation", "naissance", "commencement", "fabrication divine", "œuvre divine", "instauration", "fondation", "émanation"],
+  "response": "Dans 'La Genèse', la création est décrite comme l’acte divin par lequel Dieu donne vie à l’humanité, dotée d’une âme et d’un dessein. Le chapitre explore les récits coraniques et bibliques sur l’origine de l’univers et de l’homme. Consultez 'La Genèse' pour une analyse détaillée."
+},
+    {
         keywords: ["humilité", "foi", "chapitre 1"],
         response: "Le chapitre 1 de *La Voie du Salut* promeut l’humilité et la foi en s’adressant aux croyants avec respect, les invitant à méditer jour et nuit sur la parole divine, comme mentionné dans le livre de Josué, pour prospérer spirituellement."
     },
