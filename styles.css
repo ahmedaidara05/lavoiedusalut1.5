@@ -658,16 +658,6 @@ body.dark .bot {
   color: #255e28; /* Couleur verte pour l'icône */
 }
 
-#send::before {
-  content: "➤";
-  font-weight: bold;
-  transition: transform 0.2s;
-}
-
-#send:hover::before {
-  transform: scale(1.2);
-}
-
 body.dark #send {
   color: #255e28;
 }
