@@ -758,20 +758,28 @@ body.dark #clear-history {
     flex-direction: column;
     align-items: center;
     transition: transform 0.5s ease-in-out;
-    background-color: #d2c9a3; /* Fond par défaut pour la partie inférieure */
+    background-color: #d2c9a3; /* Fond par défaut */
 }
 
-.page-background-top {
+.page-image-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%; /* Occupe la moitié supérieure jusqu'au titre */
-    background-size: cover;
-    background-position: center;
-    z-index: 0; /* Derrière le header et les flèches */
-    margin: 0;
-    padding: 0;
+    height: 50%; /* Moitié supérieure */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.page-image {
+    width: auto; /* Taille réelle */
+    height: auto; /* Taille réelle */
+    max-width: 100%; /* Ne dépasse pas le conteneur */
+    max-height: 100%; /* Ne dépasse pas la moitié supérieure */
+    object-fit: contain; /* Affiche l'image entière sans déformation */
 }
 
 .page-header {
@@ -779,16 +787,16 @@ body.dark #clear-history {
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
-    max-width: 800px;
+    max-width: 90%; /* Réduit pour mobile */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 5px; /* Réduit pour mobile */
     z-index: 10;
 }
 
 .page-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Réduit pour mobile */
     font-weight: bold;
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -797,36 +805,36 @@ body.dark #clear-history {
 
 .page-content {
     position: absolute;
-    top: calc(50% + 40px); /* Décalé pour centrage vertical */
+    top: calc(50% + 30px); /* Décalé plus haut pour mobile */
     width: 100%;
-    max-width: 800px;
-    padding: 0 10px;
+    max-width: 90%; /* Réduit pour mobile */
+    padding: 0 5px; /* Réduit pour mobile */
     z-index: 1;
 }
 
 .page-text {
-    max-height: 45vh; /* Assure que la dernière ligne est visible */
+    max-height: 45vh; /* Assure la visibilité de la dernière ligne */
     overflow-y: auto;
-    text-align: center;
-    color: #000000; /* Noir pour contraste sur fond #d2c9a3 */
-    font-size: 1rem;
+    text-align: center !important; /* Force le centrage */
+    color: #000000;
+    font-size: 0.9rem; /* Réduit pour mobile */
     line-height: 1.5;
     margin: 0 auto;
     padding-bottom: 20px; /* Espace pour la dernière ligne */
 }
 
 .page-text p {
-    margin: 10px 0;
+    margin: 8px 0; /* Réduit pour mobile */
 }
 
 .start-btn {
-    padding: 8px 16px;
+    padding: 6px 12px; /* Réduit pour mobile */
     background-color: #2e7d32;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Réduit pour mobile */
 }
 
 .start-btn:hover {
@@ -835,15 +843,15 @@ body.dark #clear-history {
 
 .nav-arrow {
     position: fixed;
-    top: calc(50% - 60px); /* Plus haut pour ne pas gêner */
+    top: calc(50% - 70px); /* Plus haut pour ne pas gêner */
     background: #2e7d32; /* Fond vert */
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 25px; /* Réduit pour mobile */
+    height: 25px; /* Réduit pour mobile */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.8rem; /* Réduit pour mobile */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -851,49 +859,57 @@ body.dark #clear-history {
 }
 
 .nav-arrow.left-arrow {
-    left: 10px;
+    left: 5px; /* Réduit pour mobile */
 }
 
 .nav-arrow.right-arrow {
-    right: 10px;
+    right: 5px; /* Réduit pour mobile */
 }
 
 .nav-arrow:hover {
     background: #1b5e20;
 }
 
-/* Responsivité pour tous les écrans */
-@media (max-width: 600px) {
+/* Optimisation pour desktop */
+@media (min-width: 600px) {
     .page-header {
-        max-width: 90%;
-        padding: 0 5px;
+        max-width: 800px;
+        padding: 0 10px;
     }
 
     .page-title {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
 
     .page-content {
-        max-width: 90%;
-        padding: 0 5px;
+        max-width: 800px;
+        padding: 0 10px;
     }
 
     .page-text {
-        font-size: 0.9rem;
+        font-size: 1rem;
+    }
+
+    .page-text p {
+        margin: 10px 0;
     }
 
     .start-btn {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 
     .nav-arrow {
-        width: 25px;
-        height: 25px;
-        font-size: 0.8rem;
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
     }
 
-    .page-background-top {
-        height: 40%; /* Ajustement pour petits écrans */
+    .nav-arrow.left-arrow {
+        left: 10px;
+    }
+
+    .nav-arrow.right-arrow {
+        right: 10px;
     }
 }
