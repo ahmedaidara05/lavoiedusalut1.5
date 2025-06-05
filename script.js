@@ -293,49 +293,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const sendBtn = document.getElementById('send');
     if (sendBtn) {
-        sendBtn.onclick = () => {
-            console.log('Bouton Envoyer cliqué');
-            const input = document.getElementById('input');
-            const messages = document.getElementById('messages');
+      sendBtn.onclick = () => {
+    console.log('Bouton Envoyer cliqué');
+    const input = document.getElementById('input');
+    const messages = document.getElementById('messages');
 
-            const question = input.value.trim().toLowerCase();
-            if (!question) return;
+    const question = input.value.trim().toLowerCase();
+    if (!question) return;
 
-            messages.innerHTML += `<div class="message user">${input.value}</div>`;
-            input.value = '';
+    messages.innerHTML += `<div class="message user">${input.value}</div>`;
+    input.value = '';
 
-            // Extraire les mots-clés de la question
-            const stopWords = new Set(['le', 'la', 'et', 'de', 'à', 'en', 'un', 'une', 'des', 'du', 'les', 'est', 'ce', 'cette', 'pour', 'dans', 'sur', 'avec', 'par']);
-            const keywords = question.split(/\s+/).filter(word => word.length > 2 && !stopWords.has(word));
+    const stopWords = new Set(['le', 'la', 'et', 'de', 'à', 'en', 'un', 'une', 'des', 'du', 'les', 'est', 'ce', 'cette', 'pour', 'dans', 'sur', 'avec', 'par']);
+    const keywords = question.split(/\s+/).filter(word => word.length > 2 && !stopWords.has(word));
+    console.log('Mots-clés extraits :', keywords); // Débogage
 
-            // Trouver une réponse correspondante
-            let response = 'Désolé, je ne peux répondre qu’aux questions liées à *La Voie du Salut*. Veuillez poser une question sur un chapitre ou un enseignement spécifique.';
-            let bestMatchScore = 0;
+    let response = 'Désolé, je ne peux répondre qu’aux questions liées à *La Voie du Salut*. Veuillez poser une question sur un chapitre ou un enseignement spécifique.';
+    let bestMatchScore = 0;
 
-            chatbotResponses.forEach(entry => {
-                const matchedKeywords = keywords.filter(kw => entry.keywords.some(ekw => kw.includes(ekw.toLowerCase())));
-                const matchScore = matchedKeywords.length;
+    chatbotResponses.forEach(entry => {
+        const matchedKeywords = keywords.filter(kw =>
+            entry.keywords.some(ekw => ekw.toLowerCase().includes(kw) || kw.includes(ekw.toLowerCase()))
+        );
+        const matchScore = matchedKeywords.length;
+        console.log(`Correspondance pour ${entry.keywords}: ${matchedKeywords}`); // Débogage
+        if (matchScore > bestMatchScore) {
+            bestMatchScore = matchScore;
+            response = entry.response;
+        }
+    });
 
-                if (matchScore > bestMatchScore) {
-                    bestMatchScore = matchScore;
-                    response = entry.response;
-                }
-            });
+    const chapterMatch = question.match(/chapitre\s+(\d+)/);
+    if (chapterMatch) {
+        const chapterNum = parseInt(chapterMatch[1]);
+        if (suraContents[chapterNum]) {
+            response = `Extrait du chapitre ${chapterNum} (français) : ${suraContents[chapterNum].fr.substring(0, 200)}... Explorez ce chapitre pour plus de détails !`;
+        } else {
+            response = 'Ce chapitre n’est pas disponible. Veuillez vérifier le numéro du chapitre.';
+        }
+    }
 
-            // Vérifier si un chapitre est mentionné
-            const chapterMatch = question.match(/chapitre\s+(\d+)/);
-            if (chapterMatch && !bestMatchScore) {
-                const chapterNum = parseInt(chapterMatch[1]);
-                if (suraContents[chapterNum]) {
-                    response = `Extrait du chapitre ${chapterNum} (français) : ${suraContents[chapterNum].fr.substring(0, 200)}... Explorez ce chapitre pour plus de détails !`;
-                } else {
-                    response = 'Ce chapitre n’est pas disponible. Veuillez vérifier le numéro du chapitre.';
-                }
-            }
-
-            messages.innerHTML += `<div class="message bot">${response}</div>`;
-            messages.scrollTop = messages.scrollHeight;
-        };
+    messages.innerHTML += `<div class="message bot">${response}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+};
     } else {
         console.error('Bouton #send non trouvé dans le DOM');
     }
