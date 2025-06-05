@@ -630,7 +630,7 @@ body.dark .bot {
   display: flex;
   border-top: 1px solid #444;
   padding: 10px;
-  background: ##a2a2a2; /* Noir pour la zone de saisie */
+  background: #5d896c; /* Noir pour la zone de saisie */
 }
 
 #input {
