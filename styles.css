@@ -592,8 +592,8 @@ body.dark .start-btn {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
-  background: #d2c9a3; /* Fond des messages sombre */
-  color: #E0E0E0; /* Texte clair */
+  background: #E0E0E0; /* Fond des messages sombre */
+  color: #000000; /* Texte clair */
 }
 
 .message {
@@ -693,7 +693,7 @@ body.dark #send {
 }
 
 #close-chatbot:hover {
-  color: #FF5555; /* Rouge au survol pour indiquer la fermeture */
+  color: #a22c00; /* Rouge au survol pour indiquer la fermeture */
 }
 
 .chat-footer {
@@ -702,7 +702,7 @@ body.dark #send {
 }
 
 #clear-history {
-  background: #FF5555; /* Rouge pour indiquer une action destructive */
+  background: #ffd794; /* Rouge pour indiquer une action destructive */
   color: #FFFFFF;
   border: none;
   border-radius: 50px; /* Bouton circulaire */
@@ -720,7 +720,7 @@ body.dark #send {
 }
 
 #clear-history:hover {
-  background: #FF3333;
+  background: #fefdd3;
 }
 
 body.dark #clear-history {
