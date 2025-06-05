@@ -630,7 +630,7 @@ body.dark .bot {
   display: flex;
   border-top: 1px solid #444;
   padding: 10px;
-  background: #5d896c; /* Noir pour la zone de saisie */
+  background: #d2c9a3; /* Noir pour la zone de saisie */
 }
 
 #input {
@@ -638,14 +638,14 @@ body.dark .bot {
   border: none;
   padding: 10px;
   border-radius: 20px;
-  background: #d2c9a3;
-  color: #ffffff;
+  background: #c4c4c4;
+  color: #000000;
   outline: none;
   font-size: 14px;
 }
 
 #input::placeholder {
-  color: #aaaaaa;
+  color: #c58a38;
 }
 
 #send {
