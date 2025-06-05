@@ -605,14 +605,14 @@ body.dark .start-btn {
 
 .user {
   background: #a8e6a8; /* Vert clair pour les messages envoyés */
-  color: #000000; /* Texte noir */
+  color: #000000;
   margin-left: auto;
   border-bottom-right-radius: 0;
 }
 
 .bot {
-  background: #ffffff; /* Blanc pour les messages reçus */
-  color: #000000; /* Texte noir */
+  background: #ffffff; /* Blanc uniquement pour les messages reçus */
+  color: #000000;
   margin-right: auto;
   border-bottom-left-radius: 0;
 }
