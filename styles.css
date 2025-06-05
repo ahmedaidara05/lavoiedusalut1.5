@@ -569,11 +569,11 @@ body.dark .start-btn {
 
 #chatbot {
   position: fixed;
-  top: 20px;
+  top: 80px;
   bottom: 20px;
   right: 20px;
   width: 350px;
-  max-height: 80vh;
+  max-height: 75vh;
   background: #d2c9a3; /* Fond du chat modifié */
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
