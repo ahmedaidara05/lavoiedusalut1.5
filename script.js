@@ -607,6 +607,33 @@ sendBtn.onclick = () => {
         }
     });
 
+    // Fermer customizePanel et chatbot lorsqu'on clique à l'extérieur
+document.addEventListener('click', (e) => {
+    // Gestion de searchResults (déjà existant)
+    if (!searchBar.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+    }
+
+    // Fermer customizePanel si le clic est à l'extérieur
+    if (
+        customizePanel.style.display === 'block' &&
+        !customizePanel.contains(e.target) &&
+        !document.querySelector('.customize-btn').contains(e.target)
+    ) {
+        customizePanel.style.display = 'none';
+    }
+
+    // Fermer chatbot si le clic est à l'extérieur
+    if (
+        isChatOpen &&
+        !document.getElementById('chatbot').contains(e.target) &&
+        !document.querySelector('.ai-btn').contains(e.target)
+    ) {
+        document.getElementById('chatbot').style.display = 'none';
+        isChatOpen = false;
+    }
+});
+
     // Lecture à haute voix
     voicePlayBtn.addEventListener('click', () => {
         if (!synth) {
