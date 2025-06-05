@@ -39,7 +39,28 @@ const chatbotResponses = [
     {
         keywords: ["auteur", "ahmed said aidara"],
         response: "Ahmed Said Aidara est l’auteur de *La Voie du Salut*. Il s’adresse aux croyants avec respect et amour, promouvant une quête spirituelle basée sur la foi, l’humilité et la vérification des vérités, en s’appuyant sur le Coran et la Bible."
-    }
+    },
+    {
+  keywords: ["création"],
+  response: "Le livre explique que Dieu est l’unique créateur de toute chose. L’humain a été façonné avec un but divin clair."
+},
+{
+  keywords: ["mouhammad"],
+  response: "Le Prophète Muhammad (PSL) y est présenté comme le sceau des prophètes, humble serviteur et modèle spirituel suprême."
+},
+{
+  keywords: ["trinité"],
+  response: "Le livre conteste la Trinité comme concept divin et appelle au monothéisme pur enseigné par tous les prophètes."
+},
+{
+  keywords: ["mathématique coran"],
+  response: "Des structures mathématiques étonnantes dans le Coran y sont explorées, comme la récurrence de certains mots clés."
+},
+{
+  keywords: ["muhammad dans la bible"],
+  response: "Le livre cite des versets bibliques interprétés comme des prophéties annonçant la venue de Muhammad (PSL)."
+}
+
 ];
 
 export default chatbotResponses;
