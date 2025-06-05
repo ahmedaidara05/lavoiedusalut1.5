@@ -293,36 +293,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const sendBtn = document.getElementById('send');
     if (sendBtn) {
-      sendBtn.onclick = () => {
+sendBtn.onclick = () => {
     console.log('Bouton Envoyer cliqué');
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
 
     const question = input.value.trim().toLowerCase();
-    if (!question) return;
+    if (!question) {
+        console.log('Aucune question entrée');
+        return;
+    }
 
     messages.innerHTML += `<div class="message user">${input.value}</div>`;
     input.value = '';
 
+    // Extraire les mots-clés
     const stopWords = new Set(['le', 'la', 'et', 'de', 'à', 'en', 'un', 'une', 'des', 'du', 'les', 'est', 'ce', 'cette', 'pour', 'dans', 'sur', 'avec', 'par']);
     const keywords = question.split(/\s+/).filter(word => word.length > 2 && !stopWords.has(word));
-    console.log('Mots-clés extraits :', keywords); // Débogage
+    console.log('Mots-clés extraits :', keywords);
 
     let response = 'Désolé, je ne peux répondre qu’aux questions liées à *La Voie du Salut*. Veuillez poser une question sur un chapitre ou un enseignement spécifique.';
     let bestMatchScore = 0;
 
+    // Vérifier les correspondances avec les mots-clés
     chatbotResponses.forEach(entry => {
         const matchedKeywords = keywords.filter(kw =>
-            entry.keywords.some(ekw => ekw.toLowerCase().includes(kw) || kw.includes(ekw.toLowerCase()))
+            entry.keywords.some(ekw => kw === ekw.toLowerCase() || ekw.toLowerCase().includes(kw) || kw.includes(ekw.toLowerCase()))
         );
         const matchScore = matchedKeywords.length;
-        console.log(`Correspondance pour ${entry.keywords}: ${matchedKeywords}`); // Débogage
+        console.log(`Correspondance pour "${entry.keywords.join(', ')}": ${matchedKeywords.join(', ')} (score: ${matchScore})`);
         if (matchScore > bestMatchScore) {
             bestMatchScore = matchScore;
             response = entry.response;
         }
     });
 
+    // Vérifier si un chapitre est mentionné
     const chapterMatch = question.match(/chapitre\s+(\d+)/);
     if (chapterMatch) {
         const chapterNum = parseInt(chapterMatch[1]);
