@@ -4,6 +4,10 @@ const chatbotResponses = [
         response: "Dans le chapitre La Genèse, Ahmed Said Aidara explore la source sacrée de l’univers, révélée par le Coran, invitant à méditer sur la vérité islamique de la création."
     },
     {
+        keywords: ["auteur", "ecrivain", "écrivain", "écrit", "ahmed", "said", "aidara", "ida"],
+        response: "Ahmed Said Aidara mieux connu sous le nom de "Mouhamad" ou "Ida" est un jeune épistémophile, Sénégalais. Il est disciple à l'institut Al Mouyassar, après avoir mémorisé le Saint Coran ; diplômé, il continue ses études aux sciences religieuses. Il a été élu "élève modèle" à cet institut en 2023 lors de la cérémonie "remise de diplôme", après son discours. La Bible, lue par ce musulman, il décide de souligner certains points et faire un appel et un rappel aux hommes de Dieu. "
+    },
+    {
         keywords: ["dieu", "pere", "fils", "nom", "divin", "sacré", "unicite", "allah"],
         response: "Dans le chapitre Le terme Dieu, Père et Fils de Dieu, Ahmed Said Aidara rejette les noms chrétiens, prônant l’unicité d’Allah."
     },
