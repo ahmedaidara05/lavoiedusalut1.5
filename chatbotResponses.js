@@ -5,7 +5,7 @@ const chatbotResponses = [
     },
     {
         keywords: ["auteur", "ecrivain", "écrivain", "écrit", "ahmed", "said", "aidara", "ida"],
-        response: "Ahmed Said Aidara mieux connu sous le nom de "Mouhamad" ou "Ida" est un jeune épistémophile, Sénégalais. Il est disciple à l'institut Al Mouyassar, après avoir mémorisé le Saint Coran ; diplômé, il continue ses études aux sciences religieuses. Il a été élu "élève modèle" à cet institut en 2023 lors de la cérémonie "remise de diplôme", après son discours. La Bible, lue par ce musulman, il décide de souligner certains points et faire un appel et un rappel aux hommes de Dieu. "
+        response: "Ahmed Said Aidara mieux connu sous le nom de 'Mouhamad' ou 'Ida' est un jeune épistémophile, Sénégalais. Il est disciple à l'institut Al Mouyassar, après avoir mémorisé le Saint Coran ; diplômé, il continue ses études aux sciences religieuses. Il a été élu 'élève modèle' à cet institut en 2023 lors de la cérémonie 'remise de diplôme', après son discours. La Bible, lue par ce musulman, il décide de souligner certains points et faire un appel et un rappel aux hommes de Dieu. "
     },
     {
         keywords: ["dieu", "pere", "fils", "nom", "divin", "sacré", "unicite", "allah"],
