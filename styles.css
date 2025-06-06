@@ -799,14 +799,12 @@ header h1 {
     max-width: 600px;
     padding: 20px;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px auto 3mm auto;
     display: block;
     box-sizing: border-box;
 }
-
 .page-title {
     font-size: 2rem;
     color: #0A2463;
