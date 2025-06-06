@@ -795,16 +795,24 @@ header h1 {
 }
 
 .page-content {
-    width: 90%;
-    max-width: 600px;
+    width: 95%; /* Augmenté de 90% à 95% pour réduire les espaces latéraux */
+    max-width: 650px; /* Légèrement augmenté pour plus de texte visible */
     padding: 20px;
-    text-align: center;
+    text-align: left; /* Changé de center à left pour les paragraphes */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px auto 3mm auto;
     display: block;
     box-sizing: border-box;
+    font-size: 1.2rem; /* Augmenté de la taille par défaut (environ 1rem) à 1.2rem */
 }
+
+.page-content ul {
+    text-align: left; /* Force l'alignement à gauche */
+    margin-left: 0; /* Supprime la marge par défaut à gauche */
+    padding-left: 20px; /* Ajoute un léger padding pour un aspect propre */
+}
+
 .page-title {
     font-size: 2rem;
     color: #0A2463;
