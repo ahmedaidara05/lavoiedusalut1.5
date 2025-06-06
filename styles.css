@@ -779,11 +779,11 @@ header h1 {
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh; /* Changé de height à min-height pour permettre l'extension */
+    min-height: 100vh; /* Permet à la page de s'étendre si nécessaire */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Distribue l'espace entre l'image et le texte */
     transition: transform 0.5s ease-in-out;
     background-color: #d2c9a3;
 }
