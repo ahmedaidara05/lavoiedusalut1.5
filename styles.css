@@ -924,39 +924,44 @@ header h1 {
     }
 
 /* Navigation Arrows */
+/* Navigation Arrows */
 .nav-arrow {
-    background: #2e7d32; /* Couleur de fond vert foncé */
+    background: #2e7d32;
     color: white;
     border: none;
-    border-radius: 5px; /* Coins arrondis */
-    width: 120px; /* Largeur plus grande pour un look moderne */
-    height: 40px; /* Hauteur ajustée */
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
     cursor: pointer;
     font-size: 1rem;
-    display: inline-flex; /* Pour aligner l'icône et le texte */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 10px; /* Espacement entre les boutons */
-    transition: background 0.3s ease, transform 0.2s ease; /* Animation au survol */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    margin: 0 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Fixe les boutons en bas */
+    bottom: 10px; /* Positionne à 10px du bas */
+    left: 50%; /* Centre horizontalement */
+    transform: translateX(-50%); /* Ajuste pour un centrage parfait */
 }
 
 .nav-arrow.left-arrow i,
 .nav-arrow.right-arrow i {
-    margin: 0 5px; /* Espacement entre l'icône et le texte */
+    margin: 0 5px;
 }
 
 .nav-arrow.left-arrow::before {
-    content: "Précédent"; /* Ajoute le texte "Précédent" */
+    content: "Précédent";
 }
 
 .nav-arrow.right-arrow::after {
-    content: "Suivant"; /* Ajoute le texte "Suivant" */
+    content: "Suivant";
 }
 
 .nav-arrow:hover {
-    background: #1b5e20; /* Vert plus foncé au survol */
-    transform: translateY(-2px); /* Légère élévation au survol */
+    background: #1b5e20;
+    transform: translateY(-2px);
 }
 
 /* Conteneur pour les boutons en bas */
