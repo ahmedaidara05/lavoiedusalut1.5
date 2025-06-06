@@ -765,7 +765,6 @@ header h1 {
 }
 
 /* Carousel */
-/* Carousel */
 .carousel {
     position: relative;
     width: 100%;
@@ -854,12 +853,10 @@ header h1 {
 
 /* Navigation Arrows */
 .nav-arrows-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centre le conteneur horizontalement et verticalement */
     display: flex;
+    justify-content: center; /* Centre les flèches horizontalement */
     gap: 10px; /* Espace entre les flèches */
+    margin: 10px 0; /* Espace au-dessus et en dessous du conteneur */
     z-index: 10;
 }
 
@@ -879,8 +876,8 @@ header h1 {
 
 .nav-arrow.left-arrow,
 .nav-arrow.right-arrow {
-    position: static; /* Supprime le positionnement fixe des flèches individuelles */
-    transform: none; /* Supprime la transformation individuelle */
+    position: static; /* Supprime le positionnement fixe */
+    transform: none; /* Supprime la transformation */
 }
 
 .nav-arrow:hover {
