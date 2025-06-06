@@ -795,7 +795,7 @@ header h1 {
 }
 
 .page-content {
-    width: 95%; /* Augmenté de 90% à 95% pour réduire les espaces latéraux */
+    width: 98%; /* Augmenté de 90% à 95% pour réduire les espaces latéraux */
     max-width: 650px; /* Légèrement augmenté pour plus de texte visible */
     padding: 20px;
     text-align: left; /* Changé de center à left pour les paragraphes */
@@ -923,19 +923,45 @@ header h1 {
         font-size: 0.9rem;
     }
 
-    .nav-arrow {
-        width: 25px;
-        height: 25px;
-        font-size: 0.8rem;
-    }
+/* Navigation Arrows */
+.nav-arrow {
+    background: #2e7d32; /* Couleur de fond vert foncé */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Coins arrondis */
+    width: 120px; /* Largeur plus grande pour un look moderne */
+    height: 40px; /* Hauteur ajustée */
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex; /* Pour aligner l'icône et le texte */
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px; /* Espacement entre les boutons */
+    transition: background 0.3s ease, transform 0.2s ease; /* Animation au survol */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre légère */
+}
 
-    .nav-arrow.left-arrow {
-        left: 5px;
-    }
+.nav-arrow.left-arrow i,
+.nav-arrow.right-arrow i {
+    margin: 0 5px; /* Espacement entre l'icône et le texte */
+}
 
-    .nav-arrow.right-arrow {
-        right: 5px;
-    }
+.nav-arrow.left-arrow::before {
+    content: "Précédent"; /* Ajoute le texte "Précédent" */
+}
+
+.nav-arrow.right-arrow::after {
+    content: "Suivant"; /* Ajoute le texte "Suivant" */
+}
+
+.nav-arrow:hover {
+    background: #1b5e20; /* Vert plus foncé au survol */
+    transform: translateY(-2px); /* Légère élévation au survol */
+}
+
+/* Conteneur pour les boutons en bas */
+.page-content .nav-arrow {
+    margin-top: 20px; /* Espacement au-dessus des boutons */
 }
 
 /* Scroll Animation (si nécessaire, à activer avec JavaScript) */
