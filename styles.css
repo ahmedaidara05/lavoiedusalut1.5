@@ -810,11 +810,11 @@ header h1 {
 }
 
 .page-content {
-    position: relative;
-    top: 50%;
+    position: absolute; /* Changé de relative à absolute pour un meilleur contrôle */
+    bottom: 0; /* Place le texte en bas */
     width: 90%;
     max-width: 600px;
-    max-height: 45vh; /* Limite la hauteur pour permettre le défilement */
+    max-height: 50vh; /* Limite la hauteur à la moitié inférieure pour le texte */
     overflow-y: auto; /* Active le défilement vertical */
     padding: 20px;
     text-align: center;
