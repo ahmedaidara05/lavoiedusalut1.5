@@ -765,6 +765,7 @@ header h1 {
 }
 
 /* Carousel */
+/* Carousel */
 .carousel {
     position: relative;
     width: 100%;
@@ -852,7 +853,6 @@ header h1 {
 }
 
 /* Navigation Arrows */
-/* Conteneur pour les flèches */
 .nav-arrows-container {
     position: fixed;
     top: 50%;
@@ -863,7 +863,6 @@ header h1 {
     z-index: 10;
 }
 
-/* Style des flèches */
 .nav-arrow {
     background: #2e7d32;
     color: white;
@@ -878,7 +877,6 @@ header h1 {
     justify-content: center;
 }
 
-/* Supprime les positionnements individuels */
 .nav-arrow.left-arrow,
 .nav-arrow.right-arrow {
     position: static; /* Supprime le positionnement fixe des flèches individuelles */
@@ -888,7 +886,6 @@ header h1 {
 .nav-arrow:hover {
     background: #1b5e20;
 }
-
 
 /* Bubbles */
 .bubble {
@@ -934,19 +931,11 @@ header h1 {
     .nav-arrows-container {
         gap: 5px; /* Réduit l'espace entre les flèches pour les petits écrans */
     }
-    
+
     .nav-arrow {
         width: 25px;
         height: 25px;
         font-size: 0.8rem;
-    }
-
-    .nav-arrow.left-arrow {
-        left: 5px;
-    }
-
-    .nav-arrow.right-arrow {
-        right: 5px;
     }
 }
 
