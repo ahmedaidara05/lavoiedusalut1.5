@@ -768,17 +768,20 @@ header h1 {
 .carousel {
     position: relative;
     width: 100%;
+    height: auto; /* Supprimer toute hauteur fixe pour permettre l'extension */
+    min-height: 100vh; /* Hauteur minimale pour couvrir l'écran */
     overflow-y: auto; /* Défilement vertical */
     margin: 0;
     padding: 0;
-    min-height: 100vh; /* Assure une hauteur minimale */
 }
 
 .carousel-page {
     width: 100%;
-    display: block; /* Changé de flex à block pour un flux naturel */
+    display: block; /* Flux naturel */
     transition: transform 0.5s ease-in-out;
     background-color: #d2c9a3;
+    height: auto; /* S'adapte au contenu */
+    min-height: 100vh; /* Hauteur minimale */
 }
 
 .page-image-container {
@@ -805,10 +808,10 @@ header h1 {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px auto 3mm auto; /* Petit espace en bas de 0.3 cm (3mm) */
-    display: block; /* Flux naturel */
-    height: auto; /* Assure que la hauteur s'adapte au contenu */
-    overflow-y: auto; /* Défilement vertical */
-    box-sizing: border-box; /* Inclut le padding dans la hauteur */
+    display: block;
+    height: auto; /* S'adapte au contenu */
+    min-height: 50vh; /* Hauteur minimale pour éviter un conteneur trop petit */
+    box-sizing: border-box;
 }
 
 .page-title {
