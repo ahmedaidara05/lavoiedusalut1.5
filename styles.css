@@ -764,13 +764,10 @@ header h1 {
     margin: 0;
 }
 
-/* Styles pour la page d'accueil avec carrousel */
+/* Carousel */
 .carousel {
     position: relative;
     width: 100%;
-    height: auto;
-    min-height: 100vh;
-    overflow-y: auto;
     margin: 0;
     padding: 0;
 }
@@ -778,88 +775,181 @@ header h1 {
 .carousel-page {
     width: 100%;
     display: block;
-    position: relative; /* Nécessaire pour positionner les boutons en absolu */
-    min-height: 100vh;
     transition: transform 0.5s ease-in-out;
     background-color: #d2c9a3;
-    padding-bottom: 60px; /* Espace réservé pour les boutons en bas */
 }
 
 .page-image-container {
     width: 100%;
-    display: block;
-    text-align: center;
-    padding-top: 10px;
+    display: block; /* Changé pour un flux naturel */
+    text-align: center; /* Centre l'image horizontalement */
+    padding-top: 10px; /* Petit espace en haut */
 }
 
 .page-image {
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: 50vh;
+    max-height: 60vh; /* Limite la hauteur de l'image pour éviter qu'elle prenne trop de place */
     object-fit: contain;
 }
 
 .page-content {
-    width: 95%;
-    max-width: 650px;
+    width: 98%; /* Augmenté de 90% à 95% pour réduire les espaces latéraux */
+    max-width: 650px; /* Légèrement augmenté pour plus de texte visible */
     padding: 20px;
-    text-align: left;
+    text-align: left; /* Changé de center à left pour les paragraphes */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px auto 3mm auto;
     display: block;
     box-sizing: border-box;
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Augmenté de la taille par défaut (environ 1rem) à 1.2rem */
 }
 
 .page-content ul {
     text-align: left;
     margin-left: 0;
     padding-left: 20px;
-    list-style-type: none;
+    list-style-type: none; /* Supprime les puces (points) */
+}
+
+.page-title {
+    font-size: 2rem;
+    color: #0A2463;
+    margin: 10px 0;
+}
+
+.subtitle {
+    font-style: italic;
+    color: #444;
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.quote-box {
+    background-color: #F6F5EF;
+    border-left: 4px solid #BFAF5E;
+    padding: 15px;
+    margin: 20px 0;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.start-btn {
+    padding: 10px 20px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.start-btn:hover {
+    background-color: #1b5e20;
 }
 
 /* Navigation Arrows */
 .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
     background: #2e7d32;
     color: white;
     border: none;
-    border-radius: 5px;
-    width: 120px;
-    height: 40px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     font-size: 1rem;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 10px;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    position: absolute; /* Position absolue par rapport à .carousel-page */
-    bottom: 10px; /* 10px du bas de .carousel-page */
-    left: 50%; /* Centrage horizontal */
-    transform: translateX(-50%); /* Ajustement pour un centrage parfait */
+    z-index: 10;
 }
 
-.nav-arrow.left-arrow i,
-.nav-arrow.right-arrow i {
-    margin: 0 5px;
+.nav-arrow.left-arrow {
+    left: 10px;
 }
 
-.nav-arrow.left-arrow::before {
-    content: "Précédent";
-}
-
-.nav-arrow.right-arrow::after {
-    content: "Suivant";
+.nav-arrow.right-arrow {
+    right: 10px;
 }
 
 .nav-arrow:hover {
     background: #1b5e20;
-    transform: translateY(-2px);
+}
+
+/* Bubbles */
+.bubble {
+    position: fixed;
+    bottom: -50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatBubble 10s linear infinite;
+}
+
+@keyframes floatBubble {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .quote-box {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .start-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .nav-arrow {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+
+    .nav-arrow.left-arrow {
+        left: 5px;
+    }
+
+    .nav-arrow.right-arrow {
+        right: 5px;
+    }
+}
+
+/* Scroll Animation (si nécessaire, à activer avec JavaScript) */
+.scroll-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.scroll-anim.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .home-page header {
-    display: none;
+    display: none; /* Masque le header sur la page d'accueil */
 }
