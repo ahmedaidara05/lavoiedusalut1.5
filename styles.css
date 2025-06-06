@@ -808,9 +808,10 @@ header h1 {
 }
 
 .page-content ul {
-    text-align: left; /* Force l'alignement à gauche */
-    margin-left: 0; /* Supprime la marge par défaut à gauche */
-    padding-left: 20px; /* Ajoute un léger padding pour un aspect propre */
+    text-align: left;
+    margin-left: 0;
+    padding-left: 20px;
+    list-style-type: none; /* Supprime les puces (points) */
 }
 
 .page-title {
