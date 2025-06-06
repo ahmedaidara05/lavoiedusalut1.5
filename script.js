@@ -792,13 +792,14 @@ document.addEventListener('click', (e) => {
         }
     });
 
-    // Personnalisation des couleurs
-    document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.body.style.backgroundColor = btn.getAttribute('data-color');
-            localStorage.setItem('backgroundColor', btn.getAttribute('data-color'));
-        });
+// Personnalisation des couleurs
+document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const readingPage = document.getElementById('readingPage');
+        readingPage.style.backgroundColor = btn.getAttribute('data-color');
+        localStorage.setItem('readerBackgroundColor', btn.getAttribute('data-color'));
     });
+});
 
     // Charger le contenu du chapitre
     function loadSuraContent(verseIndex = null) {
@@ -864,14 +865,14 @@ if (savedFontSize) {
     textContent.style.fontSize = `${savedFontSize}px`;
 }
 
-const savedBgColor = localStorage.getItem('backgroundColor');
+// Charger les paramètres sauvegardés
+const savedBgColor = localStorage.getItem('readerBackgroundColor');
 if (savedBgColor) {
-    document.body.style.backgroundColor = savedBgColor;
+    document.getElementById('readingPage').style.backgroundColor = savedBgColor;
 } else {
-    document.body.style.backgroundColor = '#d2c9a3'; // Couleur par défaut
-    localStorage.setItem('backgroundColor', '#d2c9a3'); // Sauvegarder la valeur par défaut
+    document.getElementById('readingPage').style.backgroundColor = '#d2c9a3';
+    localStorage.setItem('readerBackgroundColor', '#d2c9a3');
 }
-
     // Initialisation
     loadSuraContent();
     loadFavorites();
