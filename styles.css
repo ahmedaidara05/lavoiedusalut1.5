@@ -439,12 +439,12 @@ body.dark .highlight-verse {
 
 .favorites-page {
     padding: 60px 20px 0;
-    height: auto; /* Laisser la hauteur s'adapter au contenu */
-    min-height: 0; /* Supprimer la hauteur minimale pour éviter l'espace vide */
-    max-height: 100vh; /* Garder la limite maximale pour le défilement */
+    height: auto;
+    min-height: 0;
+    max-height: 100vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: #fff;
+    background: #d2c9a3; /* Changé de #fff à #d2c9a3 */
     box-sizing: border-box;
 }
 
@@ -452,8 +452,9 @@ body.dark .highlight-verse {
     list-style: none;
     padding: 0;
     margin: 0;
-    padding-bottom: 0; /* Supprimer le padding-bottom pour éviter l'espace supplémentaire */
-    margin-bottom: 0; /* Assurer qu'aucune marge n'ajoute d'espace */
+    padding-bottom: 0;
+    margin-bottom: 0;
+    background: transparent; /* Assure que la liste elle-même est transparente */
 }
 
 #favoritesList li {
@@ -464,26 +465,26 @@ body.dark .highlight-verse {
     align-items: center;
     cursor: pointer;
     transition: background 0.3s ease;
+    background: transparent; /* Fond transparent pour les éléments */
 }
 
 #favoritesList li:hover {
-    background: #e0e0e0;
+    background: #e0e0e0; /* Conserve le survol */
 }
 
-/* Ajouter une règle pour le dernier élément de la liste pour supprimer l'espace résiduel */
 #favoritesList li:last-child {
-    border-bottom: none; /* Supprimer la bordure du dernier élément pour éviter un espace visuel */
-    padding-bottom: 0; /* Supprimer le padding-bottom du dernier élément */
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .notes-page {
     padding: 60px 20px 2px;
     height: auto;
-    min-height: 0; /* Supprimer la hauteur minimale pour éviter l'espace vide */
-    max-height: 100vh; /* Déclencher le défilement si le contenu dépasse */
+    min-height: 0;
+    max-height: 100vh;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Améliorer le défilement sur mobile */
-    background: #f5f5f0;
+    -webkit-overflow-scrolling: touch;
+    background: #d2c9a3; /* Changé de #f5f5f0 à #d2c9a3 */
     box-sizing: border-box;
 }
 
@@ -509,12 +510,13 @@ body.dark .highlight-verse {
 
 .category {
     margin-bottom: 5px;
+    background: transparent; /* Assure que le conteneur est transparent */
 }
 
 .category h3 {
     margin: 0;
     padding: 5px;
-    background: #d2c9a3;
+    background: #d2c9a3; /* Déjà correct */
     border-radius: 5px;
 }
 
@@ -524,6 +526,7 @@ body.dark .highlight-verse {
     padding: 5px;
     border: 1px solid #d2c9a3;
     border-radius: 5px;
+    background: #d2c9a3; /* Fond explicite pour éviter le blanc */
 }
 
 body.dark {
