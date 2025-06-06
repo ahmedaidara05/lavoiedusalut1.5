@@ -60,13 +60,11 @@ document.querySelectorAll('.nav-arrow.right-arrow').forEach(btn => {
     });
 });
 
-// Gestion des boutons "DÉCOUVRIR L'OUVRAGE"
-document.querySelectorAll('.cta-button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.getElementById('homePage').style.display = 'none';
-        document.getElementById('indexPage').style.display = 'block';
-    });
-});
+// Gestion du bouton "DÉCOUVRIR L'OUVRAGE"
+function showSommaire() {
+    document.getElementById('homePage').style.display = 'none';
+    document.getElementById('sommairePage').style.display = 'block';
+}
 
 // Animation au scroll
 const scrollElements = document.querySelectorAll('.scroll-anim');
