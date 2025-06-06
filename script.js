@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Importer les réponses du chatbot
     const { default: chatbotResponses } = await import('./chatbotResponses.js');
 
-    // Gestion du carrousel
+// Gestion du carrousel
 let currentPage = 1;
 const totalPages = 3;
 
@@ -37,6 +37,13 @@ function showPage(pageNumber) {
     const currentPageElement = document.getElementById(`page${pageNumber}`);
     currentPageElement.style.display = 'block';
     currentPageElement.style.transform = 'translateX(0)';
+
+    // Réinitialiser les animations de scroll pour la nouvelle page
+    const scrollElements = currentPageElement.querySelectorAll('.scroll-anim');
+    scrollElements.forEach(el => {
+        el.classList.remove('visible');
+        observer.observe(el);
+    });
 }
 
 document.querySelectorAll('.nav-arrow.left-arrow').forEach(btn => {
@@ -53,16 +60,50 @@ document.querySelectorAll('.nav-arrow.right-arrow').forEach(btn => {
     });
 });
 
-// Gestion des boutons "Commencer"
-document.querySelectorAll('.start-btn').forEach(btn => {
+// Gestion des boutons "DÉCOUVRIR L'OUVRAGE"
+document.querySelectorAll('.cta-button').forEach(btn => {
     btn.addEventListener('click', () => {
-        homePage.style.display = 'none';
-        indexPage.style.display = 'block';
+        document.getElementById('homePage').style.display = 'none';
+        document.getElementById('indexPage').style.display = 'block';
     });
 });
 
+// Animation au scroll
+const scrollElements = document.querySelectorAll('.scroll-anim');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+scrollElements.forEach(el => observer.observe(el));
+
+// Création des bulles
+for (let i = 0; i < 20; i++) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    const size = Math.random() * 20 + 10;
+    bubble.style.width = bubble.style.height = `${size}px`;
+    bubble.style.left = `${Math.random() * 100}vw`;
+    bubble.style.animationDuration = `${8 + Math.random() * 6}s`;
+    bubble.style.opacity = Math.random();
+    document.body.appendChild(bubble);
+}
+
+// Gestion du son
+function playSound() {
+    const sound = document.getElementById('click-sound');
+    sound.currentTime = 0;
+    sound.play();
+}
+
 // Initialisation de la première page
 showPage(currentPage);
+    
     
     // Sélection des éléments DOM
     const homePage = document.getElementById('homePage');
