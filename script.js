@@ -53,6 +53,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentFontSize = 16;
     let isChatOpen = false;
 
+    // Fonction pour afficher le sommaire
+function showSommaire() {
+    const homePage = document.getElementById('homePage');
+    const indexPage = document.getElementById('index-page');
+    homePage.style.display = 'none';
+    indexPage.style.display = 'block';
+}
+
+// Création des bulles
+for (let i = 0; i < 10; i++) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    const size = Math.random() * 20 + 10;
+    bubble.style.width = bubble.style.height = `${size}px`;
+    bubble.style.left = `${Math.random() * 100}vw`;
+    bubble.style.animationDuration = `${8 + Math.random() * 6}s`;
+    bubble.style.opacity = Math.random() * 0.5 + 0.2;
+    document.body.appendChild(bubble);
+}
+
+// Initialisation du carrousel
+let currentPage = 1;
+const totalPages = 3;
+
+function showPage(pageNumber) {
+    document.querySelectorAll('.carousel-page').forEach(page => {
+        page.style.display = 'none';
+        page.style.transform = 'translateX(100%)';
+    });
+    const currentPageElement = document.getElementById(`page${pageNumber}`);
+    currentPageElement.style.display = 'block';
+    currentPageElement.style.transform = 'translateX(0)';
+}
+
+document.querySelectorAll('.nav-arrow.left-arrow').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentPage = currentPage > 1 ? currentPage - 1 : totalPages;
+        showPage(currentPage);
+    });
+});
+
+document.querySelectorAll('.nav-arrow.right-arrow').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentPage = currentPage < totalPages ? currentPage + 1 : 1;
+        showPage(currentPage);
+    });
+});
+
+showPage(currentPage);
+    
      // Contenu des 44 sourates en arabe, anglais et français (avec 4 paragraphes pour 1-5 et 44)
     const suraContents = {
         1: {
