@@ -805,6 +805,9 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px auto 3mm auto; /* Petit espace en bas de 0.3 cm (3mm) */
     display: block; /* Flux naturel */
+    height: auto; /* Assure que la hauteur s'adapte au contenu */
+    overflow-y: auto; /* Défilement vertical */
+    box-sizing: border-box; /* Inclut le padding dans la hauteur */
 }
 
 .page-title {
