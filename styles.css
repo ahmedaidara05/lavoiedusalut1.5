@@ -852,10 +852,19 @@ header h1 {
 }
 
 /* Navigation Arrows */
-.nav-arrow {
+/* Conteneur pour les flèches */
+.nav-arrows-container {
     position: fixed;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centre le conteneur horizontalement et verticalement */
+    display: flex;
+    gap: 10px; /* Espace entre les flèches */
+    z-index: 10;
+}
+
+/* Style des flèches */
+.nav-arrow {
     background: #2e7d32;
     color: white;
     border: none;
@@ -867,20 +876,19 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
 }
 
-.nav-arrow.left-arrow {
-    left: 10px;
-}
-
+/* Supprime les positionnements individuels */
+.nav-arrow.left-arrow,
 .nav-arrow.right-arrow {
-    right: 10px;
+    position: static; /* Supprime le positionnement fixe des flèches individuelles */
+    transform: none; /* Supprime la transformation individuelle */
 }
 
 .nav-arrow:hover {
     background: #1b5e20;
 }
+
 
 /* Bubbles */
 .bubble {
@@ -923,6 +931,10 @@ header h1 {
         font-size: 0.9rem;
     }
 
+    .nav-arrows-container {
+        gap: 5px; /* Réduit l'espace entre les flèches pour les petits écrans */
+    }
+    
     .nav-arrow {
         width: 25px;
         height: 25px;
