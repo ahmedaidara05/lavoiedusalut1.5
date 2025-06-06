@@ -506,6 +506,8 @@ body.dark .highlight-verse {
     border: none;
     padding: 10px;
     border-radius: 5px;
+    margin-top: 5px; /* Ajoute un espace au-dessus pour l'alignement */
+    display: block;
 }
 
 .category {
