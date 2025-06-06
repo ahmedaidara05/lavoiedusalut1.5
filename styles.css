@@ -149,6 +149,7 @@ header h1 {
 .reading-page {
     height: 100vh;
     overflow-y: auto;
+    background-color: #d2c9a3; /* Couleur par défaut */
 }
 
 .search-bar {
