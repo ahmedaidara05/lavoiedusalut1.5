@@ -346,7 +346,12 @@ body.dark .highlight-verse {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease; /* Animation au survol */
+}
+
+.color-btn:hover {
+    transform: scale(1.2); /* Grossit légèrement au survol */
 }
 
 .option-btn {
@@ -354,11 +359,17 @@ body.dark .highlight-verse {
     height: auto;
     padding: 5px 10px;
     border-radius: 5px;
-    background: #d2c9a3;
+    background: rgba(210, 201, 163, 0.7); /* Fond semi-transparent basé sur #d2c9a3 */
     border: none;
     display: flex;
     align-items: center;
     gap: 5px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.option-btn:hover {
+    background: rgba(210, 201, 163, 1); /* Plein #d2c9a3 au survol */
+    transform: translateY(-2px); /* Léger soulèvement */
 }
 
 .header-icons {
