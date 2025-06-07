@@ -684,11 +684,11 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Déclaration des variables globales
+// Gestion de la lecture à haute voix
 const voicePlayBtn = document.getElementById('voicePlayBtn');
 const languageSelect = document.getElementById('languageSelect');
-const arabicText = document.querySelector('.arabic-text');
-const textContent = document.querySelector('.text-content');
+const arabicText = document.getElementById('arabicText'); // Changé de .querySelector('.arabic-text')
+const textContent = document.getElementById('textContent'); // Changé de .querySelector('.text-content')
 let isPlaying = false;
 
 // Fonction pour nettoyer le texte arabe (supprime les tashkeel si nécessaire)
@@ -713,97 +713,101 @@ function showNotification(message, type = 'error') {
 }
 
 // Gestion de la lecture à haute voix
-voicePlayBtn.addEventListener('click', () => {
-    if (!window.speechSynthesis) {
-        console.error('Synthèse vocale non supportée par ce navigateur');
-        showNotification('Synthèse vocale non supportée par ce navigateur.');
-        return;
-    }
+if (voicePlayBtn) {
+    voicePlayBtn.addEventListener('click', () => {
+        if (!window.speechSynthesis) {
+            console.error('Synthèse vocale non supportée par ce navigateur');
+            showNotification('Synthèse vocale non supportée par ce navigateur.');
+            return;
+        }
 
-    const synth = window.speechSynthesis;
-    if (isPlaying) {
-        synth.cancel();
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-        return;
-    }
+        const synth = window.speechSynthesis;
+        if (isPlaying) {
+            synth.cancel();
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            return;
+        }
 
-    // Récupérer le texte à lire
-    let textToRead = languageSelect.value === 'ar' ? arabicText?.innerText : textContent?.innerText;
-    if (!textToRead || textToRead.trim() === '') {
-        console.error('Aucun texte disponible pour la lecture');
-        showNotification('Aucun texte à lire.');
-        return;
-    }
+        // Récupérer le texte à lire
+        let textToRead = languageSelect.value === 'ar' ? arabicText?.innerText : textContent?.innerText;
+        if (!textToRead || textToRead.trim() === '') {
+            console.error('Aucun texte disponible pour la lecture');
+            showNotification('Aucun texte à lire.');
+            return;
+        }
 
-    // Nettoyer le texte arabe
-    if (languageSelect.value === 'ar') {
-        textToRead = cleanArabicText(textToRead);
-    }
-
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
-    utterance.volume = 1;
-    utterance.rate = languageSelect.value === 'ar' ? 0.9 : 1; // Plus lent pour l'arabe
-    utterance.pitch = 1;
-
-    const selectVoice = () => {
-        const voices = synth.getVoices();
-        console.log('Voix disponibles :', voices.map(v => `${v.name} (${v.lang})`));
-
-        let selectedVoice;
+        // Nettoyer le texte arabe
         if (languageSelect.value === 'ar') {
-            selectedVoice = voices.find(voice => voice.lang.startsWith('ar')) ||
-                            voices.find(voice => voice.lang === 'ar-SA') ||
-                            voices.find(voice => voice.lang === 'ar-EG') ||
-                            voices[0];
-            if (!selectedVoice || !selectedVoice.lang.startsWith('ar')) {
-                console.warn('Aucune voix arabe trouvée');
-                showNotification('Aucune voix arabe disponible.');
+            textToRead = cleanArabicText(textToRead);
+        }
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+        utterance.volume = 1;
+        utterance.rate = languageSelect.value === 'ar' ? 0.9 : 1; // Plus lent pour l'arabe
+        utterance.pitch = 1;
+
+        const selectVoice = () => {
+            const voices = synth.getVoices();
+            console.log('Voix disponibles :', voices.map(v => `${v.name} (${v.lang})`));
+
+            let selectedVoice;
+            if (languageSelect.value === 'ar') {
+                selectedVoice = voices.find(voice => voice.lang.startsWith('ar')) ||
+                                voices.find(voice => voice.lang === 'ar-SA') ||
+                                voices.find(voice => voice.lang === 'ar-EG') ||
+                                voices[0];
+                if (!selectedVoice || !selectedVoice.lang.startsWith('ar')) {
+                    console.warn('Aucune voix arabe trouvée');
+                    showNotification('Aucune voix arabe disponible. Essayez d\'installer une voix arabe.');
+                }
+            } else if (languageSelect.value === 'fr') {
+                selectedVoice = voices.find(voice => voice.lang === 'fr-FR') || voices[0];
+            } else if (languageSelect.value === 'en') {
+                selectedVoice = voices.find(voice => voice.lang === 'en-US') || voices[0];
             }
-        } else if (languageSelect.value === 'fr') {
-            selectedVoice = voices.find(voice => voice.lang === 'fr-FR') || voices[0];
-        } else if (languageSelect.value === 'en') {
-            selectedVoice = voices.find(voice => voice.lang === 'en-US') || voices[0];
-        }
 
-        if (selectedVoice) {
-            utterance.voice = selectedVoice;
-            console.log(`Voix sélectionnée : ${selectedVoice.name} (${selectedVoice.lang})`);
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+                console.log(`Voix sélectionnée : ${selectedVoice.name} (${selectedVoice.lang})`);
+            } else {
+                console.warn('Aucune voix trouvée');
+                showNotification('Aucune voix disponible pour la langue sélectionnée.');
+            }
+        };
+
+        // Charger les voix
+        if (synth.getVoices().length === 0) {
+            synth.onvoiceschanged = () => {
+                selectVoice();
+                synth.speak(utterance);
+                synth.onvoiceschanged = null;
+            };
         } else {
-            console.warn('Aucune voix trouvée');
-            showNotification('Aucune voix disponible pour la langue sélectionnée.');
-        }
-    };
-
-    // Charger les voix
-    if (synth.getVoices().length === 0) {
-        synth.onvoiceschanged = () => {
             selectVoice();
             synth.speak(utterance);
-            synth.onvoiceschanged = null;
+        }
+
+        utterance.onend = () => {
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            showNotification('Lecture terminée.', 'success');
         };
-    } else {
-        selectVoice();
-        synth.speak(utterance);
-    }
 
-    utterance.onend = () => {
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-        showNotification('Lecture terminée.', 'success');
-    };
+        utterance.onerror = (e) => {
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            console.error(`Erreur de synthèse vocale : ${e.error}`);
+            showNotification(`Erreur de lecture : ${e.error}`);
+        };
 
-    utterance.onerror = (e) => {
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-        console.error(`Erreur de synthèse vocale : ${e.error}`);
-        showNotification(`Erreur de lecture : ${e.error}`);
-    };
-
-    isPlaying = true;
-    voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-});
+        isPlaying = true;
+        voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+    });
+} else {
+    console.error('Bouton #voicePlayBtn non trouvé dans le DOM');
+}
 
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
