@@ -712,7 +712,7 @@ body.dark #send {
 .chat-footer {
   padding: 5px 15px;
   text-align: right;
-  background: #d2c9a3; /* Fond beige pour le pied de chat */
+  background: transparent !important;
 }
 
 #clear-history {
