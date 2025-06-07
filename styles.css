@@ -580,7 +580,7 @@ body.dark .start-btn {
   right: 20px;
   width: 350px;
   max-height: 90vh;
-  background: url('chat-background.png') no-repeat center center !important; /* Ajoute !important */
+  background: url('chat-background.png') no-repeat center center !important;
   background-size: cover;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -640,7 +640,7 @@ body.dark .start-btn {
 }
 
 body.dark #chatbot {
-  background: url('chat-background.png') no-repeat center center !important; /* Remplace #d2c9a3 */
+  background: url('chat-background.png') no-repeat center center !important;
   background-size: cover;
 }
 
