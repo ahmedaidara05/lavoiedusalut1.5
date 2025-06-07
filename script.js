@@ -685,72 +685,79 @@ document.addEventListener('click', (e) => {
 
 // Lecture à haute voix
 function cleanArabicText(text) {
-    return text.replace(/[\u064B-\u065F\u0670]/g, ''); // Supprime les diacritiques arabes
+    return text.replace(/[\u064B-\u065F\u0670]/g, '').trim(); // Supprime les diacritiques arabes
 }
 
-voicePlayBtn.addEventListener('click', () => {
-    if (!window.speechSynthesis) {
-        console.error('Synthèse vocale non supportée.');
-        return;
-    }
-
-    const synth = window.speechSynthesis;
-    if (isPlaying) {
-        synth.cancel();
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-        return;
-    }
-
-    let textToRead = languageSelect.value === 'ar' ? arabicText?.innerText : textContent?.innerText;
-    if (!textToRead || textToRead.trim() === '') {
-        console.error('Aucun texte à lire.');
-        return;
-    }
-
-    if (languageSelect.value === 'ar') {
-        textToRead = cleanArabicText(textToRead);
-    }
-
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
-    utterance.volume = 1;
-    utterance.rate = languageSelect.value === 'ar' ? 0.8 : 1;
-    utterance.pitch = 1;
-
-    const selectVoice = () => {
-        const voices = synth.getVoices();
-        let selectedVoice = voices.find(voice => voice.lang.includes(languageSelect.value === 'ar' ? 'ar' : languageSelect.value === 'en' ? 'en' : 'fr')) || voices[0];
-        if (selectedVoice) {
-            utterance.voice = selectedVoice;
+if (!voicePlayBtn) {
+    console.error('Bouton #voicePlayBtn non trouvé.');
+} else {
+    voicePlayBtn.addEventListener('click', () => {
+        if (!window.speechSynthesis) {
+            console.error('Synthèse vocale non supportée.');
+            return;
         }
-    };
 
-    if (synth.getVoices().length === 0) {
-        synth.onvoiceschanged = () => {
+        const synth = window.speechSynthesis;
+        if (isPlaying) {
+            synth.cancel();
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            return;
+        }
+
+        let textToRead = languageSelect.value === 'ar' ? arabicText?.innerText : textContent?.innerText;
+        if (!textToRead || textToRead.trim() === '') {
+            console.error('Aucun texte à lire.');
+            return;
+        }
+
+        if (languageSelect.value === 'ar') {
+            textToRead = cleanArabicText(textToRead);
+        }
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+        utterance.volume = 1;
+        utterance.rate = languageSelect.value === 'ar' ? 0.85 : 1;
+        utterance.pitch = 1;
+
+        const selectVoice = () => {
+            const voices = synth.getVoices();
+            const voice = voices.find(v => v.lang.includes(languageSelect.value === 'ar' ? 'ar' : languageSelect.value === 'en' ? 'en' : 'fr')) || voices[0];
+            if (voice) {
+                utterance.voice = voice;
+                console.log(`Voix utilisée : ${voice.name} (${voice.lang})`);
+            } else {
+                console.warn('Aucune voix trouvée.');
+            }
+        };
+
+        if (synth.getVoices().length === 0) {
+            synth.onvoiceschanged = () => {
+                selectVoice();
+                synth.speak(utterance);
+                synth.onvoiceschanged = null;
+            };
+        } else {
             selectVoice();
             synth.speak(utterance);
-            synth.onvoiceschanged = null;
+        }
+
+        utterance.onend = () => {
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
         };
-    } else {
-        selectVoice();
-        synth.speak(utterance);
-    }
 
-    utterance.onend = () => {
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-    };
+        utterance.onerror = (e) => {
+            isPlaying = false;
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            console.error(`Erreur : ${e.error}`);
+        };
 
-    utterance.onerror = (e) => {
-        isPlaying = false;
-        voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
-        console.error(`Erreur de lecture : ${e.error}`);
-    };
-
-    isPlaying = true;
-    voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-});
+        isPlaying = true;
+        voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+    });
+}
     
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
