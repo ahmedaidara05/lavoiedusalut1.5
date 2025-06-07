@@ -580,8 +580,8 @@ body.dark .start-btn {
     right: 20px;
     width: 350px;
     max-height: 90vh;
-    background: url('./chat-background.png') no-repeat center center fixed !important;
-    background-size: cover !important;
+    background: url('./chat-background.png') no-repeat center center !important;
+    background-size: 100% 100% !important; /* Étire l'image pour remplir tout le conteneur */
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     display: none;
@@ -640,8 +640,8 @@ body.dark .start-btn {
 }
 
 body.dark #chatbot {
-    background: url('./chat-background.png') no-repeat center center fixed !important;
-    background-size: cover !important;
+    background: url('./chat-background.png') no-repeat center center !important;
+    background-size: 100% 100% !important; /* Même comportement en mode sombre */
 }
 
 body.dark .bot {
