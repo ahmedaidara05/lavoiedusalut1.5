@@ -673,13 +673,13 @@ body.dark .bot {
   padding: 10px;
   border-radius: 20px;
   background: #c4c4c4;
-  color: #1a9e5a;
+  color: #1c5739;
   outline: none;
   font-size: 14px;
 }
 
 #input::placeholder {
-  color: #9fbaac;
+  color: #1a9e5a;
 }
 
 #send {
