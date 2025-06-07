@@ -580,8 +580,8 @@ body.dark .start-btn {
   right: 20px;
   width: 350px;
   max-height: 90vh;
-background: url('chat-background.png') no-repeat center center; /* Chemin relatif sans /images/ */
-    background-size: cover;
+  background: url('./chat-background.png') no-repeat center center; /* Chemin relatif depuis CSS */
+  background-size: cover;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   display: none;
