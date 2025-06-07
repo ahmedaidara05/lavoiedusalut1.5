@@ -580,7 +580,8 @@ body.dark .start-btn {
   right: 20px;
   width: 350px;
   max-height: 90vh;
-  background: #d2c9a3; /* Fond du chat modifié */
+  background: url('/images/chat-background.jpg') no-repeat center center;
+  background-size: cover;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   display: none;
