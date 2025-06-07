@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let notes = JSON.parse(localStorage.getItem('notes')) || {};
     let currentSura = 1;
     let isPlaying = false;
-    const synth = window.speechSynthesis;
     let currentFontSize = 16;
     let isChatOpen = false;
 
@@ -684,60 +683,78 @@ document.addEventListener('click', (e) => {
     }
 });
 
-    // Lecture à haute voix
+// Lecture à haute voix
+function cleanArabicText(text) {
+    return text.replace(/[\u064B-\u065F\u0670]/g, ''); // Supprime les diacritiques arabes
+}
+
+function showNotification(message, type = 'error') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        background: ${type === 'error' ? '#ff6b6b' : '#2e7d32'};
+        color: white; padding: 10px 20px; border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10000;
+        font-size: 14px;
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+if (voicePlayBtn) {
     voicePlayBtn.addEventListener('click', () => {
-        if (!synth) {
-            console.error('Synthèse vocale non supportée par ce navigateur');
+        if (!window.speechSynthesis) {
+            showNotification('Synthèse vocale non supportée par ce navigateur.');
             return;
         }
 
+        const synth = window.speechSynthesis;
         if (isPlaying) {
             synth.cancel();
             isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
             return;
         }
 
-        const textToRead = languageSelect.value === 'ar' ? arabicText.innerText : textContent.innerText;
+        let textToRead = languageSelect.value === 'ar' ? arabicText?.innerText : textContent?.innerText;
         if (!textToRead || textToRead.trim() === '') {
-            console.error('Aucun texte disponible pour la lecture');
+            showNotification('Aucun texte à lire.');
             return;
+        }
+
+        if (languageSelect.value === 'ar') {
+            textToRead = cleanArabicText(textToRead);
         }
 
         const utterance = new SpeechSynthesisUtterance(textToRead);
         utterance.lang = languageSelect.value === 'ar' ? 'ar-SA' : languageSelect.value === 'en' ? 'en-US' : 'fr-FR';
+        utterance.volume = 1;
+        utterance.rate = languageSelect.value === 'ar' ? 0.9 : 1;
+        utterance.pitch = 1;
 
         const selectVoice = () => {
             const voices = synth.getVoices();
             let selectedVoice;
-
-            if (languageSelect.value === 'fr') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'fr-FR' &&
-                    (voice.name.toLowerCase().includes('thomas') ||
-                     voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('fr-fr'))
-                ) || voices.find(voice => voice.lang === 'fr-FR') || voices[0];
+            if (languageSelect.value === 'ar') {
+                selectedVoice = voices.find(voice => voice.lang.startsWith('ar')) ||
+                                voices.find(voice => voice.lang === 'ar-SA') ||
+                                voices.find(voice => voice.lang === 'ar-EG') ||
+                                voices[0];
+                if (!selectedVoice || !selectedVoice.lang.startsWith('ar')) {
+                    showNotification('Aucune voix arabe disponible. Installez une voix arabe.');
+                }
+            } else if (languageSelect.value === 'fr') {
+                selectedVoice = voices.find(voice => voice.lang === 'fr-FR') || voices[0];
             } else if (languageSelect.value === 'en') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'en-US' &&
-                    (voice.name.toLowerCase().includes('guy') ||
-                     voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('daniel'))
-                ) || voices.find(voice => voice.lang === 'en-US') || voices[0];
-            } else if (languageSelect.value === 'ar') {
-                selectedVoice = voices.find(voice =>
-                    voice.lang === 'ar-SA' &&
-                    (voice.name.toLowerCase().includes('male') ||
-                     voice.name.toLowerCase().includes('ar'))
-                ) || voices.find(voice => voice.lang === 'ar-SA') || voices[0];
+                selectedVoice = voices.find(voice => voice.lang === 'en-US') || voices[0];
             }
 
             if (selectedVoice) {
                 utterance.voice = selectedVoice;
-                console.log(`Voix sélectionnée : ${selectedVoice.name}`);
             } else {
-                console.log('Aucune voix spécifique trouvée, utilisation de la voix par défaut');
+                showNotification('Aucune voix disponible pour la langue sélectionnée.');
             }
         };
 
@@ -745,31 +762,31 @@ document.addEventListener('click', (e) => {
             synth.onvoiceschanged = () => {
                 selectVoice();
                 synth.speak(utterance);
+                synth.onvoiceschanged = null;
             };
         } else {
             selectVoice();
             synth.speak(utterance);
         }
 
-        utterance.volume = 1;
-        utterance.rate = 1;
-        utterance.pitch = 1;
-
         utterance.onend = () => {
             isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            console.log('Lecture terminée');
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            showNotification('Lecture terminée.', 'success');
         };
 
         utterance.onerror = (e) => {
             isPlaying = false;
-            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture à haute voix';
-            console.error(`Erreur de synthèse vocale : ${e.error}`);
+            voicePlayBtn.innerHTML = '<i class="fas fa-play"></i> Lecture';
+            showNotification(`Erreur de lecture : ${e.error}`);
         };
 
         isPlaying = true;
         voicePlayBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
     });
+} else {
+    console.error('Bouton .voice-play-btn non trouvé dans le DOM');
+}
 
     // Zoom
     document.querySelector('.zoom-in-btn').addEventListener('click', () => {
