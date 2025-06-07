@@ -580,7 +580,7 @@ body.dark .start-btn {
   right: 20px;
   width: 350px;
   max-height: 90vh;
-  background: url('/images/chat-background.jpg') no-repeat center center;
+  background: url('chat-background.png') no-repeat center center; /* Change .jpg en .png */
   background-size: cover;
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -595,13 +595,13 @@ body.dark .start-btn {
 /* Media query pour les écrans mobiles (largeur inférieure à 600px) */
 @media screen and (max-width: 600px) {
   #chatbot {
-    width: 90%; /* Réduit la largeur pour s'adapter à l'écran */
-    max-width: 350px; /* Limite la largeur maximale */
-    left: 50%; /* Centre horizontalement */
-    transform: translateX(-50%); /* Déplace de moitié de sa largeur pour un centrage parfait */
-    right: auto; /* Supprime la propriété right pour éviter les conflits */
+    width: 90%;
+    max-width: 350px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
     top: 70px;
-    bottom: 10px; /* Réduit légèrement l'espace du bas pour mobile */
+    bottom: 10px;
     max-height: 70vh;
   }
 }
