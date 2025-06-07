@@ -574,22 +574,22 @@ body.dark .start-btn {
 }
 
 #chatbot {
-  position: fixed;
-  top: 80px;
-  bottom: 20px;
-  right: 20px;
-  width: 350px;
-  max-height: 90vh;
-  background: url('chat-background.png') no-repeat center center !important;
-  background-size: cover;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 9999;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: all 0.3s ease;
+    position: fixed;
+    top: 80px;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    max-height: 90vh;
+    background: url('./chat-background.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
 }
 
 /* Media query pour les écrans mobiles (largeur inférieure à 600px) */
@@ -611,11 +611,11 @@ body.dark .start-btn {
 }
 
 #messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  background: #d2c9a3; /* Fond beige de la zone des messages (conservé) */
-  color: #000000;
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: transparent !important; /* Remplace #d2c9a3 par transparent */
+    color: #000000;
 }
 
 .message {
@@ -640,8 +640,8 @@ body.dark .start-btn {
 }
 
 body.dark #chatbot {
-  background: url('chat-background.png') no-repeat center center !important;
-  background-size: cover;
+    background: url('./chat-background.png') no-repeat center center fixed !important;
+    background-size: cover !important;
 }
 
 body.dark .bot {
