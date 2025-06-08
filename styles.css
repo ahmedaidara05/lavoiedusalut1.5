@@ -177,7 +177,7 @@ header h1 {
     border: 1px solid #d2c9a3;
     border-radius: 4px;
     position: fixed;
-    top: 150px; /* Conservé pour correspondre à votre position */
+    top: top: 140px !important; /* Conservé pour correspondre à votre position */
     left: 0;
     right: 0;
     z-index: 1000;
