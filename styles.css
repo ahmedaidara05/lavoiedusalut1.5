@@ -51,7 +51,7 @@ header h1 {
     flex-grow: 1;
     text-align: center;
     margin: 0;
-    font-size: 10px;
+    font-size: 5px;
 }
 
 .close-btn, .back-btn {
@@ -177,7 +177,7 @@ header h1 {
     border: 1px solid #d2c9a3;
     border-radius: 4px;
     position: fixed;
-    top: 120px; /* Conservé pour correspondre à votre position */
+    top: 150px; /* Conservé pour correspondre à votre position */
     left: 0;
     right: 0;
     z-index: 1000;
