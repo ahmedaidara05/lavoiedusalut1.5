@@ -4,6 +4,14 @@ const chatbotResponses = [
         response: "Dans le chapitre La Genèse, Ahmed Said Aidara explore la source sacrée de l’univers, révélée par le Coran, invitant à méditer sur la vérité islamique de la création."
     },
     {
+        keywords: ["bonjour", "cv", "ca va", "cava", "hello", "hi", "salam", "nkm", "naguendef", "bonsoir", "nafiyo", "marhabane", "apres midi", ".", ".", "?", "§", "!", "@", "'", "=", "1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
+        response: "Bonjour chers lecteurs ! 😊 Comment puis-je vous accompagner dans votre découverte de La Voie du Salut d'Ahmed Said Aidara ? N’hésitez pas à poser vos questions ou à explorer l'œuvre."
+    },
+    {
+        keywords: ["cc", "coucou"],
+        response: "Cc ! 😊 Bienvenue sur l'application de La Voie du Salut. Comment puis-je t'aider aujourd'hui ?"
+    },
+    {
         keywords: ["auteur", "ecrivain", "écrivain", "écrit", "ahmed", "said", "aidara", "ida"],
         response: "Ahmed Said Aidara mieux connu sous le nom de 'Mouhamad' ou 'Ida' est un jeune épistémophile, Sénégalais. Il est disciple à l'institut Al Mouyassar, après avoir mémorisé le Saint Coran ; diplômé, il continue ses études aux sciences religieuses. Il a été élu 'élève modèle' à cet institut en 2023 lors de la cérémonie 'remise de diplôme', après son discours. La Bible, lue par ce musulman, il décide de souligner certains points et faire un appel et un rappel aux hommes de Dieu. "
     },
