@@ -53,7 +53,7 @@ header h1 {
     flex-grow: 1;
     text-align: center;
     margin: 0;
-    font-size: 17px;
+    font-size: 10px;
 }
 
 .close-btn, .back-btn {
