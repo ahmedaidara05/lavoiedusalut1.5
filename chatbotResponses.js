@@ -4,7 +4,7 @@ const chatbotResponses = [
         response: "Dans le chapitre La Genèse, Ahmed Said Aidara explore la source sacrée de l’univers, révélée par le Coran, invitant à méditer sur la vérité islamique de la création."
     },
     {
-        keywords: ["bonjour", "cv", "ca va", "cava", "hello", "hi", "salam", "nkm", "naguendef", "bonsoir", "nafiyo", "marhabane", "apres midi", ".", ".", "?", "§", "!", "@", "'", "=", "1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
+        keywords: ["bonjour", "cv", "ca va", "cava", "hello", "hi", "salam", "nkm", "naguendef", "bonsoir", "nafiyo", "marhabane", "apres midi", "§", "@", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
         response: "Bonjour chers lecteurs ! 😊 Comment puis-je vous accompagner dans votre découverte de La Voie du Salut d'Ahmed Said Aidara ? N’hésitez pas à poser vos questions ou à explorer l'œuvre."
     },
     {
